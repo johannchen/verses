@@ -11,9 +11,21 @@
     <li><a href="#/view2">view2</a></li>
   </ul>
 
+  <h2>Verses</h2>
+  <div ng-controller="VerseController">
+    <form ng-submit="addVerse()">
+      <input type="text" ng-model="verseTitle" size="30" placeholder="verse title"><br />
+      <textarea rows="5" cols="50" ng-model="verseContent" placeholder="verse content"></textarea><br />
+      <input type="submit" class="btn-primary" value="Add Verse">
+    </form>
+    <ul class="unstyled">
+      <li ng-repeat="verse in verses">
+      {{verse.title}}<br />
+      {{verse.content}}
+      </li>
+    </ul>
+  </div>
   <div ng-view></div>
-
-  <div>Angular seed app: v<span app-version></span></div>
 
   <script src="lib/angular/angular.js"></script>
   <script src="js/app.js"></script>
