@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function VerseController($scope) {
+function VersesCtrl($scope) {
   $scope.verses = [
     { title: 'John 1:4', content: 'In him was life, and that life was the light of man' },
     { title: 'Romans 1:16', content: 'I am not ashamed of the gospel, because it is the power of God for the salvation of everyone who believes: first for the Jew, then for the Gentile.'}]
@@ -13,10 +13,6 @@ function VerseController($scope) {
     $scope.verseContent = '';
   }
 }
-
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
-
 
 function MyCtrl2() {
 }
