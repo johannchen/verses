@@ -11,6 +11,11 @@ function VersesCtrl($scope, storage) {
     $scope.verseContent = '';
 		storage.saveObject($scope.verses, 'verses');
   }
+
+	$scope.removeVerse = function(index) {
+		$scope.verses.splice(index, 1);
+		storage.saveObject($scope.verses, 'verses');
+	}
 }
 
 function MyCtrl2() {

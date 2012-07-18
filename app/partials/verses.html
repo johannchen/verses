@@ -7,7 +7,7 @@
   </form>
   <ul class="unstyled">
     <li ng-repeat="verse in verses">
-    {{verse.title}}<br />
+    {{verse.title}} <a class="" ng-click="removeVerse($index);">remove</a><br />
     {{verse.content}}
     </li>
   </ul>
