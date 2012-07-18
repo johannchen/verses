@@ -8,6 +8,10 @@
 var servicesModule = angular.module('myApp.services', []).
   value('version', '0.1');
 
+servicesModule.factory('dmp', function() {
+	return new diff_match_path();
+});
+
 servicesModule.factory('storage', function() {
 	var myStorage = {};
 

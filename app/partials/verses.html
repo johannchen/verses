@@ -7,8 +7,16 @@
   </form>
   <ul class="unstyled">
     <li ng-repeat="verse in verses">
-    {{verse.title}} <a class="" ng-click="removeVerse($index);">remove</a><br />
-    {{verse.content}}
+		{{verse.title}}
+		<a class="" ng-click="removeVerse($index)">remove</a> | 
+		<a class="">memorize</a> {{verse.memorized}} 
+		<br />
+    {{verse.content}}<br />
+		{{diffResult}}
+    <form ng-submit="memorizeVerse($index)">
+			<textarea rows="5" cols="50" ng-model="typedVerse" placeholder="type verse to memorize"></textarea><br />
+			<input type="submit" class="btn-primary" value="Submit">
+    </form>
     </li>
   </ul>
 </div>
