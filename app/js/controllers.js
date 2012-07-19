@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function VersesCtrl($scope, storage, dmp) {
+function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
   
   $scope.addVerse = function() {
@@ -19,13 +19,15 @@ function VersesCtrl($scope, storage, dmp) {
 
 	$scope.memorizeVerse = function(index) {
 		var verse = $scope.verses[index];
-		if (verse.content === $scope.typedContent) {
+		if (verse.content === verse.typedContent) {
 			verse.memorized ? ++verse.memorized : verse.memorized = 1;
 		} else {
 			// show diff
-		  var	d = dmp.diff_main(typedContent, verse.content);
+			// $scope.diffResult = dmp.diff($scope.typedContent, verse.content);
+			var dmp = new diff_match_patch();
+			var d = dmp.diff_main(verse.typedContent, verse.content);
 			dmp.diff_cleanupSemantic(d);
-			$scope.diffResult = dmp.diff_prettyHtml(d);
+		  verse.diffResult = dmp.diff_prettyHtml(d);
 		}
 	}
 }

@@ -12,9 +12,9 @@
 		<a class="">memorize</a> {{verse.memorized}} 
 		<br />
     {{verse.content}}<br />
-		{{diffResult}}
+		<div ng-bind-html-unsafe="verse.diffResult"></div>
     <form ng-submit="memorizeVerse($index)">
-			<textarea rows="5" cols="50" ng-model="typedVerse" placeholder="type verse to memorize"></textarea><br />
+			<textarea rows="5" cols="50" ng-model="verse.typedContent" placeholder="type verse to memorize"></textarea><br />
 			<input type="submit" class="btn-primary" value="Submit">
     </form>
     </li>
