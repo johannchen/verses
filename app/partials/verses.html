@@ -11,7 +11,7 @@
 		<a class="" ng-click="removeVerse($index)">remove</a> | 
 		<a class="">memorize</a> {{verse.memorized}} 
 		<br />
-    {{verse.content}}<br />
+    <span jc-editable-textarea ng-model="verse.content"></span>
 		<div ng-bind-html-unsafe="verse.diffResult"></div>
     <form ng-submit="memorizeVerse($index)">
 			<textarea rows="5" cols="50" ng-model="verse.typedContent" placeholder="type verse to memorize"></textarea><br />
