@@ -9,14 +9,13 @@ function VersesCtrl($scope, storage) {
     $scope.verses.push({title: $scope.verseTitle, content: $scope.verseContent});
     $scope.verseTitle = '';
     $scope.verseContent = '';
-		storage.saveObject($scope.verses, 'verses');
   }
 
 	$scope.removeVerse = function(index) {
 		$scope.verses.splice(index, 1);
-		storage.saveObject($scope.verses, 'verses');
 	}
 
+	//TODO: rootScope typedContent
 	$scope.memorizeVerse = function(index) {
 		var verse = $scope.verses[index];
 		if (verse.content === verse.typedContent) {
@@ -30,6 +29,13 @@ function VersesCtrl($scope, storage) {
 		  verse.diffResult = dmp.diff_prettyHtml(d);
 		}
 	}
+
+	//TODO: observe and save verses when it change
+	$scope.$watch('verses', function(newValue, oldValue) {
+		console.log("new: " + newValue.length);
+		console.log("old: " + oldValue.length);
+		//storage.saveObject($scope.verses, 'verses');
+	});
 }
 
 function MyCtrl2() {
