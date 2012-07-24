@@ -1,7 +1,7 @@
 <h2>Verses</h2>
 <div ng-controller="VersesCtrl">
   <form ng-submit="addVerse()">
-    <input type="text" ng-model="verseTitle" size="30" placeholder="verse title"><br />
+    <input type="text" ng-model="verseTitle" size="30" placeholder="verse title" list="bible"><br />
     <textarea rows="5" cols="50" ng-model="verseContent" placeholder="verse content"></textarea><br />
     <input type="submit" class="btn-primary" value="Add Verse">
   </form>
@@ -21,3 +21,71 @@
   </ul>
 </div>
 
+<datalist id="bible">
+	<option value="Genesis">
+	<option value="Exodusss">
+	<option value="Leviticusss">
+	<option value="Numberss">
+	<option value="Deuteronomy">
+	<option value="Joshua">
+	<option value="Judges">
+	<option value="Ruth">
+	<option value="1 Samuel">
+	<option value="2 Samuel">
+	<option value="1 Kings">
+	<option value="2 Kings">
+	<option value="1 Chronicles">
+	<option value="2 Chronicles">
+	<option value="Ezra">
+	<option value="Nehemiah">
+	<option value="Esther">
+	<option value="Job">
+	<option value="Psalms">
+	<option value="Proverbs">
+	<option value="Ecclesiastes">
+	<option value="Song of Solomon">
+	<option value="Isaiah">
+	<option value="Jeremiah">
+	<option value="Lamentations">
+	<option value="Ezekiel">
+	<option value="Daniel">
+	<option value="Hosea">
+	<option value="Joel">
+	<option value="Amos">
+	<option value="Obadiah">
+	<option value="Jonah">
+	<option value="Micah">
+	<option value="Nahum">
+	<option value="Habakkuk">
+	<option value="Zephaniah">
+	<option value="Haggai">
+	<option value="Zechariah">
+	<option value="Malachi">
+	<option value="Matthew">
+	<option value="Mark">
+	<option value="Luke">
+	<option value="John">
+	<option value="Acts">
+	<option value="Romans">
+	<option value="1 Corinthians">
+	<option value="2 Corinthians">
+	<option value="Galatians">
+	<option value="Ephesians">
+	<option value="Philippians">
+	<option value="Colossians">
+	<option value="1 Thessalonians">
+	<option value="2 Thessalonians">
+	<option value="1 Timothy">
+	<option value="2 Timothy">
+	<option value="Titus">
+	<option value="Philemon">
+	<option value="Hebrews">
+	<option value="James">
+	<option value="1 Peter">
+	<option value="2 Peter">
+	<option value="1 John">
+	<option value="2 John">
+	<option value="3 John">
+	<option value="Jude">
+	<option value="Revelation">
+</datalist>
