@@ -22,18 +22,19 @@ directivesModule.directive('ngEnter', function() {
 directivesModule.directive('editableText', function() {
   return {
     restrict: 'A',
-    scope: { localModel: '=model' },
-    template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{localModel}}</span>' +
-      '<input type="text" ng-model="localModel" ng-show="editMode" ng-enter="editMode=false" />'
+    //scope: { localModel: '=model' },
+    scope: { model: '=' },
+    template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
+      '<input type="text" ng-model="model" ng-show="editMode" ng-enter="editMode=false" />'
   }
 });
 
 directivesModule.directive('editableTextarea', function() {
   return {
     restrict: 'A',
-    scope: { localModel: '=model' },
-    template: '<div ng-hide="editMode" ng-click="editMode=true">{{localModel}}</div>' +
-      '<textarea rows="10" cols="50" ng-model="localModel" ng-show="editMode" ng-enter="editMode=false"></textarea>'
+    scope: { model: '=' },
+    template: '<div ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</div>' +
+      '<textarea rows="10" class="input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
   } 
 });
 

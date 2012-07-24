@@ -5,12 +5,6 @@
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
   
-  $scope.addVerse = function() {
-    $scope.verses.push({title: $scope.verseTitle, content: $scope.verseContent});
-    $scope.verseTitle = '';
-    $scope.verseContent = '';
-  }
-
 	$scope.removeVerse = function(index) {
 		$scope.verses.splice(index, 1);
 	}
@@ -41,6 +35,15 @@ function VersesCtrl($scope, storage) {
 		storage.saveObject(newValue, 'verses');
 	}, true);
 }
+
+function NewVerseCtrl($scope, $location, storage) {
+  $scope.verses = storage.getObject('verses');
+	$scope.addVerse = function() {                                               
+	 	$scope.verses.unshift({title: $scope.verseTitle, content: $scope.verseContent}); 
+		$location.path('/');
+		storage.saveObject($scope.verses, 'verses');
+	}
+}	
 
 function MyCtrl2() {
 }
