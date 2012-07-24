@@ -15,27 +15,31 @@ function VersesCtrl($scope, storage) {
 		$scope.verses.splice(index, 1);
 	}
 
-	//TODO: rootScope typedContent
-	$scope.memorizeVerse = function(index) {
-		var verse = $scope.verses[index];
-		if (verse.content === verse.typedContent) {
+	$scope.memorizeVerse = function() {
+		//var verse = $scope.verses[index];
+    // this access to current scope
+    var verse = this.verse;
+		if (verse.content === this.typedContent) {
 			verse.memorized ? ++verse.memorized : verse.memorized = 1;
+      this.typedContent = '';
 		} else {
 			// show diff
 			// $scope.diffResult = dmp.diff($scope.typedContent, verse.content);
 			var dmp = new diff_match_patch();
-			var d = dmp.diff_main(verse.typedContent, verse.content);
+			var d = dmp.diff_main(this.typedContent, verse.content);
 			dmp.diff_cleanupSemantic(d);
-		  verse.diffResult = dmp.diff_prettyHtml(d);
+		  this.diffResult = dmp.diff_prettyHtml(d);
 		}
 	}
 
-	//TODO: observe and save verses when it change
+	//observe and save verses when it change
+  //TODO: save the when change completed?
 	$scope.$watch('verses', function(newValue, oldValue) {
-		console.log("new: " + newValue.length);
-		console.log("old: " + oldValue.length);
+		//console.log("new: " + newValue.length);
+		//console.log("old: " + oldValue.length);
 		//storage.saveObject($scope.verses, 'verses');
-	});
+		storage.saveObject(newValue, 'verses');
+	}, true);
 }
 
 function MyCtrl2() {

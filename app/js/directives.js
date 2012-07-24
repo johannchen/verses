@@ -23,7 +23,7 @@ directivesModule.directive('editableText', function() {
   return {
     restrict: 'A',
     scope: { localModel: '=model' },
-    template: '<span ng-hide="editMode" ng-click="editMode=true">{{localModel}}</span>' +
+    template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{localModel}}</span>' +
       '<input type="text" ng-model="localModel" ng-show="editMode" ng-enter="editMode=false" />'
   }
 });
