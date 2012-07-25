@@ -9,13 +9,20 @@ function VersesCtrl($scope, storage) {
 		$scope.verses.splice(index, 1);
 	}
 
+  $scope.showMemorizeForm = function() {
+    this.isMemorizing = true;
+  }
+
+  $scope.hideMemorizeForm = function() {
+    this.isMemorizing = false;
+  }
+
 	$scope.memorizeVerse = function() {
 		//var verse = $scope.verses[index];
     // this access to current scope
     var verse = this.verse;
 		if (verse.content === this.typedContent) {
 			verse.memorized ? ++verse.memorized : verse.memorized = 1;
-      this.typedContent = '';
 		} else {
 			// show diff
 			// $scope.diffResult = dmp.diff($scope.typedContent, verse.content);
@@ -24,6 +31,8 @@ function VersesCtrl($scope, storage) {
 			dmp.diff_cleanupSemantic(d);
 		  this.diffResult = dmp.diff_prettyHtml(d);
 		}
+    this.isMemorizing = false;
+    this.typedContent = '';
 	}
 
 	//observe and save verses when it change

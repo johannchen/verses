@@ -4,13 +4,17 @@
     <li ng-repeat="verse in verses">
 			<div class="span4 thumbnail">
 				<span editable-text model="verse.title"></span>
-				<a class="">memorize</a> {{verse.memorized}} 
+        <a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
+        <a class="" ng-click="hideMemorizeForm()" ng-show="isMemorizing">review</a> 
+        {{verse.memorized}} 
 				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 				<hr /> 
 				<p>
-				<span editable-textarea model="verse.content"></span>
-				<div ng-bind-html-unsafe="diffResult"></div>
-				<form ng-submit="memorizeVerse()">
+        <div ng-hide="isMemorizing">
+          <span editable-textarea model="verse.content"></span>
+        </div>
+				<div ng-bind-html-unsafe="diffResult" ng-hide="isMemorizing"></div>
+				<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
 					<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
 					<input type="submit" class="btn-primary" value="Submit">
 				</form>
