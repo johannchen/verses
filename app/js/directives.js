@@ -38,6 +38,17 @@ directivesModule.directive('editableTextarea', function() {
   } 
 });
 
+directivesModule.directive('jcVerse', function() {
+	return {
+		restrict: 'E',
+		scope: { verse: '=' },
+		link: function(scope, element, attrs) {
+			var $el = $(element);
+			$el.hide().fadeIn('slow');
+			$('.thumbnails').sortable();
+		}
+	};	
+});
 /* tutorial code 
 directivesModule.directive('jcEditableTextarea', function() {
   var editTemplate = '<textarea ng-show="isEditMode" ng-dblclick="switchToPreview()" rows="10" cols="30" ng-model="editTextArea"></textarea>';
