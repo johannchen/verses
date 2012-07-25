@@ -1,7 +1,7 @@
 <div ng-controller="VersesCtrl">
 <!-- TODO: make directive for listing verses -->
   <ul class="thumbnails">
-    <li ng-repeat="verse in verses">
+    <li ng-repeat="verse in verses | startFrom:currentPage*pageSize | limitTo:pageSize">
 			<div class="span4 thumbnail">
 				<span editable-text model="verse.title"></span>
         <a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
@@ -22,5 +22,12 @@
 			</div>
     </li>
   </ul>
+	<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+		Previous
+	</button>
+	{{currentPage+1}}/{{pageMax}}
+	<button ng-disabled="currentPage >= verses.length/pageSize-1" ng-click="currentPage=currentPage+1">
+		Next
+	</button>
 </div>
 

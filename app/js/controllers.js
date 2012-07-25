@@ -4,6 +4,9 @@
 
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
+	$scope.currentPage = 0;
+	$scope.pageSize = 10;
+	$scope.pageMax = Math.ceil($scope.verses.length/$scope.pageSize);
   
 	$scope.removeVerse = function(index) {
 		$scope.verses.splice(index, 1);
@@ -20,6 +23,7 @@ function VersesCtrl($scope, storage) {
 	$scope.memorizeVerse = function() {
 		//var verse = $scope.verses[index];
     // this access to current scope
+		this.diffResult = '';
     var verse = this.verse;
 		if (verse.content === this.typedContent) {
 			verse.memorized ? ++verse.memorized : verse.memorized = 1;
