@@ -1,39 +1,49 @@
 <script>
+//TODO: drag and drop persist position?
 $(function() {
 	$('.thumbnails').sortable();
 });
 </script>
 
-<div ng-controller="VersesCtrl">
-<!-- TODO: make directive for listing verses -->
-  <ul class="thumbnails">
-    <li ng-repeat="verse in verses | startFrom:currentPage*pageSize | limitTo:pageSize">
-			<div class="span4 thumbnail">
-				<span editable-text model="verse.title"></span>
-        <a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
-        <a class="" ng-click="hideMemorizeForm()" ng-show="isMemorizing">review</a> 
-        {{verse.memorized}} 
-				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
-				<hr /> 
-				<p>
-        <div ng-hide="isMemorizing">
-          <span editable-textarea model="verse.content"></span>
-        </div>
-				<div ng-bind-html-unsafe="diffResult" ng-hide="isMemorizing"></div>
-				<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
-					<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
-					<input type="submit" class="btn-primary" value="Submit">
-				</form>
-				</p>
-			</div>
-    </li>
-  </ul>
-	<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-		Previous
-	</button>
-	{{currentPage+1}}/{{pageMax}}
-	<button ng-disabled="currentPage >= verses.length/pageSize-1" ng-click="currentPage=currentPage+1">
-		Next
-	</button>
+<div class="container" >
+	<div class="row">
+		<div class="span9">
+			<div class="row">
+			<!-- TODO: make directive for listing verses -->
+			<ul class="thumbnails">
+				<li ng-repeat="verse in verses | startFrom:currentPage*pageSize | limitTo:pageSize | filter:search">
+				<div class="span4 thumbnail">
+					<span editable-text model="verse.title"></span>
+					<a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
+					<a class="" ng-click="hideMemorizeForm()" ng-show="isMemorizing">review</a> 
+					{{verse.memorized}} 
+					<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
+					<hr /> 
+					<p>
+					<div ng-hide="isMemorizing">
+						<span editable-textarea model="verse.content"></span>
+					</div>
+					<div ng-bind-html-unsafe="diffResult" ng-hide="isMemorizing"></div>
+					<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
+						<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
+						<input type="submit" class="btn-primary" value="Submit">
+					</form>
+					</p>
+				</div>
+				</li>
+			</ul>
+		</div>
+			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+				Previous
+			</button>
+			{{currentPage+1}}/{{pageMax}}
+			<button ng-disabled="currentPage >= verses.length/pageSize-1" ng-click="currentPage=currentPage+1">
+				Next
+			</button>
+		</div>
+		<div class="span3">
+			Search: <input type="text" class="span2" ng-model="search">
+		</div>
+	</div>
 </div>
 
