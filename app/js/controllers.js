@@ -7,7 +7,9 @@ function VersesCtrl($scope, storage) {
 	$scope.limit = 10;
 
 	$scope.removeVerse = function(index) {
-		$scope.verses.splice(index, 1);
+		if(confirm("Are you sure to remove this verse?") == true) {
+			$scope.verses.splice(index, 1);
+		}
 	}
 
   $scope.showMemorizeForm = function() {
@@ -25,6 +27,7 @@ function VersesCtrl($scope, storage) {
     var verse = this.verse;
 		if (verse.content === this.typedContent) {
 			verse.memorized ? ++verse.memorized : verse.memorized = 1;
+			verse.last_memorized_at = new Date();
 		} else {
 			// show diff
 			// $scope.diffResult = dmp.diff($scope.typedContent, verse.content);
@@ -40,9 +43,6 @@ function VersesCtrl($scope, storage) {
 	//observe and save verses when it change
   //TODO: save the when change completed?
 	$scope.$watch('verses', function(newValue, oldValue) {
-		//console.log("new: " + newValue.length);
-		//console.log("old: " + oldValue.length);
-		//storage.saveObject($scope.verses, 'verses');
 		storage.saveObject(newValue, 'verses');
 	}, true);
 }
@@ -50,7 +50,7 @@ function VersesCtrl($scope, storage) {
 function NewVerseCtrl($scope, $location, storage) {
   $scope.verses = storage.getObject('verses');
 	$scope.addVerse = function() {                                               
-	 	$scope.verses.unshift({title: $scope.verseTitle, content: $scope.verseContent}); 
+	 	$scope.verses.unshift({title: $scope.verseTitle, content: $scope.verseContent, created_at: new Date()}); 
 		$location.path('/');
 		storage.saveObject($scope.verses, 'verses');
 	}

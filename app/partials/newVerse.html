@@ -1,14 +1,12 @@
 <div ng-controller="NewVerseCtrl">
 	<div class="span4 thumbnail">
-	<form ng-submit="addVerse()">
-		<input type="text" class="span3" ng-model="verseTitle" placeholder="verse title" list="bible">
-		<hr />
-		<textarea rows="5" class="input-xlarge"  ng-model="verseContent" placeholder="verse content"></textarea><br />
-		<input type="submit" class="btn-primary" value="Add Verse">
-	</form>
-</div>
-</div>
-
+		<form ng-submit="addVerse()">
+			<input type="text" class="span3" ng-model="verseTitle" placeholder="verse title" list="bible">
+			<hr />
+			<textarea rows="5" class="input-xlarge"  ng-model="verseContent" placeholder="verse content"></textarea><br />
+			<input type="submit" class="btn-primary" value="Add Verse">
+		</form>
+	</div>
 <datalist id="bible">
 	<option value="Genesis">
 	<option value="Exodusss">
@@ -77,3 +75,4 @@
 	<option value="Jude">
 	<option value="Revelation">
 </datalist>
+</div>
