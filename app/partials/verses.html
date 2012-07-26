@@ -12,7 +12,7 @@ $(function() {
 			<!-- TODO: make directive for listing verses -->
 			<div id="verses" ng-model="limit">
 			<ul class="thumbnails">
-				<li ng-repeat="verse in verses | filter:search | limitTo:limit">
+				<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
 				<div class="span4 thumbnail">
 					<span editable-text model="verse.title"></span>
 					<a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
@@ -42,7 +42,12 @@ $(function() {
 		
 		</div>
 		<div class="span3">
-			Search: <input type="text" class="span2" ng-model="search">
+			Search: <input type="text" class="span2" ng-model="search"><br />
+			Sort by: 
+			<select ng-model="order" class="span2">
+				<option value="memorized">Memorization</option>
+				<option value="title">Title</option>
+			</select>
 		</div>
 	</div>
 </div>
