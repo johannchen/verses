@@ -10,8 +10,9 @@ $(function() {
 		<div class="span9">
 			<div class="row">
 			<!-- TODO: make directive for listing verses -->
+			<div id="verses" ng-model="limit">
 			<ul class="thumbnails">
-				<li ng-repeat="verse in verses | startFrom:currentPage*pageSize | limitTo:pageSize | filter:search">
+				<li ng-repeat="verse in verses | filter:search | limitTo:limit">
 				<div class="span4 thumbnail">
 					<span editable-text model="verse.title"></span>
 					<a class="" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing">memorize</a> 
@@ -32,14 +33,13 @@ $(function() {
 				</div>
 				</li>
 			</ul>
+			<div id="load-more" ng-show="limit < verses.length">
+				<button ng-click="limit=limit+10">Load More</button>
+				{{limit}} / {{verses.length}}
+			</div>
 		</div>
-			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-				Previous
-			</button>
-			{{currentPage+1}}/{{pageMax}}
-			<button ng-disabled="currentPage >= verses.length/pageSize-1" ng-click="currentPage=currentPage+1">
-				Next
-			</button>
+		</div>
+		
 		</div>
 		<div class="span3">
 			Search: <input type="text" class="span2" ng-model="search">

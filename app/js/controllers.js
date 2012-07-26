@@ -4,10 +4,8 @@
 
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
-	$scope.currentPage = 0;
-	$scope.pageSize = 10;
-	$scope.pageMax = Math.ceil($scope.verses.length/$scope.pageSize);
-  
+	$scope.limit = 10;
+
 	$scope.removeVerse = function(index) {
 		$scope.verses.splice(index, 1);
 	}
