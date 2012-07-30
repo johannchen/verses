@@ -56,6 +56,24 @@ function NewVerseCtrl($scope, $location, storage) {
 	}
 }	
 
+function TagsCtrl($scope) {
+	$scope.tags = [
+		{name: 'Love'},
+		{name: 'Joy'},
+		{name: 'Peace'}];
+	
+	$scope.addTag = function() {
+		$scope.tags.push({name: $scope.tagName});
+		$scope.tagName = '';
+	};
+
+	$scope.deleteTag = function(index) {
+		if(confirm("Are you sure to remove this tag?") == true) {
+			$scope.tags.splice(index, 1);
+		}
+	};
+}
+
 function MyCtrl2() {
 }
 MyCtrl2.$inject = [];

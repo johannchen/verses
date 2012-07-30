@@ -11,25 +11,25 @@ directivesModule.directive('appVersion', ['version', function(version) {
   };
 }]);
 
-directivesModule.directive('ngEnter', function() {
+directivesModule.directive('jcEnter', function() {
   return function(scope, elm, attrs) {
     elm.bind('keypress', function(e) {
-      if(e.charCode === 13) scope.$apply(attrs.ngEnter);
+      if(e.charCode === 13) scope.$apply(attrs.jcEnter);
     });
   };
 });
 
-directivesModule.directive('editableText', function() {
+directivesModule.directive('jcEditableText', function() {
   return {
     restrict: 'A',
     //scope: { localModel: '=model' },
     scope: { model: '=' },
     template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
-      '<input type="text" ng-model="model" ng-show="editMode" ng-enter="editMode=false" />'
+      '<input type="text" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
   }
 });
 
-directivesModule.directive('editableTextarea', function() {
+directivesModule.directive('jcEditableTextarea', function() {
   return {
     restrict: 'A',
     scope: { model: '=' },
