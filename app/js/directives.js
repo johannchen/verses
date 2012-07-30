@@ -3,40 +3,36 @@
 /* Directives */
 
 
-var directivesModule = angular.module('myApp.directives', []);
-
-directivesModule.directive('appVersion', ['version', function(version) {
-  return function(scope, elm, attrs) {
-    elm.text(version);
-  };
-}]);
-
-directivesModule.directive('jcEnter', function() {
-  return function(scope, elm, attrs) {
-    elm.bind('keypress', function(e) {
-      if(e.charCode === 13) scope.$apply(attrs.jcEnter);
-    });
-  };
-});
-
-directivesModule.directive('jcEditableText', function() {
-  return {
-    restrict: 'A',
-    //scope: { localModel: '=model' },
-    scope: { model: '=' },
-    template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
-      '<input type="text" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
-  }
-});
-
-directivesModule.directive('jcEditableTextarea', function() {
-  return {
-    restrict: 'A',
-    scope: { model: '=' },
-    template: '<div ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</div>' +
-      '<textarea rows="10" class="input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
-  } 
-});
+angular.module('myApp.directives', []).
+	directive('appVersion', ['version', function(version) {
+		return function(scope, elm, attrs) {
+			elm.text(version);
+		};
+	}]).
+  directive('jcEnter', function() {
+		return function(scope, elm, attrs) {
+			elm.bind('keypress', function(e) {
+				if(e.charCode === 13) scope.$apply(attrs.jcEnter);
+			});
+		};
+	}).
+	directive('jcEditableText', function() {
+		return {
+			restrict: 'A',
+			//scope: { localModel: '=model' },
+			scope: { model: '=' },
+			template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
+				'<input type="text" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
+		}
+	}).
+	directive('jcEditableTextarea', function() {
+		return {
+			restrict: 'A',
+			scope: { model: '=' },
+			template: '<div ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</div>' +
+				'<textarea rows="10" class="input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
+		} 
+	});
 
 /* tutorial code 
 directivesModule.directive('jcEditableTextarea', function() {

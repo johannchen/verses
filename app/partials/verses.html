@@ -1,7 +1,12 @@
 <script>
-//TODO: drag and drop persist position?
 $(function() {
 	$('.thumbnails').sortable();
+	$('.draggable').draggable({ revert: true });
+	$('#drop').droppable({
+		drop: function(event, ui) {
+			$(this).find('p').html('dropped!');
+		}
+	});
 });
 </script>
 
@@ -12,6 +17,7 @@ $(function() {
 		<div id="verses" ng-model="limit">
 		<ul class="thumbnails">
 			<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
+			<jc-verse>
 			<div ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}">
 				<span jc-editable-text model="verse.title"></span>
 				<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
@@ -34,6 +40,7 @@ $(function() {
 				</form>
 				</p>
 			</div>
+			</jc-verse>
 			</li>
 		</ul>
 		<div id="load-more" ng-show="limit < verses.length">
@@ -56,7 +63,9 @@ $(function() {
 		<div ng-controller="TagsCtrl">
 			<ul class="unstyled">
 				<li ng-repeat="tag in tags">
-					<span jc-editable-text model="tag.name"></span>
+					<a class="draggable">
+						<span jc-editable-text model="tag.name"></span>
+					</a>
 					<button class="btn btn-large close pull-right"  ng-click="deleteTag($index)">&times;</button>  
 				</li>
 			</ul>
@@ -65,7 +74,9 @@ $(function() {
 				<input class="btn-primary" type="submit" value="add">
 			</form>
 		</div>
-
+		<div id="drop">
+			<p>Please drop here</p>
+		</div>
 	</div>
 </div>
 
