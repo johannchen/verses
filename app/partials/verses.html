@@ -15,10 +15,13 @@ $(function() {
 				<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
 				<div ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}">
 					<span editable-text model="verse.title"></span>
-					<i class="icon-info-sign" title="Created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
-					<i class="icon-arrow-right" title="Memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
-					<i class="icon-arrow-left" title="Review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
-          <i class="icon-ok" ng-show="verse.memorized"></i>{{verse.memorized}} 
+					<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
+					<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
+          <i class="icon-info-sign" title="created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
+          <span ng-show="verse.memorized">
+            <i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
+            <span title="times memorized">{{verse.memorized}}</span>
+          </span>
 					<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 					<hr /> 
 					<p>
