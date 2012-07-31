@@ -20,7 +20,13 @@ $(function() {
 					<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
 					<span title="times memorized">{{verse.memorized}}</span>
         </span>
-				<span class="tags">{{verse.tags}}</span>
+				<ul class="taglist">
+					<li ng-repeat="tag in verse.tags">
+						<span class="label label-info">{{tag}}
+							<a ng-click="removeTag($index)">x</a>
+						</span>
+					</li>
+				</ul>
 				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 				<hr /> 
 				<p>
@@ -55,11 +61,9 @@ $(function() {
 		</select>
 		<div ng-controller="TagsCtrl">
 			<ul class="unstyled">
-				<li ng-repeat="tag in tags">
-					<a jc-draggable>
-						<span jc-editable-text model="tag.name"></span>
-					</a>
-					<button class="btn btn-large close pull-right"  ng-click="deleteTag($index)">&times;</button>  
+				<li ng-repeat="tag in tags" jc-draggable>
+					<span class="label label-info" jc-editable-text model="tag.name"></span>
+					<button class="btn btn-large close"  ng-click="deleteTag($index)">&times;</button>  
 				</li>
 			</ul>
 			<form ng-submit="addTag()">

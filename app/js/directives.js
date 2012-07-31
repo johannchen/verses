@@ -24,8 +24,8 @@ angular.module('myApp.directives', []).
 			      //$(this).find('.tags').html(ui.draggable.text());
 						//model.push(ui.draggable.text());
 						//model view does not reflect the value change
-						console.log(scope);
-						scope.verse.tags = $.trim(ui.draggable.text());
+						//console.log(scope);
+						scope.verse.tags.push($.trim(ui.draggable.text()));
 						scope.$apply();
 		      }
 	      });

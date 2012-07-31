@@ -6,3 +6,13 @@
 .yellow {
   background-color: #ffcc00;
 }
+
+.taglist {
+  display: inline;
+}
+
+.taglist li {
+  display: inline; 
+  list-style-type: none;
+  padding-right: 3px;
+}

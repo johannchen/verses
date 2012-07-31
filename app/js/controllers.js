@@ -40,6 +40,10 @@ function VersesCtrl($scope, storage) {
     this.typedContent = '';
 	}
 
+	$scope.removeTag = function(index) {
+		this.tags.splice(index, 1);
+	}
+
 	//observe and save verses when it change
   //TODO: save the when change completed?
 	$scope.$watch('verses', function(newValue, oldValue) {
@@ -50,7 +54,11 @@ function VersesCtrl($scope, storage) {
 function NewVerseCtrl($scope, $location, storage) {
   $scope.verses = storage.getObject('verses');
 	$scope.addVerse = function() {                                               
-	 	$scope.verses.unshift({title: $scope.verseTitle, content: $scope.verseContent, created_at: new Date()}); 
+	 	$scope.verses.unshift({
+			title: $scope.verseTitle, 
+			content: $scope.verseContent,
+			tags: [],
+			created_at: new Date()}); 
 		$location.path('/');
 		storage.saveObject($scope.verses, 'verses');
 	}
