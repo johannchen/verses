@@ -1,8 +1,6 @@
 'use strict';
 
 /* Directives */
-
-
 angular.module('myApp.directives', []).
 	directive('appVersion', ['version', function(version) {
 		return function(scope, elm, attrs) {
@@ -23,7 +21,12 @@ angular.module('myApp.directives', []).
       link: function(scope, elm, attrs) {
 	      elm.droppable({
 		      drop: function(event, ui) {
-			      $(this).find('.tags').html(ui.draggable.text());
+			      //$(this).find('.tags').html(ui.draggable.text());
+						//model.push(ui.draggable.text());
+						//model view does not reflect the value change
+						console.log(scope);
+						scope.verse.tags = $.trim(ui.draggable.text());
+						scope.$apply();
 		      }
 	      });
       }
@@ -39,7 +42,6 @@ angular.module('myApp.directives', []).
 	directive('jcEditableText', function() {
 		return {
 			restrict: 'A',
-			//scope: { localModel: '=model' },
 			scope: { model: '=' },
 			template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
 				'<input type="text" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'

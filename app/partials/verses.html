@@ -20,7 +20,7 @@ $(function() {
 					<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
 					<span title="times memorized">{{verse.memorized}}</span>
         </span>
-        <span class="tags"></span>
+				<span class="tags">{{verse.tags}}</span>
 				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 				<hr /> 
 				<p>
