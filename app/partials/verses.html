@@ -1,12 +1,6 @@
 <script>
 $(function() {
 	$('.thumbnails').sortable();
-	$('.draggable').draggable({ revert: true });
-	$('#drop').droppable({
-		drop: function(event, ui) {
-			$(this).find('p').html('dropped!');
-		}
-	});
 });
 </script>
 
@@ -17,8 +11,7 @@ $(function() {
 		<div id="verses" ng-model="limit">
 		<ul class="thumbnails">
 			<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
-			<jc-verse>
-			<div ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}">
+			<div ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
 				<span jc-editable-text model="verse.title"></span>
 				<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
 				<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
@@ -26,7 +19,8 @@ $(function() {
 				<span ng-show="verse.memorized">
 					<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
 					<span title="times memorized">{{verse.memorized}}</span>
-				</span>
+        </span>
+        <span class="tags"></span>
 				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 				<hr /> 
 				<p>
@@ -40,7 +34,6 @@ $(function() {
 				</form>
 				</p>
 			</div>
-			</jc-verse>
 			</li>
 		</ul>
 		<div id="load-more" ng-show="limit < verses.length">
@@ -63,7 +56,7 @@ $(function() {
 		<div ng-controller="TagsCtrl">
 			<ul class="unstyled">
 				<li ng-repeat="tag in tags">
-					<a class="draggable">
+					<a jc-draggable>
 						<span jc-editable-text model="tag.name"></span>
 					</a>
 					<button class="btn btn-large close pull-right"  ng-click="deleteTag($index)">&times;</button>  
@@ -73,9 +66,6 @@ $(function() {
 				<input type="text" ng-model="tagName" placeholder="add new tag">
 				<input class="btn-primary" type="submit" value="add">
 			</form>
-		</div>
-		<div id="drop">
-			<p>Please drop here</p>
 		</div>
 	</div>
 </div>

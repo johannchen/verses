@@ -9,6 +9,26 @@ angular.module('myApp.directives', []).
 			elm.text(version);
 		};
 	}]).
+  directive('jcDraggable', function() {
+		return {
+      retrict: 'A', 
+      link: function(scope, elm, attrs) {
+        elm.draggable({revert: true});
+      } 
+		};
+	}).
+  directive('jcDroppable', function() {
+		return {
+      retrict: 'A',
+      link: function(scope, elm, attrs) {
+	      elm.droppable({
+		      drop: function(event, ui) {
+			      $(this).find('.tags').html(ui.draggable.text());
+		      }
+	      });
+      }
+    };
+	}).
   directive('jcEnter', function() {
 		return function(scope, elm, attrs) {
 			elm.bind('keypress', function(e) {
