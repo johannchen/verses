@@ -84,7 +84,11 @@ function TagsCtrl($scope, storage) {
 	};
 
   $scope.selectTag = function() {
-		this.tagColor = 'success';
+		//reset tag color
+		//this.tagColor = 'success';
+		// filter by tag name
+		if (typeof($scope.$parent.search) === 'undefined') $scope.$parent.search = {};
+		$scope.$parent.search.tags = this.tag.name;
 	}
 
 	$scope.$watch('tags', function(newValue, oldValue) {

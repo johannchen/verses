@@ -58,7 +58,8 @@ $(function() {
 	
 	</div>
 	<div class="span3">
-		Search: <input type="text" class="span2" ng-model="search"><br />
+		Search: <input type="text" class="span2" ng-model="search.$">
+		<br />
 		Sort by: 
 		<select ng-model="order" class="span2">
 			<option value="last_memorized_at">Lastest Memorized</option>
@@ -72,7 +73,7 @@ $(function() {
 		<div ng-controller="TagsCtrl">
 			<ul class="taglist unstyled">
 				<li ng-repeat="tag in tags | orderBy:'name'">
-				<span ng-init="tagColor='info'" ng-click="selectTag()"class="label label-{{tagColor}}" jc-draggable>
+				<span ng-click="selectTag()"class="label label-info" jc-draggable>
 				  <span jc-editable-text model="tag.name"></span>
 				</span>
 					<span ng-click="deleteTag($index)">&times;</span>  
