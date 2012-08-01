@@ -83,6 +83,10 @@ function TagsCtrl($scope, storage) {
 		}
 	};
 
+  $scope.selectTag = function() {
+		this.tagColor = 'success';
+	}
+
 	$scope.$watch('tags', function(newValue, oldValue) {
 		storage.saveObject(newValue, 'tags');
 	}, true);
