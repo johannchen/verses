@@ -4,7 +4,6 @@
 
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
-	$scope.limit = 10;
 
 	$scope.removeVerse = function(index) {
 		if(confirm("Are you sure to remove this verse?") == true) {

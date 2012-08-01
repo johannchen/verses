@@ -9,8 +9,7 @@ $(function() {
 <div class="row">
 	<div class="span9">
 		<div class="row">
-		<!-- TODO: make directive for listing verses -->
-		<div id="verses" ng-model="limit">
+		<div id="verses" ng-init="limit=10">
 		<ul class="thumbnails">
 			<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
       <article ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
@@ -49,7 +48,7 @@ $(function() {
 			</article>
 			</li>
 		</ul>
-		<div id="load-more" ng-show="limit < verses.length">
+		<div id="load-more" ng-show="limit < versesCount">
 			<button ng-click="limit=limit+10">Load More</button>
 			{{limit}} / {{verses.length}}
 		</div>
@@ -58,6 +57,7 @@ $(function() {
 	
 	</div>
 	<div class="span3">
+		Results: {{versesCount = (verses | filter:search).length}} <br />
 		Search: <input type="text" class="span2" ng-model="search.$">
 		<br />
 		Sort by: 
