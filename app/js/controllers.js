@@ -69,13 +69,10 @@ function VerseTagsCtrl($scope) {
 	}
 }
 
-function TagsCtrl($scope) {
-	$scope.tags = [
-		{name: 'Love'},
-		{name: 'Joy'},
-		{name: 'Peace'}];
-	
-	$scope.addTag = function() {
+function TagsCtrl($scope, storage) {
+	$scope.tags = storage.getObject('tags');
+  
+  $scope.addTag = function() {
 		$scope.tags.push({name: $scope.tagName});
 		$scope.tagName = '';
 	};
@@ -85,6 +82,10 @@ function TagsCtrl($scope) {
 			$scope.tags.splice(index, 1);
 		}
 	};
+
+	$scope.$watch('tags', function(newValue, oldValue) {
+		storage.saveObject(newValue, 'tags');
+	}, true);
 }
 
 function MyCtrl2() {

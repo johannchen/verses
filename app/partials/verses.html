@@ -68,7 +68,7 @@ $(function() {
 		</select>
 		<div ng-controller="TagsCtrl">
 			<ul class="taglist unstyled">
-				<li ng-repeat="tag in tags">
+				<li ng-repeat="tag in tags | orderBy:'name'">
 					<span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
 					<span ng-click="deleteTag($index)">&times;</span>  
 				</li>
