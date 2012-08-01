@@ -25,6 +25,7 @@ angular.module('myApp.directives', []).
 						//model.push(ui.draggable.text());
 						//model view does not reflect the value change
 						//console.log(scope);
+            if (typeof scope.verse.tags === 'undefined') scope.verse.tags = [];
 						scope.verse.tags.push($.trim(ui.draggable.text()));
 						scope.$apply();
 		      }
@@ -44,7 +45,7 @@ angular.module('myApp.directives', []).
 			restrict: 'A',
 			scope: { model: '=' },
 			template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
-				'<input type="text" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
+				'<input type="text" class="span2" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
 		}
 	}).
 	directive('jcEditableTextarea', function() {

@@ -14,6 +14,7 @@ function VersesCtrl($scope, storage) {
 
   $scope.showMemorizeForm = function() {
     this.isMemorizing = true;
+    this.doneMemorizing = false;
   }
 
   $scope.hideMemorizeForm = function() {
@@ -35,14 +36,12 @@ function VersesCtrl($scope, storage) {
 			var d = dmp.diff_main(this.typedContent, verse.content);
 			dmp.diff_cleanupSemantic(d);
 		  this.diffResult = dmp.diff_prettyHtml(d);
+      this.doneMemorizing = true;
 		}
     this.isMemorizing = false;
     this.typedContent = '';
 	}
 
-	$scope.removeTag = function(index) {
-		this.tags.splice(index, 1);
-	}
 
 	//observe and save verses when it change
   //TODO: save the when change completed?
@@ -63,6 +62,12 @@ function NewVerseCtrl($scope, $location, storage) {
 		storage.saveObject($scope.verses, 'verses');
 	}
 }	
+
+function VerseTagsCtrl($scope) {
+	$scope.removeTag = function(index) {
+		$scope.verse.tags.splice(index, 1);
+	}
+}
 
 function TagsCtrl($scope) {
 	$scope.tags = [

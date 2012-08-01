@@ -1,7 +1,9 @@
 <script>
+  /*
 $(function() {
 	$('.thumbnails').sortable();
 });
+*/
 </script>
 
 <div class="row">
@@ -11,7 +13,8 @@ $(function() {
 		<div id="verses" ng-model="limit">
 		<ul class="thumbnails">
 			<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
-			<div ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
+      <article ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
+        <header>
 				<span jc-editable-text model="verse.title"></span>
 				<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
 				<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
@@ -20,26 +23,30 @@ $(function() {
 					<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
 					<span title="times memorized">{{verse.memorized}}</span>
         </span>
-				<ul class="taglist">
+				<ul class="verse_tags" ng-controller="VerseTagsCtrl">
 					<li ng-repeat="tag in verse.tags">
 						<span class="label label-info">{{tag}}
-							<a ng-click="removeTag($index)">x</a>
+							<span ng-click="removeTag($index)">&times;</span>
 						</span>
 					</li>
 				</ul>
-				<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
+        <button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
+        </header>
 				<hr /> 
 				<p>
 				<div ng-hide="isMemorizing">
-					<span jc-editable-textarea model="verse.content"></span>
+          <span jc-editable-textarea model="verse.content"></span>
 				</div>
-				<div ng-bind-html-unsafe="diffResult" ng-hide="isMemorizing"></div>
+				<div ng-show="doneMemorizing">
+          <hr />
+          <div ng-bind-html-unsafe="diffResult"></div>
+        </div>
 				<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
 					<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
 					<input type="submit" class="btn-primary" value="Submit">
 				</form>
 				</p>
-			</div>
+			</article>
 			</li>
 		</ul>
 		<div id="load-more" ng-show="limit < verses.length">
@@ -60,15 +67,17 @@ $(function() {
 			<option value="last_memorized_at">Last Memorized Date</option>
 		</select>
 		<div ng-controller="TagsCtrl">
-			<ul class="unstyled">
-				<li ng-repeat="tag in tags" jc-draggable>
-					<span class="label label-info" jc-editable-text model="tag.name"></span>
-					<button class="btn btn-large close"  ng-click="deleteTag($index)">&times;</button>  
+			<ul class="taglist unstyled">
+				<li ng-repeat="tag in tags">
+					<span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
+					<span ng-click="deleteTag($index)">&times;</span>  
 				</li>
 			</ul>
-			<form ng-submit="addTag()">
-				<input type="text" ng-model="tagName" placeholder="add new tag">
-				<input class="btn-primary" type="submit" value="add">
+      <form ng-submit="addTag()">
+        <div class="input-append">
+          <input type="text" class="span2" ng-model="tagName" placeholder="add new tag">
+          <input class="btn-primary" type="submit" value="add">
+        </div>
 			</form>
 		</div>
 	</div>

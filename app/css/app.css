@@ -1,4 +1,9 @@
 /* app css stylesheet */
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .green {
   background-color: #99ff66;
 }
@@ -7,12 +12,17 @@
   background-color: #ffcc00;
 }
 
-.taglist {
+.verse_tags {
   display: inline;
+  margin-left: 1px;
 }
 
-.taglist li {
+.verse_tags li {
   display: inline; 
   list-style-type: none;
   padding-right: 3px;
+}
+
+.taglist li {
+  padding-bottom: 3px;
 }
