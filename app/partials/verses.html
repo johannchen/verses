@@ -1,62 +1,63 @@
 <script>
-  /*
-$(function() {
-	$('.thumbnails').sortable();
-});
-*/
+/*
+	 $(function() {
+	 $('.thumbnails').sortable();
+	 });
+ */
 </script>
 
 <div class="row">
 	<div class="span9">
 		<div class="row">
-		<div id="verses" ng-init="limit=10">
-		<ul class="thumbnails">
-			<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
-      <article ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
-        <header>
-				<span jc-editable-text model="verse.title"></span>
-				<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
-				<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
-				<i class="icon-info-sign" title="created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
-				<span ng-show="verse.memorized">
-					<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
-					<span title="times memorized">{{verse.memorized}}</span>
-        </span>
-				<ul class="verse_tags" ng-controller="VerseTagsCtrl">
-					<li ng-repeat="tag in verse.tags">
-						<span class="label label-info">{{tag}}
-							<span ng-click="removeTag($index)">&times;</span>
-						</span>
+			<div id="verses" ng-init="limit=10">
+				<ul class="thumbnails">
+					<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
+					<article ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
+						<header>
+							<span jc-editable-text model="verse.title"></span>
+							<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
+							<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
+							<i class="icon-info-sign" title="created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
+							<span ng-show="verse.memorized">
+								<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
+								<span title="times memorized">{{verse.memorized}}</span>
+							</span>
+							<ul class="verse_tags" ng-controller="VerseTagsCtrl">
+								<li ng-repeat="tag in verse.tags">
+								<span class="label label-info">{{tag}}
+									<span ng-click="removeTag($index)">&times;</span>
+								</span>
+								</li>
+							</ul>
+							<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
+						</header>
+						<hr /> 
+						<p>
+						<div ng-hide="isMemorizing">
+							<span jc-editable-textarea model="verse.content"></span>
+						</div>
+						<div ng-show="doneMemorizing">
+							<hr />
+							<div ng-bind-html-unsafe="diffResult"></div>
+						</div>
+						<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
+							<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
+							<input type="submit" class="btn-primary" value="Submit">
+						</form>
+						</p>
+					</article>
 					</li>
 				</ul>
-        <button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
-        </header>
-				<hr /> 
-				<p>
-				<div ng-hide="isMemorizing">
-          <span jc-editable-textarea model="verse.content"></span>
-				</div>
-				<div ng-show="doneMemorizing">
-          <hr />
-          <div ng-bind-html-unsafe="diffResult"></div>
-        </div>
-				<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
-					<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
-					<input type="submit" class="btn-primary" value="Submit">
-				</form>
-				</p>
-			</article>
-			</li>
-		</ul>
+			</div>
+		</div>
 		<div id="load-more" ng-show="limit < versesCount">
 			<button ng-click="limit=limit+10"><i class="icon-arrow-down"></i>Load More {{limit}} / {{verses.length}}</button>
 		</div>
-	</div>
-	</div>
-	
+
 	</div>
 	<div class="span3">
-		Results: {{versesCount = (verses | filter:search).length}} <br />
+		Memorized: {{memorizedCount()}} / {{verses.length}}<br />
+		Search Results: {{versesCount = (verses | filter:search).length}}<br />
 		<input type="text" class="span2" ng-model="search.$" placeholder="search">
 		<br />
 		<select ng-model="order" class="span2">
@@ -71,20 +72,20 @@ $(function() {
 		</select>
 
 		<div ng-controller="TagsCtrl">
-    <select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
-      <option value="">-- filter by --</option>
-		</select>
+			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+				<option value="">-- filter by --</option>
+			</select>
 			<ul class="taglist unstyled">
 				<li ng-repeat="tag in tags | orderBy:'name'">
-				  <span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
-					<span ng-click="deleteTag($index)">&times;</span>  
+				<span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
+				<span ng-click="deleteTag($index)">&times;</span>  
 				</li>
 			</ul>
-      <form ng-submit="addTag()">
-        <div class="input-append">
-          <input type="text" class="span2" ng-model="tagName" placeholder="add new tag">
-          <input class="btn-primary" type="submit" value="add">
-        </div>
+			<form ng-submit="addTag()">
+				<div class="input-append">
+					<input type="text" class="span2" ng-model="tagName" placeholder="add new tag">
+					<input class="btn-primary" type="submit" value="add">
+				</div>
 			</form>
 		</div>
 	</div>

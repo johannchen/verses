@@ -7,6 +7,30 @@ angular.module('myApp.directives', []).
 			elm.text(version);
 		};
 	}]).
+	directive('bibleAutocomplete', function() {
+		var bible = [
+			"Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+	    "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
+			"1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles",
+		  "Ezra", "Nehemiah", "Esther",
+		  "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs",
+		  "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
+		  "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+		  "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
+		  "Matthew", "Mark", "Luke", "John", "Acts",
+		  "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+		  "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
+		  "1 Timothy", "2 Timothy", "Titus", "Philemon",
+		  "Hebrews", "James", "1 Peter", "2 Peter",
+		  "1 John", "2 John", "3 John", "Jude", "Revelation"
+		];
+		return {
+      retrict: 'A', 
+      link: function(scope, elm, attrs) {
+        elm.autocomplete({source: bible});
+      } 
+		};
+	}).
   directive('jcDraggable', function() {
 		return {
       retrict: 'A', 
@@ -56,34 +80,3 @@ angular.module('myApp.directives', []).
 				'<textarea rows="10" class="input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
 		} 
 	});
-
-/* tutorial code 
-directivesModule.directive('jcEditableTextarea', function() {
-  var editTemplate = '<textarea ng-show="isEditMode" ng-dblclick="switchToPreview()" rows="10" cols="30" ng-model="editTextArea"></textarea>';
-  var previewTemplate = '<div ng-hide="isEditMode" ng-dblclick="switchToEdit()">Preview</div>';
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {},
-    compile: function(tElement, tAttrs, transclude) {
-      var editTextArea = tElement.text();
-      tElement.html(editTemplate);
-      var previewElement = angular.element(previewTemplate);
-      tElement.append(previewElement);
-
-      return function(scope, element, attrs) {
-        scope.isEditMode = false;
-        scope.editTextArea = editTextArea;
-
-        scope.switchToPreview = function() {
-          previewElement.html(scope.editTextArea);
-          scope.isEditMode = false;
-        }
-        scope.switchToEdit = function() {
-          scope.isEditMode = true;
-        }
-      }
-    }
-  }
-});
-*/

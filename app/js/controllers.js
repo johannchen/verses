@@ -5,6 +5,14 @@
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
 
+	$scope.memorizedCount = function() {
+		var count = 0;
+		angular.forEach($scope.verses, function(verse) {
+			count += verse.memorized > 0 ? 1 : 0;
+		});
+		return count;
+	}
+
 	$scope.removeVerse = function(index) {
 		if(confirm("Are you sure to remove this verse?") == true) {
 			$scope.verses.splice(index, 1);
@@ -83,12 +91,13 @@ function TagsCtrl($scope, storage) {
 	};
 
   $scope.selectTag = function() {
-		//reset tag color
-		//this.tagColor = 'success';
 		// filter by tag name
 		if (typeof($scope.$parent.search) === 'undefined') $scope.$parent.search = {};
-		//$scope.$parent.search.tags = this.tag.name;
-		$scope.$parent.search.tags = this.selectedTag.name;
+		if (this.selectedTag == null) {
+			$scope.$parent.search.tags = "";
+		} else {
+			$scope.$parent.search.tags = this.selectedTag.name;
+		}
 	}
 
 	$scope.$watch('tags', function(newValue, oldValue) {
