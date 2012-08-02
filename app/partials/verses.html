@@ -49,8 +49,7 @@ $(function() {
 			</li>
 		</ul>
 		<div id="load-more" ng-show="limit < versesCount">
-			<button ng-click="limit=limit+10">Load More</button>
-			{{limit}} / {{verses.length}}
+			<button ng-click="limit=limit+10"><i class="icon-arrow-down"></i>Load More {{limit}} / {{verses.length}}</button>
 		</div>
 	</div>
 	</div>
@@ -70,12 +69,14 @@ $(function() {
 			<option value="created_at">Oldest Added</option>
 			<option value="title">Verse Title</option>
 		</select>
+
 		<div ng-controller="TagsCtrl">
+		Filter by:
+		<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+		</select>
 			<ul class="taglist unstyled">
 				<li ng-repeat="tag in tags | orderBy:'name'">
-				<span ng-click="selectTag()"class="label label-info" jc-draggable>
-				  <span jc-editable-text model="tag.name"></span>
-				</span>
+				  <span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
 					<span ng-click="deleteTag($index)">&times;</span>  
 				</li>
 			</ul>
