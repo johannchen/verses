@@ -57,22 +57,22 @@ $(function() {
 	</div>
 	<div class="span3">
 		Results: {{versesCount = (verses | filter:search).length}} <br />
-		Search: <input type="text" class="span2" ng-model="search.$">
+		<input type="text" class="span2" ng-model="search.$" placeholder="search">
 		<br />
-		Sort by: 
 		<select ng-model="order" class="span2">
+			<option value="">-- sort by --</option>
 			<option value="last_memorized_at">Lastest Memorized</option>
 			<option value="-last_memorized_at">Oldest Memorized</option>
 			<option value="memorized">Most Memorized</option>
-			<option value="-memorized">Lest Memorized</option>
+			<option value="-memorized">Least Memorized</option>
 			<option value="-created_at">Lastest Added</option>
 			<option value="created_at">Oldest Added</option>
 			<option value="title">Verse Title</option>
 		</select>
 
 		<div ng-controller="TagsCtrl">
-		Filter by:
-		<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+    <select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+      <option value="">-- filter by --</option>
 		</select>
 			<ul class="taglist unstyled">
 				<li ng-repeat="tag in tags | orderBy:'name'">

@@ -88,7 +88,7 @@ function TagsCtrl($scope, storage) {
 		// filter by tag name
 		if (typeof($scope.$parent.search) === 'undefined') $scope.$parent.search = {};
 		//$scope.$parent.search.tags = this.tag.name;
-		$scope.$parent.search.tags = this.selectedTag;
+		$scope.$parent.search.tags = this.selectedTag.name;
 	}
 
 	$scope.$watch('tags', function(newValue, oldValue) {
