@@ -6,13 +6,45 @@
  */
 </script>
 
+<div id="headrow" class="row">
+  <div class="span8">
+		<input type="text" class="span2" ng-model="search.$" placeholder="search">
+		<select ng-model="order" class="span2">
+			<option value="">-- sort by --</option>
+			<option value="last_memorized_at">Lastest Memorized</option>
+			<option value="-last_memorized_at">Oldest Memorized</option>
+			<option value="-memorized">Most Memorized</option>
+			<option value="memorized">Least Memorized</option>
+			<option value="-created_at">Lastest Added</option>
+			<option value="created_at">Oldest Added</option>
+			<option value="title">Verse Title</option>
+		</select>
+		<span ng-controller="TagsCtrl">
+			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+				<option value="">-- filter by --</option>
+      </select>
+    </span>
+    Results: {{versesCount = (verses | filter:search).length}}
+  </div>
+  <div class="span2">
+    <div class="pull-right">
+    <span class="badge badge-success" title="Memorized">{{memorizedCount()}}</span> / 
+    <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
+  </div>
+  </div>
+  <div class="span2">
+    <button ng-click="backupVerses()">Backup Verses</button>
+    <output></output>
+  </div>
+  <hr />
+</div>
 <div class="row">
-	<div class="span9">
+  <div class="span10">
 		<div class="row">
 			<div id="verses" ng-init="limit=10">
 				<ul class="thumbnails">
-					<li ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
-					<article ng-model="verseColor" class="span4 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
+					<li class="span5" ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
+					<article ng-model="verseColor" class="span5 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
 						<header>
 							<span jc-editable-text model="verse.title"></span>
 							<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
@@ -32,7 +64,7 @@
 							<button class="btn btn-large close pull-right"  ng-click="removeVerse($index)">&times;</button>  
 						</header>
 						<hr /> 
-						<p>
+						<div class="verse_content">
 						<div ng-hide="isMemorizing">
 							<span jc-editable-textarea model="verse.content"></span>
 						</div>
@@ -44,7 +76,7 @@
 							<textarea rows="5" class="input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
 							<input type="submit" class="btn-primary" value="Submit">
 						</form>
-						</p>
+						</div>
 					</article>
 					</li>
 				</ul>
@@ -55,44 +87,24 @@
 		</div>
 
 	</div>
-	<div class="span3">
-		Memorized: {{memorizedCount()}} / {{verses.length}}<br />
-		Search Results: {{versesCount = (verses | filter:search).length}}<br />
-		<input type="text" class="span2" ng-model="search.$" placeholder="search">
-		<br />
-		<select ng-model="order" class="span2">
-			<option value="">-- sort by --</option>
-			<option value="last_memorized_at">Lastest Memorized</option>
-			<option value="-last_memorized_at">Oldest Memorized</option>
-			<option value="memorized">Most Memorized</option>
-			<option value="-memorized">Least Memorized</option>
-			<option value="-created_at">Lastest Added</option>
-			<option value="created_at">Oldest Added</option>
-			<option value="title">Verse Title</option>
-		</select>
-
-		<div ng-controller="TagsCtrl">
-			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
-				<option value="">-- filter by --</option>
-			</select>
+  <div class="span2">
+    <div ng-controller="TagsCtrl">
+      <h4>Draggable Tags</h4>
+      <hr />
 			<ul class="taglist unstyled">
-				<li ng-repeat="tag in tags | orderBy:'name'">
+        <li ng-repeat="tag in tags | orderBy:'name'">
 				<span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
-				<span ng-click="deleteTag($index)">&times;</span>  
+        <span ng-click="deleteTag($index)">&times;</span>  
 				</li>
 			</ul>
 			<form ng-submit="addTag()">
 				<div class="input-append">
-					<input type="text" class="span2" ng-model="tagName" placeholder="add new tag">
+					<input type="text" class="input-small" ng-model="tagName" placeholder="add new tag">
 					<input class="btn-primary" type="submit" value="add">
 				</div>
 			</form>
     </div>
 
-    <div id="download">
-      <button ng-click="backupVerses()">Backup Verses</button>
-      <output></output>
-    </div>
 	</div>
 </div>
 

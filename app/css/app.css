@@ -4,6 +4,10 @@ hr {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+#headrow {
+  margin-bottom: 10px;
+}
 .green {
   background-color: #99ff66;
 }
@@ -25,4 +29,8 @@ hr {
 
 .taglist li {
   padding-bottom: 3px;
+}
+
+.verse_content {
+  line-height: 130%;
 }

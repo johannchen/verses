@@ -71,7 +71,8 @@ function VersesCtrl($scope, storage) {
     var a = document.createElement('a');
     a.download = 'verses.txt';
     a.href = window.URL.createObjectURL(bb.getBlob(mime_type));
-    a.textContent = 'Download ready';
+    a.textContent = 'Download';
+    //a.class = 'btn btn-success';
 
     output.appendChild(a);
 
