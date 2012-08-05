@@ -4,7 +4,11 @@
 
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
-
+/*
+  $scope.verses = storage.get(['verses'], function(data) {
+    data = data.verses || {};
+  });
+*/
 	$scope.memorizedCount = function() {
 		var count = 0;
 		angular.forEach($scope.verses, function(verse) {
@@ -29,7 +33,6 @@ function VersesCtrl($scope, storage) {
   }
 
 	$scope.memorizeVerse = function() {
-		//var verse = $scope.verses[index];
     // this access to current scope
 		this.diffResult = '';
     var verse = this.verse;
@@ -38,7 +41,7 @@ function VersesCtrl($scope, storage) {
 			verse.last_memorized_at = new Date();
 		} else {
 			// show diff
-			// $scope.diffResult = dmp.diff($scope.typedContent, verse.content);
+			//this.diffResult = dmp.diff($scope.typedContent, verse.content);
 			var dmp = new diff_match_patch();
 			var d = dmp.diff_main(this.typedContent, verse.content);
 			dmp.diff_cleanupSemantic(d);
@@ -49,12 +52,44 @@ function VersesCtrl($scope, storage) {
     this.typedContent = '';
 	}
 
+  $scope.backupVerses = function() {
+    var output = document.querySelector('output');
+    var mime_type = "text/plain";
+    window.URL = window.webkitURL || window.URL;
+    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+      window.MozBlobBuilder;
+    
+    var prevLink = output.querySelector('a');
+    if (prevLink) {
+      window.URL.revokeObjectURL(prevLink.href);
+      output.innerHTML = '';
+    }
+    
+    var bb = new BlobBuilder();
+    bb.append(storage.getString('verses'));
+
+    var a = document.createElement('a');
+    a.download = 'verses.txt';
+    a.href = window.URL.createObjectURL(bb.getBlob(mime_type));
+    a.textContent = 'Download ready';
+
+    output.appendChild(a);
+
+    a.onclick = function(e) {
+      // clean up
+      // Need a small delay for the revokeObjectURL to work properly.
+      setTimeout(function() {
+        window.URL.revokeObjectURL(a.href);
+      }, 1500);
+      output.innerHTML = '';
+    };
+  }
 
 	//observe and save verses when it change
   //TODO: save the when change completed?
 	$scope.$watch('verses', function(newValue, oldValue) {
 		storage.saveObject(newValue, 'verses');
-	}, true);
+  }, true);
 }
 
 function NewVerseCtrl($scope, $location, storage) {
@@ -67,7 +102,7 @@ function NewVerseCtrl($scope, $location, storage) {
 			created_at: new Date()}); 
 		$location.path('/');
 		storage.saveObject($scope.verses, 'verses');
-	}
+  }
 }	
 
 function VerseTagsCtrl($scope) {
