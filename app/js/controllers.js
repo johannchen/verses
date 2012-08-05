@@ -17,6 +17,26 @@ function VersesCtrl($scope, storage) {
 		return count;
 	}
 
+  $scope.newVerse = function() {
+    $scope.isAddingVerse = true;
+  }
+  
+  $scope.cancelNewVerse = function() {
+    $scope.isAddingVerse = false;
+  }
+
+	$scope.addVerse = function() {                                               
+	 	$scope.verses.unshift({
+			title: $scope.verseTitle, 
+			content: $scope.verseContent,
+			tags: [],
+      memorized: 0,
+			created_at: new Date()}); 
+    $scope.verseTitle = "";
+    $scope.verseContent = "";
+    $scope.isAddingVerse = false;
+  }
+
 	$scope.removeVerse = function(index) {
 		if(confirm("Are you sure to remove this verse?") == true) {
 			$scope.verses.splice(index, 1);
@@ -92,20 +112,6 @@ function VersesCtrl($scope, storage) {
 		storage.saveObject(newValue, 'verses');
   }, true);
 }
-
-function NewVerseCtrl($scope, $location, storage) {
-  $scope.verses = storage.getObject('verses');
-	$scope.addVerse = function() {                                               
-	 	$scope.verses.unshift({
-			title: $scope.verseTitle, 
-			content: $scope.verseContent,
-			tags: [],
-      memorized: 0,
-			created_at: new Date()}); 
-		$location.path('/');
-		storage.saveObject($scope.verses, 'verses');
-  }
-}	
 
 function VerseTagsCtrl($scope) {
 	$scope.removeTag = function(index) {

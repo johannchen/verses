@@ -77,6 +77,6 @@ angular.module('myApp.directives', []).
 			restrict: 'A',
 			scope: { model: '=' },
 			template: '<div ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</div>' +
-				'<textarea rows="10" class="input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
+				'<textarea rows="10" class="span4 input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
 		} 
 	});
