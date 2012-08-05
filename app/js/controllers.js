@@ -100,6 +100,7 @@ function NewVerseCtrl($scope, $location, storage) {
 			title: $scope.verseTitle, 
 			content: $scope.verseContent,
 			tags: [],
+      memorized: 0,
 			created_at: new Date()}); 
 		$location.path('/');
 		storage.saveObject($scope.verses, 'verses');
