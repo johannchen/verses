@@ -4,6 +4,7 @@
 
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
+  $scope.memorized = false;
 /*
   $scope.verses = storage.get(['verses'], function(data) {
     data = data.verses || {};
@@ -97,6 +98,29 @@ function VersesCtrl($scope, storage) {
       output.innerHTML = '';
     };
   }
+
+  $scope.filterByMemorized = function(item) {
+    if($scope.memorized) {
+      return item.memorized > 0;
+    }
+    return true;
+  };
+
+  $scope.selectFilter = function() {
+		// filter by memorized 
+		if (typeof($scope.search) === 'undefined') $scope.search = {};
+		if ($scope.selectedFilter === "") {
+			$scope.search.memorized = "";
+      $scope.memorized = false;
+    } else if ($scope.selectedFilter === "unmemorized") {
+			$scope.search.memorized = "0";
+      $scope.memorized = false;
+		} else {
+			$scope.search.memorized = "" ;
+      $scope.memorized = true;
+		}
+    console.log($scope);
+	};
 
 	//observe and save verses when it change
   //TODO: save the when change completed?

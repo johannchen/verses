@@ -8,29 +8,34 @@
 
 <div id="headrow" class="row">
 
-  <div class="span8">
+  <div class="span9">
     <form class="form-inline">
     <button ng-click="newVerse()" class="btn">New Verse</button>
 		<input type="text" class="span2" ng-model="search.$" placeholder="search">
-		<select ng-model="order" class="span2">
-			<option value="">-- sort by --</option>
-			<option value="last_memorized_at">Lastest Memorized</option>
-			<option value="-last_memorized_at">Oldest Memorized</option>
-			<option value="-memorized">Most Memorized</option>
-			<option value="memorized">Least Memorized</option>
-			<option value="-created_at">Lastest Added</option>
-			<option value="created_at">Oldest Added</option>
-			<option value="title">Verse Title</option>
-		</select>
+    <select ng-model="selectedFilter" ng-change="selectFilter()" class="span2">
+      <option value="">-- filter by --</option>
+      <option value="unmemorized">Unmemorized</option>
+      <option value="memorized">Memorized</option>
+    </select>
 		<span ng-controller="TagsCtrl">
 			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
 				<option value="">-- tag by --</option>
       </select>
     </span>
-    Results: {{versesCount = (verses | filter:search).length}}
+    <select ng-model="order" class="span2">
+      <option value="">-- sort by --</option>
+			<option value="-last_memorized_at" ng-show="memorized">Lastest Memorized</option>
+			<option value="last_memorized_at" ng-show="memorized">Oldest Memorized</option>
+			<option value="-memorized" ng-show="memorized">Most Memorized</option>
+      <option value="memorized" ng-show="memorized">Least Memorized</option>
+			<option value="-created_at">Lastest Added</option>
+			<option value="created_at">Oldest Added</option>
+			<option value="title">Verse Title</option>
+		</select>
+	    Results: {{versesCount = (verses | filter:search | filter:filterByMemorized).length}}
   </form>
   </div>
-  <div class="span2">
+  <div class="span1">
     <div class="pull-right">
     <span class="badge badge-success" title="Memorized">{{memorizedCount()}}</span> / 
     <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
@@ -58,7 +63,7 @@
             </form>
           </li>
       
-					<li class="span5" ng-repeat="verse in verses | filter:search | orderBy:order | limitTo:limit">
+					<li class="span5" ng-repeat="verse in verses | filter:search | filter:filterByMemorized | orderBy:order:false | limitTo:limit">
 					<article ng-model="verseColor" class="span5 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
 						<header>
 							<span jc-editable-text model="verse.title"></span>
