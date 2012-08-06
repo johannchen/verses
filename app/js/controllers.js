@@ -38,8 +38,9 @@ function VersesCtrl($scope, storage) {
     $scope.isAddingVerse = false;
   }
 
-	$scope.removeVerse = function(index) {
+	$scope.removeVerse = function(verse) {
 		if(confirm("Are you sure to remove this verse?") == true) {
+      var index = $scope.verses.indexOf(verse);
 			$scope.verses.splice(index, 1);
 		}
 	}
@@ -136,14 +137,24 @@ function VerseTagsCtrl($scope) {
 
 function TagsCtrl($scope, storage) {
 	$scope.tags = storage.getObject('tags');
-  
+  /*
+  var lastId = 0,
+    lastIndex = $scope.tags.length - 1;
+  if (lastIndex >=  0) { lastId = $scope.tags[lastIndex].id; }
+  var nextId = lastId + 1;
+*/ 
   $scope.addTag = function() {
-		$scope.tags.push({name: $scope.tagName});
+		$scope.tags.push({
+  //    id: nextId, 
+      name: $scope.tagName
+    });
 		$scope.tagName = '';
+ //   nextId++;
 	};
 
-	$scope.deleteTag = function(index) {
+	$scope.deleteTag = function(tag) {
 		if(confirm("Are you sure to remove this tag?") == true) {
+      var index = $scope.tags.indexOf(tag);
 			$scope.tags.splice(index, 1);
 		}
 	};

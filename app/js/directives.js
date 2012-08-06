@@ -13,7 +13,7 @@ angular.module('myApp.directives', []).
 	    "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
 			"1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles",
 		  "Ezra", "Nehemiah", "Esther",
-		  "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs",
+		  "Job", "Psalm", "Proverbs", "Ecclesiastes", "Song of Songs",
 		  "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
 		  "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah",
 		  "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
