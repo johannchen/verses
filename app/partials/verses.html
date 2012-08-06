@@ -25,7 +25,9 @@ function handleFileSelect(evt) {
           localStorage['tags'] = e.target.result;
         } else {
           console.log("file does not match names");
-        }   
+        }  
+        // TODO: do it without browser refresh 
+        window.location.reload();
       }
     })(f);
    
