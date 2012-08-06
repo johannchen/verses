@@ -73,7 +73,7 @@ function VersesCtrl($scope, storage) {
     this.typedContent = '';
 	}
 
-  $scope.backupVerses = function() {
+  $scope.exportVerses = function() {
     var output = document.querySelector('output');
     window.URL = window.webkitURL || window.URL;
  
@@ -85,7 +85,7 @@ function VersesCtrl($scope, storage) {
 
     var a = document.createElement('a');
     a.download = 'verses.txt';
-    a.href = window.URL.createObjectURL(storage.getBackupBlob('verses'));
+    a.href = window.URL.createObjectURL(storage.getExportBlob('verses'));
     a.textContent = 'Download';
 
     output.appendChild(a);
@@ -119,7 +119,6 @@ function VersesCtrl($scope, storage) {
 			$scope.search.memorized = "" ;
       $scope.memorized = true;
 		}
-    console.log($scope);
 	};
 
 	//observe and save verses when it change
@@ -159,7 +158,7 @@ function TagsCtrl($scope, storage) {
 		}
 	};
 
-  $scope.backupTags = function() {
+  $scope.exportTags = function() {
     var output = document.querySelector('#download-tags');
     window.URL = window.webkitURL || window.URL;
  
@@ -171,7 +170,7 @@ function TagsCtrl($scope, storage) {
 
     var a = document.createElement('a');
     a.download = 'tags.txt';
-    a.href = window.URL.createObjectURL(storage.getBackupBlob('tags'));
+    a.href = window.URL.createObjectURL(storage.getExportBlob('tags'));
     a.textContent = 'Download';
 
     output.appendChild(a);

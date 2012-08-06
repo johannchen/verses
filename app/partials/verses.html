@@ -4,6 +4,40 @@
 	 $('.thumbnails').sortable();
 	 });
  */
+
+// import files
+function handleFileSelect(evt) {
+  var files = evt.target.files; // FileList object
+  //files is a FileList of File objects. 
+  for (var i = 0, f; f = files[i]; i++) {
+    // Only process txt file
+    if (!f.type.match('text/plain')) { continue; }
+
+    var reader = new FileReader();
+
+    // Clossure to capture the file info.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // if file name match, then copy data to localStorage
+        if(theFile.name === 'verses.txt') {
+          localStorage['verses'] = e.target.result;
+        } else if(theFile.name === 'tags.txt') {
+          localStorage['tags'] = e.target.result;
+        } else {
+          console.log("file does not match names");
+        }   
+      }
+    })(f);
+   
+    // Read in the file
+    reader.readAsText(f);
+
+    //TODO: merge two json objects
+  }
+}
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
 </script>
 
 <div id="headrow" class="row">
@@ -42,7 +76,7 @@
   </div>
   </div>
   <div class="span2">
-    <button ng-click="backupVerses()" class="btn">Backup Verses</button>
+    <button ng-click="exportVerses()" class="btn">Export Verses</button>
     <output></output>
   </div>
   <hr />
@@ -123,10 +157,18 @@
 					<input class="btn-primary" type="submit" value="add">
 				</div>
 			</form>
-      <button ng-click="backupTags()" class="btn">Backup Tags</button>
+      <button ng-click="exportTags()" class="btn">Export Tags</button>
       <div id="download-tags"></div>
     </div>
 
+    <div id="import">
+      <h4>Import Verses & Tags</h4>
+      <hr />
+      <input type="file" id="files" name="files[]" multiple /> 
+      <div class="alert alert-block">
+        The import files will replace your current content!
+      </div>
+    </div>
 	</div>
 </div>
 

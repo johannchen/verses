@@ -27,7 +27,7 @@ servicesModule.factory('storage', function() {
 		localStorage[key] = JSON.stringify(objectToSave);
 	};
 
-  myStorage.getBackupBlob = function(key) {
+  myStorage.getExportBlob = function(key) {
     window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
       window.MozBlobBuilder;
     var mime_type = "text/plain";

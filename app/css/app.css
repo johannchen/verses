@@ -8,6 +8,11 @@ hr {
 #headrow {
   margin-bottom: 10px;
 }
+
+#import {
+  margin-top: 20px;
+}
+
 .green {
   background-color: #99ff66;
 }
