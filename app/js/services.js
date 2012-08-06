@@ -27,13 +27,21 @@ servicesModule.factory('storage', function() {
 		localStorage[key] = JSON.stringify(objectToSave);
 	};
 
+  myStorage.getBackupBlob = function(key) {
+    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+      window.MozBlobBuilder;
+    var mime_type = "text/plain";
+    var bb = new BlobBuilder();
+    bb.append(myStorage.getString(key));
+    return bb.getBlob(mime_type);
+  };
+
 	myStorage.supported = function() {
 		return 'localStorage' in window && window['localStorage'] !== null;
 	};
 
 	return myStorage;
 });
-
 /*
 servicesModule.factory('dmp', function() {
 	//return new diff_match_patch();

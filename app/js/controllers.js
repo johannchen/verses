@@ -74,28 +74,20 @@ function VersesCtrl($scope, storage) {
 
   $scope.backupVerses = function() {
     var output = document.querySelector('output');
-    var mime_type = "text/plain";
     window.URL = window.webkitURL || window.URL;
-    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
-      window.MozBlobBuilder;
-    
+ 
     var prevLink = output.querySelector('a');
     if (prevLink) {
       window.URL.revokeObjectURL(prevLink.href);
       output.innerHTML = '';
     }
-    
-    var bb = new BlobBuilder();
-    bb.append(storage.getString('verses'));
 
     var a = document.createElement('a');
     a.download = 'verses.txt';
-    a.href = window.URL.createObjectURL(bb.getBlob(mime_type));
+    a.href = window.URL.createObjectURL(storage.getBackupBlob('verses'));
     a.textContent = 'Download';
-    //a.class = 'btn btn-success';
 
     output.appendChild(a);
-
     a.onclick = function(e) {
       // clean up
       // Need a small delay for the revokeObjectURL to work properly.
@@ -141,7 +133,33 @@ function TagsCtrl($scope, storage) {
 		} else {
 			$scope.$parent.search.tags = this.selectedTag.name;
 		}
-	}
+	};
+
+  $scope.backupTags = function() {
+    var output = document.querySelector('#download-tags');
+    window.URL = window.webkitURL || window.URL;
+ 
+    var prevLink = output.querySelector('a');
+    if (prevLink) {
+      window.URL.revokeObjectURL(prevLink.href);
+      output.innerHTML = '';
+    }
+
+    var a = document.createElement('a');
+    a.download = 'tags.txt';
+    a.href = window.URL.createObjectURL(storage.getBackupBlob('tags'));
+    a.textContent = 'Download';
+
+    output.appendChild(a);
+    a.onclick = function(e) {
+      // clean up
+      // Need a small delay for the revokeObjectURL to work properly.
+      setTimeout(function() {
+        window.URL.revokeObjectURL(a.href);
+      }, 1500);
+      output.innerHTML = '';
+    };
+  };
 
 	$scope.$watch('tags', function(newValue, oldValue) {
 		storage.saveObject(newValue, 'tags');

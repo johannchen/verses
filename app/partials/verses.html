@@ -24,7 +24,7 @@
 		</select>
 		<span ng-controller="TagsCtrl">
 			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
-				<option value="">-- filter by --</option>
+				<option value="">-- tag by --</option>
       </select>
     </span>
     Results: {{versesCount = (verses | filter:search).length}}
@@ -118,6 +118,8 @@
 					<input class="btn-primary" type="submit" value="add">
 				</div>
 			</form>
+      <button ng-click="backupTags()" class="btn">Backup Tags</button>
+      <div id="download-tags"></div>
     </div>
 
 	</div>
