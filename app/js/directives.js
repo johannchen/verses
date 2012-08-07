@@ -45,10 +45,6 @@ angular.module('myApp.directives', []).
       link: function(scope, elm, attrs) {
 	      elm.droppable({
 		      drop: function(event, ui) {
-			      //$(this).find('.tags').html(ui.draggable.text());
-						//model.push(ui.draggable.text());
-						//model view does not reflect the value change
-						//console.log(scope);
             if (typeof scope.verse.tags === 'undefined') scope.verse.tags = [];
 						scope.verse.tags.push($.trim(ui.draggable.text()));
 						scope.$apply();
@@ -77,6 +73,6 @@ angular.module('myApp.directives', []).
 			restrict: 'A',
 			scope: { model: '=' },
 			template: '<div ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</div>' +
-				'<textarea rows="10" class="span4 input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false"></textarea>'
+				'<textarea rows="10" class="span4 input-xlarge" ng-model="model" ng-show="editMode" ng-dblclick="editMode=false" autofocus="autofocus"></textarea>'
 		} 
 	});

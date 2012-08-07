@@ -130,7 +130,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 							<div ng-bind-html-unsafe="diffResult"></div>
 						</div>
 						<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
-							<textarea rows="5" class="span4 input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
+							<textarea rows="5" class="span4 input-xlarge" ng-model="typedContent" placeholder="type verse to memorize" autofocus="autofocus"></textarea><br />
 							<input type="submit" class="btn-primary" value="Submit">
 						</form>
 						</div>
