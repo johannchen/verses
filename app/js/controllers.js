@@ -26,7 +26,7 @@ function VersesCtrl($scope, storage) {
     $scope.isAddingVerse = false;
   }
 
-	$scope.addVerse = function() {                                               
+	$scope.addVerseClose = function() {                                               
 	 	$scope.verses.unshift({
 			title: $scope.verseTitle, 
 			content: $scope.verseContent,
@@ -36,6 +36,19 @@ function VersesCtrl($scope, storage) {
     $scope.verseTitle = "";
     $scope.verseContent = "";
     $scope.isAddingVerse = false;
+  }
+
+  //TODO: dry add verse
+  $scope.addVerseOpen = function() {                                        
+	 	$scope.verses.unshift({
+			title: $scope.verseTitle, 
+			content: $scope.verseContent,
+			tags: [],
+      memorized: 0,
+			created_at: new Date()}); 
+    $scope.verseTitle = "";
+    $scope.verseContent = "";
+    $scope.isAddingVerse = true;
   }
 
 	$scope.removeVerse = function(verse) {

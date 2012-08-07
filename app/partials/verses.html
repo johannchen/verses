@@ -24,7 +24,7 @@ function handleFileSelect(evt) {
         } else if(theFile.name === 'tags.txt') {
           localStorage['tags'] = e.target.result;
         } else {
-          console.log("file does not match names");
+          alert("Cannot import files! Please make sure the file name match 'verses.txt' or 'tags.txt' which you export from the app.");
         }  
       }
     })(f);
@@ -94,7 +94,8 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
               <button class="btn btn-large close pull-right"  ng-click="cancelNewVerse()">&times;</button>  
               <hr />
               <textarea rows="5" class="span4 input-xlarge"  ng-model="verseContent" placeholder="verse content"></textarea><br />
-              <button ng-click="addVerse()" class="btn btn-primary">Add Verse</button>
+              <button ng-click="addVerseClose()" class="btn btn-primary">Add Verse</button>
+              <button ng-click="addVerseOpen()" class="btn btn-success">Add Another</button>
               <button ng-click="cancelNewVerse()" class="btn">Cancel</button>
             </form>
           </li>
