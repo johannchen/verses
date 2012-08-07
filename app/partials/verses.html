@@ -1,0 +1,177 @@
+<script>
+/*
+	 $(function() {
+	 $('.thumbnails').sortable();
+	 });
+ */
+
+// import files
+function handleFileSelect(evt) {
+  var files = evt.target.files; // FileList object
+  //files is a FileList of File objects. 
+  for (var i = 0, f; f = files[i]; i++) {
+    // Only process txt file
+    if (!f.type.match('text/plain')) { continue; }
+
+    var reader = new FileReader();
+
+    // Clossure to capture the file info.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // if file name match, then copy data to localStorage
+        if(theFile.name === 'verses.txt') {
+          localStorage['verses'] = e.target.result;
+        } else if(theFile.name === 'tags.txt') {
+          localStorage['tags'] = e.target.result;
+        } else {
+          console.log("file does not match names");
+        }  
+      }
+    })(f);
+   
+    // Read in the file
+    reader.readAsText(f);
+
+    //TODO: merge two json objects
+  }
+  // TODO: do it without browser refresh 
+  window.location.reload();
+}
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+</script>
+
+<div id="headrow" class="row">
+
+  <div class="span9">
+    <form class="form-inline">
+    <button ng-click="newVerse()" class="btn">New Verse</button>
+		<input type="text" class="span2" ng-model="search.$" placeholder="search">
+    <select ng-model="selectedFilter" ng-change="selectFilter()" class="span2">
+      <option value="">-- filter by --</option>
+      <option value="unmemorized">Unmemorized</option>
+      <option value="memorized">Memorized</option>
+    </select>
+		<span ng-controller="TagsCtrl">
+			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+				<option value="">-- tag by --</option>
+      </select>
+    </span>
+    <select ng-model="order" class="span2">
+      <option value="">-- sort by --</option>
+			<option value="-last_memorized_at" ng-show="memorized">Lastest Memorized</option>
+			<option value="last_memorized_at" ng-show="memorized">Oldest Memorized</option>
+			<option value="-memorized" ng-show="memorized">Most Memorized</option>
+      <option value="memorized" ng-show="memorized">Least Memorized</option>
+			<option value="-created_at">Lastest Added</option>
+			<option value="created_at">Oldest Added</option>
+			<option value="title">Verse Reference</option>
+		</select>
+	    Results: {{versesCount = (verses | filter:search | filter:filterByMemorized).length}}
+  </form>
+  </div>
+  <div class="span1">
+    <div class="pull-right">
+    <span class="badge badge-success" title="Memorized">{{memorizedCount()}}</span> / 
+    <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
+  </div>
+  </div>
+  <div class="span2">
+    <button ng-click="exportVerses()" class="btn">Export Verses</button>
+    <output></output>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="span10">
+		<div class="row">
+			<div id="verses" ng-init="limit=10">
+        <ul class="thumbnails">
+          <li class="span5" ng-show="isAddingVerse">
+            <form name="newVerseForm" class="span5 thumbnail">
+              <input type="text" class="span2" ng-model="verseTitle" placeholder="verse reference" bible-autocomplete>
+              <button class="btn btn-large close pull-right"  ng-click="cancelNewVerse()">&times;</button>  
+              <hr />
+              <textarea rows="5" class="span4 input-xlarge"  ng-model="verseContent" placeholder="verse content"></textarea><br />
+              <button ng-click="addVerse()" class="btn btn-primary">Add Verse</button>
+              <button ng-click="cancelNewVerse()" class="btn">Cancel</button>
+            </form>
+          </li>
+      
+					<li class="span5" ng-repeat="verse in verses | filter:search | filter:filterByMemorized | orderBy:order:false | limitTo:limit">
+					<article ng-model="verseColor" class="span5 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
+						<header>
+							<span jc-editable-text model="verse.title"></span>
+							<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
+							<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
+							<i class="icon-info-sign" title="created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
+							<span ng-show="verse.memorized">
+								<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>
+								<span title="times memorized">{{verse.memorized}}</span>
+							</span>
+							<ul class="verse_tags" ng-controller="VerseTagsCtrl">
+								<li ng-repeat="tag in verse.tags">
+								<span class="label label-info">{{tag}}
+									<span ng-click="removeTag($index)">&times;</span>
+								</span>
+								</li>
+							</ul>
+							<button class="btn btn-large close pull-right"  ng-click="removeVerse(verse)">&times;</button>  
+						</header>
+						<hr /> 
+						<div class="verse_content">
+						<div ng-hide="isMemorizing">
+							<span jc-editable-textarea model="verse.content"></span>
+						</div>
+						<div ng-show="doneMemorizing">
+							<hr />
+							<div ng-bind-html-unsafe="diffResult"></div>
+						</div>
+						<form ng-submit="memorizeVerse()" ng-show="isMemorizing">
+							<textarea rows="5" class="span4 input-xlarge" ng-model="typedContent" placeholder="type verse to memorize"></textarea><br />
+							<input type="submit" class="btn-primary" value="Submit">
+						</form>
+						</div>
+					</article>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="load-more" ng-show="limit < versesCount">
+			<button ng-click="limit=limit+10"><i class="icon-arrow-down"></i>Load More {{limit}} / {{verses.length}}</button>
+		</div>
+
+	</div>
+  <div class="span2">
+    <div ng-controller="TagsCtrl">
+      <h4>Draggable Tags</h4>
+      <hr />
+			<ul class="taglist unstyled">
+        <li ng-repeat="tag in tags | orderBy:'name'">
+				<span class="label label-info" jc-draggable jc-editable-text model="tag.name"></span>
+        <span ng-click="deleteTag(tag)">&times;</span>  
+				</li>
+			</ul>
+			<form ng-submit="addTag()">
+				<div class="input-append">
+					<input type="text" class="input-small" ng-model="tagName" placeholder="add new tag">
+					<input class="btn-primary" type="submit" value="add">
+				</div>
+			</form>
+      <button ng-click="exportTags()" class="btn">Export Tags</button>
+      <div id="download-tags"></div>
+    </div>
+
+    <div id="import">
+      <h4>Import Verses & Tags</h4>
+      <hr />
+      <input type="file" id="files" name="files[]" multiple /> 
+      <div class="alert alert-block">
+        <h4>Caution!</h4> 
+        the imported files will replace your current content.
+      </div>
+    </div>
+	</div>
+</div>
+

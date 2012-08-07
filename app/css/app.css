@@ -1,0 +1,41 @@
+/* app css stylesheet */
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#headrow {
+  margin-bottom: 10px;
+}
+
+#import {
+  margin-top: 20px;
+}
+
+.green {
+  background-color: #99ff66;
+}
+
+.yellow {
+  background-color: #ffcc00;
+}
+
+.verse_tags {
+  display: inline;
+  margin-left: 1px;
+}
+
+.verse_tags li {
+  display: inline; 
+  list-style-type: none;
+  padding-right: 3px;
+}
+
+.taglist li {
+  padding-bottom: 3px;
+}
+
+.verse_content {
+  line-height: 130%;
+}
