@@ -1,4 +1,4 @@
-mem2
+Verses
 ====
 
-Simple memorization tool
+Simple verses memorization tool
