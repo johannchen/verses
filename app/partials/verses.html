@@ -90,7 +90,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
         <ul class="thumbnails">
           <li class="span5" ng-show="isAddingVerse">
             <form name="newVerseForm" class="span5 thumbnail">
-              <input type="text" class="span2" ng-model="verseTitle" placeholder="verse reference" bible-autocomplete>
+              <input type="text" class="span2" ng-model="verseTitle" placeholder="verse reference" autofocus="autofocus" bible-autocomplete>
               <button class="btn btn-large close pull-right"  ng-click="cancelNewVerse()">&times;</button>  
               <hr />
               <textarea rows="5" class="span4 input-xlarge"  ng-model="verseContent" placeholder="verse content"></textarea><br />

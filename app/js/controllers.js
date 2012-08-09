@@ -5,11 +5,6 @@
 function VersesCtrl($scope, storage) {
   $scope.verses = storage.getObject('verses');
   $scope.memorized = false;
-/*
-  $scope.verses = storage.get(['verses'], function(data) {
-    data = data.verses || {};
-  });
-*/
 	$scope.memorizedCount = function() {
 		var count = 0;
 		angular.forEach($scope.verses, function(verse) {
@@ -26,7 +21,7 @@ function VersesCtrl($scope, storage) {
     $scope.isAddingVerse = false;
   }
 
-	$scope.addVerseClose = function() {                                               
+  $scope.addVerse = function() {                                               
 	 	$scope.verses.unshift({
 			title: $scope.verseTitle, 
 			content: $scope.verseContent,
@@ -35,20 +30,16 @@ function VersesCtrl($scope, storage) {
 			created_at: new Date()}); 
     $scope.verseTitle = "";
     $scope.verseContent = "";
-    $scope.isAddingVerse = false;
   }
 
-  //TODO: dry add verse
+	$scope.addVerseClose = function() {                                               
+    $scope.addVerse();
+	 	$scope.isAddingVerse = false;
+  }
+
   $scope.addVerseOpen = function() {                                        
-	 	$scope.verses.unshift({
-			title: $scope.verseTitle, 
-			content: $scope.verseContent,
-			tags: [],
-      memorized: 0,
-			created_at: new Date()}); 
-    $scope.verseTitle = "";
-    $scope.verseContent = "";
-    $scope.isAddingVerse = true;
+    $scope.addVerse();
+	 	$scope.isAddingVerse = true;
   }
 
 	$scope.removeVerse = function(verse) {

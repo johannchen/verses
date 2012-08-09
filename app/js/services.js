@@ -42,6 +42,27 @@ servicesModule.factory('storage', function() {
 
 	return myStorage;
 });
+
+/*
+servicesModule.factory('esv', function($resource) {
+  return $resource('http://www.esvapi.org/v2/rest/passageQuery?key=IP' +
+    '&passage=:passage' +
+    '&output-format=plain-text' +
+    '&include-short-copyright=0' +
+    '&include-passage-horizontal-lines=0' +
+    '&include-passage-references=0' +
+    '&include-headings=0' +
+    '&include-footnotes=0' +
+    '&include-verse-numbers=0' +
+    '&include-first-verse-numbers=0' +
+    '&include-heading-horizontal-lines=0' +
+    '&callback=:callback', 
+    {passage: 'John3:16',
+     callback:'JSON_CALLBACK'},
+    {get:{method:'JSONP'}});
+});
+
+*/
 /*
 servicesModule.factory('dmp', function() {
 	//return new diff_match_patch();
