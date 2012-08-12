@@ -39,3 +39,7 @@ hr {
 .verse_content {
   line-height: 130%;
 }
+
+.move {
+  cursor: move;
+}

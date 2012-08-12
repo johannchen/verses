@@ -13,6 +13,7 @@ def esv_uri(passage)
   passage = passage.gsub(/\,/, "%2C")
   options = ["include-short-copyright=0",
                "output-format=plain-text",
+               "line-length=0",
                "include-passage-horizontal-lines=0",
                "include-passage-references=0",
                "include-headings=0",

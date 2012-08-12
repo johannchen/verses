@@ -2,9 +2,23 @@
 
 /* Controllers */
 
-function VersesCtrl($scope, storage) {
+function VersesCtrl($scope, $http, storage) {
   $scope.verses = storage.getObject('verses');
   $scope.memorized = false;
+
+  $scope.getESV = function() {
+    var esvUrl = '/bible/' + $scope.verseTitle;
+    $http({method: 'GET', url: esvUrl}).
+      success(function(data, status) {
+        //$scope.status = status;
+        $scope.verseContent = data.esv;
+      }).
+      error(function(data, status) {
+        $scope.verseContent = "Request failed";
+        //$scope.status = status;
+    });
+  }
+
 	$scope.memorizedCount = function() {
 		var count = 0;
 		angular.forEach($scope.verses, function(verse) {
@@ -19,6 +33,8 @@ function VersesCtrl($scope, storage) {
   
   $scope.cancelNewVerse = function() {
     $scope.isAddingVerse = false;
+    $scope.verseTitle = "";
+    $scope.verseContent = "";
   }
 
   $scope.addVerse = function() {                                               
