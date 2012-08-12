@@ -4,7 +4,7 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-var servicesModule = angular.module('myApp.services', []);
+var servicesModule = angular.module('myApp.services', ['ngResource']);
 
 servicesModule.value('version', '0.1');
 servicesModule.factory('storage', function() {
@@ -41,6 +41,12 @@ servicesModule.factory('storage', function() {
 	};
 
 	return myStorage;
+});
+servicesModule.factory('esv', function($resource) {
+  var esv = $resource('http://0.0.0.0:4567/esv/:passage', 
+    {passage:'John3:16'},
+    {get: {method:'GET'}});
+  return esv;
 });
 /*
 servicesModule.factory('dmp', function() {

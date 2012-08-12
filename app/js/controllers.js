@@ -2,9 +2,25 @@
 
 /* Controllers */
 
-function VersesCtrl($scope, storage) {
+function VersesCtrl($scope, $http, storage) {
   $scope.verses = storage.getObject('verses');
   $scope.memorized = false;
+
+  //$http({method: 'GET', url: 'http://localhost:4567/bible/John1:4'}).
+  //$http({method: 'GET', url: 'http://bibleapi.herokuapp.com/bible/John1:4'}).
+  $http({method: 'JSONP', url: 'http://localhost:4567/bible/John1?callback=JSON_CALLBACK'}).
+    success(function(data, status) {
+      $scope.status = status;
+      $scope.data = data;
+    }).
+    error(function(data, status) {
+      $scope.data = data || "Request failed";
+      $scope.status = status;
+  });
+  /*
+  $scope.esvVerse = esv.get();
+  console.log($scope.esvVerse);
+  */
 /*
   $scope.verses = storage.get(['verses'], function(data) {
     data = data.verses || {};
