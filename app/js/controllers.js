@@ -10,12 +10,10 @@ function VersesCtrl($scope, $http, storage) {
     var esvUrl = '/bible/' + $scope.verseTitle;
     $http({method: 'GET', url: esvUrl}).
       success(function(data, status) {
-        //$scope.status = status;
         $scope.verseContent = data.esv;
       }).
       error(function(data, status) {
-        $scope.verseContent = "Request failed";
-        //$scope.status = status;
+        $scope.verseContent = "Failed to load ESV";
     });
   }
 
