@@ -21,6 +21,7 @@ function handleFileSelect(evt) {
         // if file name match, then copy data to localStorage
         if(theFile.name === 'verses.txt') {
           localStorage['verses'] = e.target.result;
+          console.log(theFile.name);
         } else if(theFile.name === 'tags.txt') {
           localStorage['tags'] = e.target.result;
         } else {
@@ -35,7 +36,7 @@ function handleFileSelect(evt) {
     //TODO: merge two json objects
   }
   // TODO: do it without browser refresh 
-  window.location.reload();
+  setTimeout("window.location.reload();", 2000);
 }
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
