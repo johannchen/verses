@@ -4,6 +4,7 @@
 
 function VersesCtrl($scope, $http, storage) {
   $scope.verses = storage.getObject('verses');
+  $scope.goal = 7;
   $scope.memorized = false;
 
   $scope.getESV = function() {

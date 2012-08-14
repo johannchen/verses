@@ -45,22 +45,22 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 
 <div id="headrow" class="row">
 
-  <div class="span9">
+  <div class="span5">
     <form class="form-inline">
     <button ng-click="newVerse()" class="btn">New Verse</button>
-		<input type="text" class="span2" ng-model="search.$" placeholder="search">
-    <select ng-model="selectedFilter" ng-change="selectFilter()" class="span2">
-      <option value="">-- filter by --</option>
+		<input type="text" class="span1" ng-model="search.$" placeholder="search">
+    <select ng-model="selectedFilter" ng-change="selectFilter()" class="span1">
+      <option value="">filter</option>
       <option value="unmemorized">Unmemorized</option>
       <option value="memorized">Memorized</option>
     </select>
 		<span ng-controller="TagsCtrl">
-			<select class="span2" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
-				<option value="">-- tag by --</option>
+			<select class="span1" ng-model="selectedTag" ng-change="selectTag()" ng-options="t.name for t in tags | orderBy:'name'">
+				<option value="">tag</option>
       </select>
     </span>
-    <select ng-model="order" class="span2">
-      <option value="">-- sort by --</option>
+    <select ng-model="order" class="span1">
+      <option value="">sort</option>
 			<option value="-last_memorized_at" ng-show="memorized">Lastest Memorized</option>
 			<option value="last_memorized_at" ng-show="memorized">Oldest Memorized</option>
 			<option value="-memorized" ng-show="memorized">Most Memorized</option>
@@ -72,11 +72,26 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 	    Results: {{versesCount = (verses | filter:search | filter:filterByMemorized).length}}
   </form>
   </div>
-  <div class="span1">
-    <div class="pull-right">
-    <span class="badge badge-success" title="Memorized">{{memorizedCount()}}</span> / 
-    <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
-  </div>
+  <div class="span5">
+    <div id="weekly-goal">
+      Weekly Goal: memorize <input type="number" min="0" max="100" style="width:30px" ng-model="goal" /> verses (<a href="#">Overall Progress</a>)
+      <div class="pull-right">
+        <span class="badge badge-success" title="Memorized Total">{{memorizedCount()}}</span> / 
+        <span class="badge badge-inverse" title="Verse Total">{{goal}}</span>
+      </div> 
+      <div class="progress progress-success">
+        <div class="bar" style="width: 60%;"></div>
+      </div>
+    </div>
+    <div id="overall-progress">
+      <div class="pull-right">
+        <span class="badge badge-success" title="Memorized Total">{{memorizedCount()}}</span> / 
+        <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
+      </div> 
+      <div class="progress progress-success">
+        <div class="bar" style="width: 60%;"></div>
+      </div>
+    </div>
   </div>
   <div class="span2">
     <button ng-click="exportVerses()" class="btn">Export Verses</button>
