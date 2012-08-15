@@ -33,9 +33,8 @@ function handleFileSelect(evt) {
     // Read in the file
     reader.readAsText(f);
 
-    //TODO: merge two json objects
+    //TODO: merge two json objects for syncing
   }
-  // TODO: do it without browser refresh 
   setTimeout("window.location.reload();", 2000);
 }
 
@@ -73,25 +72,13 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
   </form>
   </div>
   <div class="span5">
-    <div id="weekly-goal">
-      Weekly Goal: memorize <input type="number" min="0" max="100" style="width:30px" ng-model="goal" /> verses (<a href="#">Overall Progress</a>)
-      <div class="pull-right">
-        <span class="badge badge-success" title="Memorized Total">{{memorizedCount()}}</span> / 
-        <span class="badge badge-inverse" title="Verse Total">{{goal}}</span>
-      </div> 
-      <div class="progress progress-success">
-        <div class="bar" style="width: 60%;"></div>
-      </div>
-    </div>
-    <div id="overall-progress">
       <div class="pull-right">
         <span class="badge badge-success" title="Memorized Total">{{memorizedCount()}}</span> / 
         <span class="badge badge-inverse" title="Verse Total">{{verses.length}}</span>
       </div> 
       <div class="progress progress-success">
-        <div class="bar" style="width: 60%;"></div>
+        <div class="bar" style="width: {{progress()}}%;"></div>
       </div>
-    </div>
   </div>
   <div class="span2">
     <button ng-click="exportVerses()" class="btn">Export Verses</button>

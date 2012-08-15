@@ -13,8 +13,10 @@ angular.module('myApp.filters', []).
 			var out = "";
 			if (memorizedNum > 0 && memorizedNum < 5) {
 				out = 'green'; 
-			} else if (memorizedNum >= 5) {
+			} else if (memorizedNum >= 5 && memorizedNum < 10) {
 				out = 'yellow';
+			} else if (memorizedNum >= 10) {
+				out = 'orange';
 			}
 			return out;
 		}

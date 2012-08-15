@@ -4,7 +4,6 @@
 
 function VersesCtrl($scope, $http, storage) {
   $scope.verses = storage.getObject('verses');
-  $scope.goal = 7;
   $scope.memorized = false;
 
   $scope.getESV = function() {
@@ -25,6 +24,10 @@ function VersesCtrl($scope, $http, storage) {
 		});
 		return count;
 	}
+
+  $scope.progress = function() {
+     return $scope.memorizedCount() / $scope.verses.length * 100;
+  }
 
   $scope.newVerse = function() {
     $scope.isAddingVerse = true;
@@ -219,6 +222,3 @@ function TagsCtrl($scope, storage) {
 	}, true);
 }
 
-function MyCtrl2() {
-}
-MyCtrl2.$inject = [];
