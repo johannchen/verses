@@ -41,9 +41,7 @@ function handleFileSelect(evt) {
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 </script>
-
-<div id="headrow" class="row">
-
+<div id="head_row" class="row">
   <div class="span5">
     <form class="form-inline">
     <button ng-click="newVerse()" class="btn">New Verse</button>
@@ -68,7 +66,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 			<option value="created_at">Oldest Added</option>
 			<option value="title">Verse Reference</option>
 		</select>
-	    Results: {{versesCount = (verses | filter:search | filter:filterByMemorized).length}}
+    <span class="badge" title="count">{{versesCount = (verses | filter:search | filter:filterByMemorized).length}}</span>
   </form>
   </div>
   <div class="span5">
@@ -84,9 +82,9 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
     <button ng-click="exportVerses()" class="btn">Export Verses</button>
     <output></output>
   </div>
-  <hr />
 </div>
-<div class="row">
+
+<div id="content_row" class="row">
   <div class="span10">
 		<div class="row">
 			<div id="verses" ng-init="limit=10">
@@ -178,6 +176,9 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
         <h4>Caution!</h4> 
         the imported files will replace your current content.
       </div>
+    </div>
+    <div id="back_to_top">
+      <a href="#">Back to Top</a>
     </div>
 	</div>
 </div>
