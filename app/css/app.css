@@ -5,14 +5,19 @@ hr {
   margin-bottom: 5px;
 }
 
+footer {
+  margin-top: 10px;
+}
+
 #head_row {
   margin-bottom: 10px;
 }
-
+/*
 #back_to_top {
   z-index: 2;
   position: fixed;
 }
+  */
 #import {
   margin-top: 20px;
 }
