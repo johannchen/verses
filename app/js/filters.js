@@ -10,13 +10,13 @@ angular.module('myApp.filters', []).
   }]).
 	filter('bgColor', function() {
 		return function(input, memorizedNum) {
+      var colors = ['white', 'moccasin', 'pink', 'coral', 'khaki', 'tan',
+        'lightblue', 'yellowgreen', 'orchid', 'orange', 'limegreen']
 			var out = "";
-			if (memorizedNum > 0 && memorizedNum < 5) {
-				out = 'green'; 
-			} else if (memorizedNum >= 5 && memorizedNum < 10) {
-				out = 'yellow';
-			} else if (memorizedNum >= 10) {
-				out = 'orange';
+			if (memorizedNum > 0 && memorizedNum <= 10) {
+				out = colors[memorizedNum]; 
+			} else if (memorizedNum > 10) {
+				out = 'limegreen';
 			}
 			return out;
 		}

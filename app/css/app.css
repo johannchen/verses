@@ -22,17 +22,40 @@ footer {
   margin-top: 20px;
 }
 
-.green {
-  background-color: #99ff66;
+.white {
+  background-color: #FFFFFF;
 }
-
-.yellow {
-  background-color: #ffff66;
+.moccasin {
+  background-color: #FFE4B5;
 }
-
+.pink {
+  background-color: #FFC0CB;
+}
+.coral {
+  background-color: #FF7F50;
+}
+.khaki {
+  background-color: #F0E68C;
+}
+.tan {
+  background-color: #D2B48C;
+}
+.lightblue {
+  background-color: #ADD8E6;
+}
+.yellowgreen {
+  background-color: #9ACD32;
+}
+.orchid {
+  background-color: #DA70D6;
+}
 .orange {
-  background-color: #ff9900;
+  background-color: #FFA500;
 }
+.limegreen {
+  background-color: #32CD32;
+}
+
 
 .verse_tags {
   display: inline;
