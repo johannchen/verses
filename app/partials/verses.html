@@ -119,7 +119,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 							<ul class="verse_tags" ng-controller="VerseTagsCtrl">
 								<li ng-repeat="tag in verse.tags">
 								<span class="label label-info">{{tag}}
-									<span ng-click="removeTag($index)">&times;</span>
+									<span ng-click="removeTag($index)" class="pointer">&times;</span>
 								</span>
 								</li>
 							</ul>
@@ -159,7 +159,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 			<ul class="taglist unstyled">
         <li ng-repeat="tag in tags | orderBy:'name'">
 				<span class="label label-info move" jc-draggable jc-editable-text model="tag.name"></span>
-        <span ng-click="deleteTag(tag)">&times;</span>  
+        <span ng-click="deleteTag(tag)" class="pointer">&times;</span>  
 				</li>
 			</ul>
 			<form ng-submit="addTag()">
