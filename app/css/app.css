@@ -83,3 +83,11 @@ footer {
 .pointer {
   cursor: pointer;
 }
+
+.tag .remove {
+  display: none;
+}
+
+.tag:hover .remove {
+  display: inline;
+}

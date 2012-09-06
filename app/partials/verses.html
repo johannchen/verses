@@ -4,6 +4,14 @@
 	 $('.thumbnails').sortable();
 	 });
  */
+// toggle remove sign for tags
+/*
+$(function() {
+  $('.tag').hover(function() {
+    $(this).children('.pointer').toggle();
+  });
+});
+*/
 
 // import files
 function handleFileSelect(evt) {
@@ -118,8 +126,8 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 							</span>
 							<ul class="verse_tags" ng-controller="VerseTagsCtrl">
 								<li ng-repeat="tag in verse.tags">
-								<span class="label label-info">{{tag}}
-									<span ng-click="removeTag($index)" class="pointer">&times;</span>
+								<span class="label label-info tag">{{tag}}
+									<span ng-click="removeTag($index)" class="pointer remove">&times;</span>
 								</span>
 								</li>
 							</ul>
@@ -158,9 +166,11 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
       <hr />
 			<ul class="taglist unstyled">
         <li ng-repeat="tag in tags | orderBy:'name'">
+        <div class="tag">
 				<span class="label label-info move" jc-draggable jc-editable-text model="tag.name"></span>
-        <span ng-click="deleteTag(tag)" class="pointer">&times;</span>  
-				</li>
+        <div ng-click="deleteTag(tag)" class="pointer remove">&times;</div>  
+      </div>
+      </li>
 			</ul>
 			<form ng-submit="addTag()">
 				<div class="input-append">
