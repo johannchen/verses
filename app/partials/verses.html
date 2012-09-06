@@ -109,8 +109,8 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 					<article ng-model="verseColor" class="span5 thumbnail {{verseColor | bgColor:verse.memorized}}" jc-droppable>
 						<header>
 							<span jc-editable-text model="verse.title"></span>
-							<i class="icon-arrow-right" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
-							<i class="icon-arrow-left" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
+							<i class="icon-arrow-right pointer" title="to memorize" ng-click="showMemorizeForm()" ng-model="isMemorizing" ng-hide="isMemorizing"></i> 
+							<i class="icon-arrow-left pointer" title="to review" ng-click="hideMemorizeForm()" ng-show="isMemorizing"></i> 
 							<i class="icon-info-sign" title="created on {{verse.created_at | date:'MM/dd/yy'}}"></i>
 							<span ng-show="verse.memorized">
 								<i class="icon-ok" title="last memorized on {{verse.last_memorized_at | date:'MM/dd/yy'}}"></i>

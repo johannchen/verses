@@ -65,7 +65,7 @@ angular.module('myApp.directives', []).
 			restrict: 'A',
 			scope: { model: '=' },
 			template: '<span ng-hide="editMode" ng-dblclick="editMode=true">{{model}}</span>' +
-				'<input type="text" class="span2" autofocus="autofocus" ng-model="model" ng-show="editMode" jc-enter="editMode=false" />'
+				'<input type="text" class="span2" autofocus="autofocus" ng-model="model" ng-show="editMode" jc-enter="editMode=false" ng-dblclick="editMode=false" />'
 		}
 	}).
 	directive('jcEditableTextarea', function() {
