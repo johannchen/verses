@@ -24,7 +24,7 @@ App = React.createClass({
 
   renderVerses() {
     return this.data.verses.map( (verse) => {
-      return <Verse verse={verse} />;
+      return <Verse key={verse._id} verse={verse} />;
     });
   },
 

@@ -13,31 +13,36 @@ Verse = React.createClass({
     ];
     return (
       <div>
-      <Card initiallyExpanded={true} className="verse">
-        <CardTitle
+        <Card initiallyExpanded={true} className="verse">
+          <CardTitle
+            title={this.props.verse.title}
+            showExpandableButton={true} />
+          <CardText expandable={true}>
+            {this.props.verse.content}
+          </CardText>
+          <CardActions expandable={true}>
+            <FlatButton label="Note"/>
+            <FlatButton label="Memorize" onTouchTap={this._handleDiaglogTouchTap}/>
+          </CardActions>
+        </Card>
+        <Dialog
+          ref="dialog"
           title={this.props.verse.title}
-          showExpandableButton={true} />
-        <CardText expandable={true}>
-          {this.props.verse.content}
-        </CardText>
-        <CardActions expandable={true}>
-          <FlatButton label="Note"/>
-          <FlatButton label="Memorize" onTouchTap={this._handleDiaglogTouchTap}/>
-        </CardActions>
-      </Card>
-      <Dialog
-        ref="dialog"
-        title={this.props.verse.title}
-        actions={standardActions}
-        actionFocus="submit"
-        modal={this.state.modal}>
-        The actions in this window are created from the json that's passed in.
-      </Dialog>
+          actions={standardActions}
+          actionFocus="submit"
+          modal={this.state.modal}>
+          <textarea ref="textarea" rows="4" style={{width: '100%'}} />
+        </Dialog>
       </div>
     )
   },
 
   _handleDiaglogTouchTap() {
     this.refs.dialog.show();
+  },
+
+  _onDialogSubmit() {
+    console.log(this.refs.textarea.getDOMNode().value);
+    this.refs.dialog.dismiss();
   }
 });
