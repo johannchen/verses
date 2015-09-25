@@ -1,4 +1,4 @@
-var { Card, CardTitle, CardText, CardActions, FlatButton, Dialog } = MUI;
+var { Card, CardTitle, CardText, CardActions, FlatButton, IconButton, Dialog } = MUI;
 
 Verse = React.createClass({
   getInitialState() {
@@ -23,7 +23,9 @@ Verse = React.createClass({
           </CardText>
           <CardActions expandable={true}>
             <FlatButton label="Note"/>
-            <FlatButton label="Memorize" onTouchTap={this._handleDiaglogTouchTap}/>
+            <IconButton iconClassName="material-icons" onTouchTap={this._handleDiaglogTouchTap}>
+              grade
+            </IconButton>
           </CardActions>
         </Card>
         <Dialog
@@ -48,14 +50,22 @@ Verse = React.createClass({
   	return dmp.diff_prettyHtml(d);
   },
 
+  updateStar() {
+    Meteor.call('updateStar', this.props.verse._id);
+  },
+
   _handleDiaglogTouchTap() {
     this.refs.dialog.show();
   },
 
   _onDialogSubmit() {
     let typedVerse = this.refs.textarea.getDOMNode().value;
-    let diff = this.diffText(typedVerse, this.props.verse.content);
-    this.setState({diff: { __html: diff }});
-    //this.refs.dialog.dismiss();
+    if (typedVerse === this.props.verse.content) {
+      this.updateStar();
+      this.refs.dialog.dismiss();
+    } else {
+      let diff = this.diffText(typedVerse, this.props.verse.content);
+      this.setState({diff: { __html: diff }});
+    }
   }
 });
