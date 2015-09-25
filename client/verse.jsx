@@ -3,7 +3,8 @@ var { Card, CardTitle, CardText, CardActions, FlatButton, Dialog } = MUI;
 Verse = React.createClass({
   getInitialState() {
     return {
-      modal: false
+      modal: false,
+      diff: { __html: ''}
     }
   },
   render() {
@@ -32,9 +33,19 @@ Verse = React.createClass({
           actionFocus="submit"
           modal={this.state.modal}>
           <textarea ref="textarea" rows="4" style={{width: '100%'}} />
+          <p>
+            <span dangerouslySetInnerHTML={this.state.diff} />
+          </p>
         </Dialog>
       </div>
     )
+  },
+
+  diffText(text1, text2) {
+  	let dmp = new diff_match_patch();
+  	let d = dmp.diff_main(text1, text2);
+  	dmp.diff_cleanupSemantic(d);
+  	return dmp.diff_prettyHtml(d);
   },
 
   _handleDiaglogTouchTap() {
@@ -42,7 +53,9 @@ Verse = React.createClass({
   },
 
   _onDialogSubmit() {
-    console.log(this.refs.textarea.getDOMNode().value);
-    this.refs.dialog.dismiss();
+    let typedVerse = this.refs.textarea.getDOMNode().value;
+    let diff = this.diffText(typedVerse, this.props.verse.content);
+    this.setState({diff: { __html: diff }});
+    //this.refs.dialog.dismiss();
   }
 });
