@@ -1,4 +1,4 @@
-var { Card, CardTitle, CardText, CardActions, FlatButton, IconButton, Dialog } = MUI;
+var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, TextField, Dialog } = MUI;
 
 Verse = React.createClass({
   getInitialState() {
@@ -12,20 +12,39 @@ Verse = React.createClass({
       { text: 'Cancel' },
       { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
     ];
+    let styles = {
+      container: {
+        textAlign: 'center',
+        marginBottom: '16px'
+      },
+      exampleFlatButtonIcon: {
+        height: '100%',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        float: 'left',
+        paddingLeft: '12px',
+        lineHeight: '36px'
+      }
+    };
     return (
       <div>
         <Card initiallyExpanded={true} className="verse">
           <CardTitle
             title={this.props.verse.title}
+            subtitle="Mission"
             showExpandableButton={true} />
           <CardText expandable={true}>
             {this.props.verse.content}
           </CardText>
           <CardActions expandable={true}>
-            <FlatButton label="Note"/>
-            <IconButton iconClassName="material-icons" onTouchTap={this._handleDiaglogTouchTap}>
-              grade
-            </IconButton>
+            <div style={styles.container}>
+            <FlatButton label="Comments">
+              <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">speaker_notes</FontIcon>
+            </FlatButton>
+            <FlatButton label={this.props.verse.starCount} onTouchTap={this._handleDiaglogTouchTap}>
+              <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
+            </FlatButton>
+            </div>
           </CardActions>
         </Card>
         <Dialog
