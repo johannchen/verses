@@ -1,4 +1,4 @@
-var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, TextField, Dialog } = MUI;
+var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, Dialog } = MUI;
 
 Verse = React.createClass({
   getInitialState() {
@@ -31,19 +31,20 @@ Verse = React.createClass({
         <Card initiallyExpanded={true} className="verse">
           <CardTitle
             title={this.props.verse.title}
-            subtitle="Mission"
+            subtitle={this.props.verse.topic}
             showExpandableButton={true} />
           <CardText expandable={true}>
             {this.props.verse.content}
           </CardText>
           <CardActions expandable={true}>
             <div style={styles.container}>
-            <FlatButton label="Comments">
-              <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">speaker_notes</FontIcon>
-            </FlatButton>
-            <FlatButton label={this.props.verse.starCount} onTouchTap={this._handleDiaglogTouchTap}>
-              <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
-            </FlatButton>
+              <FlatButton label="Comments">
+                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">speaker_notes</FontIcon>
+              </FlatButton>
+              <FlatButton label={this.props.verse.starCount} onTouchTap={this._handleDiaglogTouchTap}>
+                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
+              </FlatButton>
+              <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Remove" onTouchTap={this.removeVerse}>clear</IconButton>
             </div>
           </CardActions>
         </Card>
@@ -71,6 +72,10 @@ Verse = React.createClass({
 
   updateStar() {
     Meteor.call('updateStar', this.props.verse._id);
+  },
+
+  removeVerse() {
+    Meteor.call('removeVerse', this.props.verse._id);
   },
 
   _handleDiaglogTouchTap() {
