@@ -12,5 +12,10 @@ Meteor.methods({
       $inc: {starCount: 1},
       $push: {stars: {starAt: Date.now()}}
     });
+  },
+  updateVerse(id, title, topic, content) {
+    Verses.update(id, {
+      $set: {title, topic, content}
+    });
   }
 });

@@ -1,9 +1,10 @@
-var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, Dialog } = MUI;
+var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
 
 Verse = React.createClass({
   getInitialState() {
     return {
       modal: false,
+      editMode: false,
       diff: { __html: ''}
     }
   },
@@ -11,6 +12,10 @@ Verse = React.createClass({
     let standardActions = [
       { text: 'Cancel' },
       { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
+    ];
+    let editActions = [
+      { text: 'Cancel' },
+      { text: 'Submit', onTouchTap: this._onEditDialogSubmit, ref: 'submit' }
     ];
     let styles = {
       container: {
@@ -45,6 +50,7 @@ Verse = React.createClass({
                 <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
               </FlatButton>
               <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Remove" onTouchTap={this.removeVerse}>clear</IconButton>
+              <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>create</IconButton>
             </div>
           </CardActions>
         </Card>
@@ -58,6 +64,17 @@ Verse = React.createClass({
           <p>
             <span dangerouslySetInnerHTML={this.state.diff} />
           </p>
+        </Dialog>
+        <Dialog
+          ref="editDialog"
+          title="Edit Verse"
+          actions={editActions}
+          actionFocus="submit"
+          modal={this.state.eidtMode}>
+          <TextField ref="title" hintText="Reference" defaultValue={this.props.verse.title} />
+          <TextField ref="topic" hintText="Topic" stype={{paddingLeft: '10px'}} defaultValue={this.props.verse.topic} />
+          <br />
+          <textarea ref="verseContent" rows="4" style={{width: '100%'}} defaultValue={this.props.verse.content} />
         </Dialog>
       </div>
     )
@@ -78,6 +95,10 @@ Verse = React.createClass({
     Meteor.call('removeVerse', this.props.verse._id);
   },
 
+  updateVerse(title, topic, content) {
+    Meteor.call('updateVerse', this.props.verse._id, title, topic, content);
+  },
+  /* memorized verse */
   _handleDiaglogTouchTap() {
     this.refs.dialog.show();
   },
@@ -91,5 +112,17 @@ Verse = React.createClass({
       let diff = this.diffText(typedVerse, this.props.verse.content);
       this.setState({diff: { __html: diff }});
     }
+  },
+
+  /* edit verse */
+  _handleEditDiaglogTouchTap() {
+    this.refs.editDialog.show();
+  },
+  _onEditDialogSubmit() {
+    let title = this.refs.title.getValue();
+    let topic = this.refs.topic.getValue();
+    let content = this.refs.verseContent.getDOMNode().value;
+    this.updateVerse(title, topic, content);
+    this.refs.editDialog.dismiss();
   }
 });
