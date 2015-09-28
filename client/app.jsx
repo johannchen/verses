@@ -17,8 +17,18 @@ App = React.createClass({
   mixins: [ReactMeteorData],
 
   getMeteorData() {
+    let query = {};
+    if (this.state.search) {
+      query = { title: new RegExp(this.state.search, 'i') };
+    }
     return {
-      verses: Verses.find().fetch()
+      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch()
+    };
+  },
+
+  getInitialState() {
+    return {
+      search: null
     };
   },
 
@@ -43,13 +53,17 @@ App = React.createClass({
     this.refs.topic.setValue('');
   },
 
+  handleSearch() {
+    this.setState({search: this.refs.search.getValue()});
+  },
+
   // TODO: how to override default style
   render() {
     return (
       <div>
         <AppBar
           title="Verses"
-          iconClassNameRight="muidocs-icon-navigation-expand-more" />
+          iconElementRight={<TextField hintText="Search" ref="search" onEnterKeyDown={this.handleSearch} />} />
         <br />
         <LinearProgress mode="determinate" value={60} />
         <br />
