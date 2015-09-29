@@ -5,17 +5,20 @@ Verse = React.createClass({
     return {
       modal: false,
       editMode: false,
+      commentMode: false,
       diff: { __html: ''}
     }
   },
+
   render() {
     let standardActions = [
       { text: 'Cancel' },
       { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
     ];
     let editActions = [
-      { text: 'Cancel' },
-      { text: 'Submit', onTouchTap: this._onEditDialogSubmit, ref: 'submit' }
+      <FlatButton label="Cancel" onTouchTap={this._editDialogClose} />,
+      <FlatButton label="Delete" primary={true} onTouchTap={this._onDeleteVerse} />,
+      <FlatButton label="Save" ref="save" secondary={true} onTouchTap={this._onEditDialogSubmit} />
     ];
     let styles = {
       container: {
@@ -43,16 +46,17 @@ Verse = React.createClass({
           </CardText>
           <CardActions expandable={true}>
             <div style={styles.container}>
-              <FlatButton label="Comments">
-                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">speaker_notes</FontIcon>
-              </FlatButton>
               <FlatButton label={this.props.verse.starCount} onTouchTap={this._handleDiaglogTouchTap}>
                 <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
               </FlatButton>
-              <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Remove" onTouchTap={this.removeVerse}>clear</IconButton>
               <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>create</IconButton>
             </div>
           </CardActions>
+          <CardText>
+            <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
+            <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
+            {this.renderComments()}
+          </CardText>
         </Card>
         <Dialog
           ref="dialog"
@@ -60,7 +64,8 @@ Verse = React.createClass({
           actions={standardActions}
           actionFocus="submit"
           modal={this.state.modal}>
-          <textarea ref="textarea" rows="4" style={{width: '100%'}} />
+
+          <TextField hintText="please type verse to memorize ..." ref="textarea" multiLine={true} fullWidth={true} />
           <p>
             <span dangerouslySetInnerHTML={this.state.diff} />
           </p>
@@ -69,15 +74,23 @@ Verse = React.createClass({
           ref="editDialog"
           title="Edit Verse"
           actions={editActions}
-          actionFocus="submit"
+          actionFocus="save"
           modal={this.state.eidtMode}>
           <TextField ref="title" hintText="Reference" defaultValue={this.props.verse.title} />
-          <TextField ref="topic" hintText="Topic" stype={{paddingLeft: '10px'}} defaultValue={this.props.verse.topic} />
+          <TextField ref="topic" hintText="Topic" style={{paddingLeft: '20px'}} defaultValue={this.props.verse.topic} />
           <br />
-          <textarea ref="verseContent" rows="4" style={{width: '100%'}} defaultValue={this.props.verse.content} />
+          <TextField ref="verseContent" multiLine={true} fullWidth={true} defaultValue={this.props.verse.content} />
         </Dialog>
       </div>
     )
+  },
+
+  renderComments() {
+    if (this.props.verse.comments) {
+      return this.props.verse.comments.map( (comment) => {
+        return <Comment key={comment.id} comment={comment} />;
+      });
+    }
   },
 
   diffText(text1, text2) {
@@ -98,13 +111,27 @@ Verse = React.createClass({
   updateVerse(title, topic, content) {
     Meteor.call('updateVerse', this.props.verse._id, title, topic, content);
   },
+
+  addComment(comment) {
+    Meteor.call('addComment', this.props.verse._id, comment);
+  },
+
+  /* add comment */
+  _handleNewComment() {
+    let comment = this.refs.newComment.getValue();
+    if (comment) {
+      this.addComment(comment);
+      this.refs.newComment.setValue(null)
+    }
+  },
+
   /* memorized verse */
   _handleDiaglogTouchTap() {
     this.refs.dialog.show();
   },
 
   _onDialogSubmit() {
-    let typedVerse = this.refs.textarea.getDOMNode().value;
+    let typedVerse = this.refs.textarea.getValue();
     if (typedVerse === this.props.verse.content) {
       this.updateStar();
       this.refs.dialog.dismiss();
@@ -115,14 +142,21 @@ Verse = React.createClass({
   },
 
   /* edit verse */
+  _editDialogClose() {
+    this.refs.editDialog.dismiss();
+  },
   _handleEditDiaglogTouchTap() {
     this.refs.editDialog.show();
   },
   _onEditDialogSubmit() {
     let title = this.refs.title.getValue();
     let topic = this.refs.topic.getValue();
-    let content = this.refs.verseContent.getDOMNode().value;
+    let content = this.refs.verseContent.getValue();
     this.updateVerse(title, topic, content);
+    this.refs.editDialog.dismiss();
+  },
+  _onDeleteVerse() {
+    this.removeVerse();
     this.refs.editDialog.dismiss();
   }
 });

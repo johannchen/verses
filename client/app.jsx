@@ -1,6 +1,7 @@
-var ThemeManager = new MUI.Styles.ThemeManager();
+let ThemeManager = new MUI.Styles.ThemeManager();
 
-var { AppBar, LinearProgress, Toolbar, ToolbarGroup, TextField, RaisedButton } = MUI;
+let { AppBar, LinearProgress, Toolbar, ToolbarGroup, TextField, RaisedButton, FontIcon, Styles } = MUI;
+let { Colors } = Styles;
 
 App = React.createClass({
   childContextTypes: {
@@ -32,6 +33,28 @@ App = React.createClass({
     };
   },
 
+  // TODO: how to override default style
+  render() {
+    return (
+      <div>
+        <AppBar
+          title="Verses"
+          iconElementRight={<TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />} />
+        <br />
+        <LinearProgress mode="determinate" value={60} />
+        <br />
+        <LinearProgress
+          mode="determinate"
+          value={40} />
+        <br />
+          <TextField hintText="John 3:16" ref="title" />
+          <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
+          <RaisedButton label="Add Verse" primary={true} onClick={this.handleNewVerse} />
+        {this.renderVerses()}
+      </div>
+    );
+  },
+
   renderVerses() {
     return this.data.verses.map( (verse) => {
       return <Verse key={verse._id} verse={verse} />;
@@ -55,27 +78,5 @@ App = React.createClass({
 
   handleSearch() {
     this.setState({search: this.refs.search.getValue()});
-  },
-
-  // TODO: how to override default style
-  render() {
-    return (
-      <div>
-        <AppBar
-          title="Verses"
-          iconElementRight={<TextField hintText="Search" ref="search" onEnterKeyDown={this.handleSearch} />} />
-        <br />
-        <LinearProgress mode="determinate" value={60} />
-        <br />
-        <LinearProgress
-          mode="determinate"
-          value={40} />
-        <br />
-          <TextField hintText="John 3:16" ref="title" />
-          <TextField hintText="Topic" ref="topic"/>
-          <RaisedButton label="Add Verse" primary={true} onClick={this.handleNewVerse} />
-        {this.renderVerses()}
-      </div>
-    );
-  }
-});
+    this.refs.search.setValue(null);
+  },});
