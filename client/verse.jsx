@@ -5,7 +5,6 @@ Verse = React.createClass({
     return {
       modal: false,
       editMode: false,
-      commentMode: false,
       diff: { __html: ''}
     }
   },
@@ -87,8 +86,9 @@ Verse = React.createClass({
 
   renderComments() {
     if (this.props.verse.comments) {
+      let verseId = this.props.verse._id;
       return this.props.verse.comments.map( (comment) => {
-        return <Comment key={comment.id} comment={comment} />;
+        return <Comment key={comment.id} comment={comment} verseId={verseId} />;
       });
     }
   },

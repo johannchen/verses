@@ -28,5 +28,12 @@ Meteor.methods({
         }
       }
     });
+  },
+  removeComment(id, commentId) {
+    Verses.update(id, {
+      $pull: {
+        comments: {id: commentId}
+      }
+    });
   }
 });
