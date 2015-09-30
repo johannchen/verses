@@ -1,4 +1,4 @@
-var { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
+let { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
 
 Verse = React.createClass({
   getInitialState() {

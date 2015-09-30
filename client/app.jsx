@@ -20,7 +20,12 @@ App = React.createClass({
   getMeteorData() {
     let query = {};
     if (this.state.search) {
-      query = { title: new RegExp(this.state.search, 'i') };
+      q = new RegExp(this.state.search, 'i');
+      query = { $or: [
+        { title: q },
+        { topic: q },
+        { content: q}
+      ]};
     }
     return {
       verses: Verses.find(query, {sort: {createdAt: -1}}).fetch()
@@ -46,10 +51,16 @@ App = React.createClass({
         <LinearProgress
           mode="determinate"
           value={40} />
-        <br />
+        <div className="action-bar">
           <TextField hintText="John 3:16" ref="title" />
           <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
           <RaisedButton label="Add Verse" primary={true} onClick={this.handleNewVerse} />
+          { this.state.search ?
+            <span style={{float: 'right'}}>
+              <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
+            </span> : ''
+          }
+        </div>
         {this.renderVerses()}
       </div>
     );
@@ -59,6 +70,10 @@ App = React.createClass({
     return this.data.verses.map( (verse) => {
       return <Verse key={verse._id} verse={verse} />;
     });
+  },
+
+  handleClearSearch() {
+    this.setState({search: null});
   },
 
   handleNewVerse() {

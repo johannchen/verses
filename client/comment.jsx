@@ -1,8 +1,10 @@
+let { FontIcon } = MUI;
+
 Comment = React.createClass({
   render() {
     return (
       <p>
-        <a onClick={this.removeComment}>&times;</a>
+        <FontIcon className="material-icons" onClick={this.removeComment}>clear</FontIcon>
         <i>{moment(this.props.comment.createdAt).format('YYYY MM DD')}</i>:
         {this.props.comment.comment}
       </p>
