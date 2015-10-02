@@ -8,9 +8,11 @@ Meteor.methods({
     Verses.remove(id);
   },
   updateStar(id) {
+    let now = Date.now();
     Verses.update(id, {
+      $set: {lastStarAt: now},
       $inc: {starCount: 1},
-      $push: {stars: {starAt: Date.now()}}
+      $push: {stars: {starAt: now}}
     });
   },
   updateVerse(id, title, topic, content) {

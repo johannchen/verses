@@ -1,7 +1,18 @@
-let ThemeManager = new MUI.Styles.ThemeManager();
+// let ThemeManager = new MUI.Styles.ThemeManager();
 
-let { AppBar, LinearProgress, Toolbar, ToolbarGroup, TextField, RaisedButton, FontIcon, Styles } = MUI;
-let { Colors } = Styles;
+let {
+  AppCanvas,
+  AppBar,
+  LinearProgress,
+  Toolbar,
+  ToolbarGroup,
+  TextField,
+  RaisedButton,
+  FontIcon,
+  DropDownMenu,
+  Styles } = MUI;
+
+let { ThemeManager, LightRawTheme, Colors } = Styles;
 
 App = React.createClass({
   childContextTypes: {
@@ -10,7 +21,8 @@ App = React.createClass({
 
   getChildContext() {
     return {
-      muiTheme: ThemeManager.getCurrentTheme()
+      //muiTheme: ThemeManager.getCurrentTheme()
+      muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
     };
   },
 
@@ -27,8 +39,23 @@ App = React.createClass({
         { content: q}
       ]};
     }
+    /*
+    function() {
+        let topicSet = new Set();
+        let topicAll = Verses.find({}, {
+          sort: {topic: 1}, fields: {topic: 1}
+        }).fetch().map( (verse) => { return verse.topic; });
+        topicAll.forEach( (topic) => {
+          topicSet.add(topic);
+        });
+        return topicSet;
+      }
+      */
     return {
-      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch()
+      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch(),
+      topics: Verses.find({}, {
+          sort: {topic: 1}, fields: {topic: 1}
+        }).fetch().map( (verse) => { return verse.topic; })
     };
   },
 
@@ -38,10 +65,21 @@ App = React.createClass({
     };
   },
 
-  // TODO: how to override default style
   render() {
+    // get unique topics
+    let topics = this.data.topics;
+    var uniqueTopics = topics.filter( function(item, index) {
+      return topics.indexOf(item) == index;
+    });
+    let topicItems = [];
+    uniqueTopics.forEach( function(item, index) {
+      if(item) {
+        topicItems.push({payload: index, text: item});
+      }
+    });
+    //let topics = [{payload: "1", text: "one"}, {payload: "2", text: "two"}];
     return (
-      <div>
+      <AppCanvas>
         <AppBar
           title="Verses"
           iconElementRight={<TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />} />
@@ -51,18 +89,23 @@ App = React.createClass({
         <LinearProgress
           mode="determinate"
           value={40} />
-        <div className="action-bar">
-          <TextField hintText="John 3:16" ref="title" />
-          <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
-          <RaisedButton label="Add Verse" primary={true} onClick={this.handleNewVerse} />
-          { this.state.search ?
-            <span style={{float: 'right'}}>
-              <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
-            </span> : ''
-          }
-        </div>
+        <Toolbar>
+          <ToolbarGroup key={0} float="left">
+            <TextField hintText="John 3:16" ref="title" />
+            <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
+            <RaisedButton label="Add Verse" primary={true} onClick={this.handleNewVerse} />
+          </ToolbarGroup>
+          <ToolbarGroup key={1} float="right">
+
+            { this.state.search ?
+                <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
+              : ''
+            }
+            <DropDownMenu menuItems={topicItems} />
+          </ToolbarGroup>
+        </Toolbar>
         {this.renderVerses()}
-      </div>
+      </AppCanvas>
     );
   },
 

@@ -15,9 +15,9 @@ Verse = React.createClass({
       { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
     ];
     let editActions = [
-      <FlatButton label="Cancel" onTouchTap={this._editDialogClose} />,
-      <FlatButton label="Delete" primary={true} onTouchTap={this._onDeleteVerse} />,
-      <FlatButton label="Save" ref="save" secondary={true} onTouchTap={this._onEditDialogSubmit} />
+      <FlatButton key={0} label="Cancel" onTouchTap={this._editDialogClose} />,
+      <FlatButton key={1} label="Delete" primary={true} onTouchTap={this._onDeleteVerse} />,
+      <FlatButton key={2} label="Save" ref="save" secondary={true} onTouchTap={this._onEditDialogSubmit} />
     ];
     let styles = {
       container: {
