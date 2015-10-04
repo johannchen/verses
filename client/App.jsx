@@ -3,6 +3,7 @@
 let {
   AppCanvas,
   AppBar,
+  ToolbarSeparator,   
   LinearProgress,
   Toolbar,
   ToolbarGroup,
@@ -10,7 +11,6 @@ let {
   RaisedButton,
   FlatButton,
   FontIcon,
-  Dialog,
   Styles } = MUI;
 
 let { ThemeManager, LightRawTheme, Colors } = Styles;
@@ -42,7 +42,8 @@ App = React.createClass({
     }
 
     return {
-      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch()
+      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch(),
+      currentUser: Meteor.user()
       /*
       topics: Verses.find({}, {
           sort: {topic: 1}, fields: {topic: 1}
@@ -54,7 +55,7 @@ App = React.createClass({
   getInitialState() {
     return {
       search: null,
-      showSignIn: false
+      auth: "signin"
     };
   },
 
@@ -75,43 +76,58 @@ App = React.createClass({
       <AppCanvas>
         <AppBar
           title="Verses"
-          iconElementRight={<RaisedButton label="Sign in" primary={true} onClick={this.handleShowSignIn} />} />
+          iconElementRight={this.data.currentUser ?
+            <RaisedButton label="Sign Out" onTouchTap={this.handleSignOut}/>
+            :
+            <div>
+              <RaisedButton label="Sign Up" onTouchTap={this.handleSignUp}  />
+              <ToolbarSeparator />
+              <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
+            </div>} />
         <div style={{paddingTop: '80px'}}>
-          <Toolbar>
-            <ToolbarGroup key={0} float="left">
-              <TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />
-              { this.state.search ?
-                  <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
-                : ''
-              }
-            </ToolbarGroup>
-            <ToolbarGroup key={1} float="right">
-              <TextField hintText="John 3:16" ref="title" />
-              <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
-              <RaisedButton label="Add Verse" primary={true} style={{float: 'right'}}  onClick={this.handleNewVerse} />
-            </ToolbarGroup>
-          </Toolbar>
+        { this.data.currentUser ?
+          <div>
+            <div className="tool-bar">
+              <Toolbar>
+                <ToolbarGroup key={0} float="left">
+                  <TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />
+                  { this.state.search ?
+                      <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
+                    : ''
+                  }
+                </ToolbarGroup>
+                <ToolbarGroup key={1} float="right">
+                  <TextField hintText="John 3:16" ref="title" />
+                  <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
+                  <RaisedButton label="Add Verse" secondary={true} style={{float: 'right'}}  onClick={this.handleNewVerse} />
+                </ToolbarGroup>
+              </Toolbar>
+            </div>
+            <div className="verses">
+              {this.renderVerses()}
+            </div>
+          </div>
+          : <AccountsMUI page={this.state.auth} />
+        }
         </div>
-        <div className="verses">
-          {this.renderVerses()}
-        </div>
-        <Dialog
-          ref="signInForm"
-          modal={this.state.showSignIn}>
-          <AccountsUIWrapper />
-        </Dialog>
       </AppCanvas>
     );
+  },
+
+  handleSignIn() {
+    this.setState({auth: "signin"});
+  },
+  handleSignUp() {
+    this.setState({auth: "signup"});
+  },
+  handleSignOut() {
+    Meteor.logout();
   },
 
   renderVerses() {
     return this.data.verses.map( (verse) => {
       return <Verse key={verse._id} verse={verse} />;
     });
-  },
-
-  handleShowSignIn() {
-    this.refs.signInForm.show();
   },
 
   handleClearSearch() {

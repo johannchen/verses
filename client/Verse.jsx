@@ -51,7 +51,7 @@ Verse = React.createClass({
               <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>create</IconButton>
             </div>
           </CardActions>
-          <CardText>
+          <CardText expandable={true}>
             <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
             <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
             {this.renderComments()}
@@ -87,7 +87,7 @@ Verse = React.createClass({
   renderComments() {
     if (this.props.verse.comments) {
       let verseId = this.props.verse._id;
-      return this.props.verse.comments.map( (comment) => {
+      return this.props.verse.comments.reverse().map( (comment) => {
         return <Comment key={comment.id} comment={comment} verseId={verseId} />;
       });
     }

@@ -36,7 +36,7 @@ htmljs@1.0.5
 http@1.1.1
 id-map@1.0.4
 insecure@1.0.4
-izzilab:material-ui@0.1.7
+izzilab:material-ui@0.1.8
 jquery@1.11.4
 jsx@0.2.1
 launch-screen@1.0.4
@@ -72,7 +72,6 @@ routepolicy@1.0.6
 service-configuration@1.0.5
 session@1.1.1
 sha@1.0.4
-softwarerero:accounts-t9n@1.0.9
 spacebars@1.0.7
 spacebars-compiler@1.0.7
 srp@1.0.4
@@ -83,7 +82,5 @@ tracker@1.0.9
 ui@1.0.8
 underscore@1.0.4
 url@1.0.5
-useraccounts:core@1.12.3
-useraccounts:materialize@1.12.3
 webapp@1.2.2
 webapp-hashing@1.0.5
