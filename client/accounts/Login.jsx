@@ -1,4 +1,4 @@
-let { Card, CardText, CardTitle, CardActions, TextField, RaisedButton } = MUI;
+let { Card, CardText, CardTitle, CardActions, TextField, RaisedButton, FlatButton } = MUI;
 
 Login = React.createClass({
   getInitialState() {
@@ -18,19 +18,19 @@ Login = React.createClass({
         </CardText>
         <CardActions>
           <RaisedButton label="Sign In" primary={true} onTouchTap={this.handleSignIn}/>
+          <FlatButton label="Forget Password" onTouchTap={this.handleForgetPassword} />
         </CardActions>
       </Card>
     )
   },
 
   handleSignIn() {
-    var self = this;
     let email = this.refs.email.getValue();
     let pass = this.refs.pass.getValue();
     Meteor.loginWithPassword(email, pass, (err) => {
       //TODO: check different error message
       if (err) {
-        self.setState({loginErrMsg: "Login Failed, Please try again."});
+        this.setState({loginErrMsg: "Login Failed, Please try again."});
       }
     });
     this.refs.email.setValue('');
