@@ -11,8 +11,9 @@ Verse = React.createClass({
 
   render() {
     let standardActions = [
-      { text: 'Cancel' },
-      { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
+      { text: 'Cancel', key: 0 },
+      { text: 'Try Again', key: 1, onTouchTap: this._onTryAgain },
+      { text: 'Submit', key: 2, onTouchTap: this._onDialogSubmit, ref: 'submit' }
     ];
     let editActions = [
       <FlatButton key={0} label="Cancel" onTouchTap={this._editDialogClose} />,
@@ -45,10 +46,15 @@ Verse = React.createClass({
           </CardText>
           <CardActions expandable={true}>
             <div style={styles.container}>
-              <FlatButton label={this.props.verse.starCount} onTouchTap={this._handleDiaglogTouchTap}>
+              <FlatButton label={this.props.verse.starCount ? this.props.verse.starCount : '0'}
+                secondary={true}
+                title={this.props.verse.lastStarAt ? moment(this.props.verse.lastStarAt).fromNow() : ''}
+                onTouchTap={this._handleDiaglogTouchTap}>
                 <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
               </FlatButton>
-              <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>create</IconButton>
+              <FlatButton label="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>
+                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">create</FontIcon>
+              </FlatButton>
             </div>
           </CardActions>
           <CardText expandable={true}>
@@ -139,6 +145,11 @@ Verse = React.createClass({
       let diff = this.diffText(typedVerse, this.props.verse.content);
       this.setState({diff: { __html: diff }});
     }
+  },
+
+  _onTryAgain() {
+    this.refs.textarea.setValue('');
+    this.setState({diff: { __html: ''}});
   },
 
   /* edit verse */

@@ -4,8 +4,10 @@ Comment = React.createClass({
   render() {
     return (
       <p>
-        <FontIcon className="material-icons" onClick={this.removeComment}>clear</FontIcon>
-        <i>{moment(this.props.comment.createdAt).format('YYYY MM DD')}</i>:
+        <FontIcon className="material-icons" onTouchTap={this.removeComment}>clear</FontIcon>
+        <span style={{paddingLeft: '10px', paddingRight: '10px'}}>
+          <i>{moment(this.props.comment.createdAt).fromNow()}</i>:
+        </span>
         {this.props.comment.comment}
       </p>
     )

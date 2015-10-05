@@ -78,6 +78,7 @@ App = React.createClass({
           title="Verses"
           iconElementRight={this.data.currentUser ?
             <div>
+              <ToolbarSeparator />
               <RaisedButton label="Sign Out" onTouchTap={this.handleSignOut}/>
             </div>
             :
@@ -92,11 +93,8 @@ App = React.createClass({
             <div className="tool-bar">
               <Toolbar>
                 <ToolbarGroup key={0} float="left">
+                  <FontIcon className="material-icons" onTouchTap={this.handleClearSearch}>search</FontIcon>
                   <TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />
-                  { this.state.search ?
-                      <TextField hintText={this.state.search}  disabled={true} onClick={this.handleClearSearch} />
-                    : ''
-                  }
                 </ToolbarGroup>
                 <ToolbarGroup key={1} float="right">
                   <TextField hintText="John 3:16" ref="title" list="books" />
@@ -160,28 +158,24 @@ App = React.createClass({
 
   handleClearSearch() {
     this.setState({search: null});
+    this.refs.search.setValue('');
   },
 
   handleNewVerse() {
-    //event.preventDefault();
-    //var title = React.findDOMNode(this.refs.title).value.trim();
+    //TODO handle style on required field
     let title = this.refs.title.getValue();
-    if (title) {
-      var topic = this.refs.topic.getValue();
-      Meteor.call("getESV", title, (err, res) => {
-        //TODO: check error
-  			var content = res.content.trim().replace(/\s{2,}/g, ' ');
-        Meteor.call('addVerse', title, topic, content);
-      });
-      //React.findDOMNode(this.refs.title).value = '';
-      this.refs.title.setValue('');
-      this.refs.topic.setValue('');
-    } else {
-      this.refs.title.setErrorText('this field is required');
-    }
+    let topic = this.refs.topic.getValue();
+    Meteor.call("getESV", title, (err, res) => {
+      //TODO: check error
+			var content = res.content.trim().replace(/\s{2,}/g, ' ');
+      Meteor.call('addVerse', title, topic, content);
+    });
+    //React.findDOMNode(this.refs.title).value = '';
+    this.refs.title.setValue('');
+    this.refs.topic.setValue('');
   },
 
   handleSearch() {
     this.setState({search: this.refs.search.getValue()});
-    this.refs.search.setValue(null);
-  },});
+  }
+});
