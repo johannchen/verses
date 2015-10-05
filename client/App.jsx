@@ -3,7 +3,7 @@
 let {
   AppCanvas,
   AppBar,
-  ToolbarSeparator,   
+  ToolbarSeparator,
   LinearProgress,
   Toolbar,
   ToolbarGroup,
@@ -77,7 +77,9 @@ App = React.createClass({
         <AppBar
           title="Verses"
           iconElementRight={this.data.currentUser ?
-            <RaisedButton label="Sign Out" onTouchTap={this.handleSignOut}/>
+            <div>
+              <RaisedButton label="Sign Out" onTouchTap={this.handleSignOut}/>
+            </div>
             :
             <div>
               <RaisedButton label="Sign Up" onTouchTap={this.handleSignUp}  />
@@ -97,12 +99,15 @@ App = React.createClass({
                   }
                 </ToolbarGroup>
                 <ToolbarGroup key={1} float="right">
-                  <TextField hintText="John 3:16" ref="title" />
+                  <TextField hintText="John 3:16" ref="title" list="books" />
                   <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
                   <RaisedButton label="Add Verse" secondary={true} style={{float: 'right'}}  onClick={this.handleNewVerse} />
                 </ToolbarGroup>
               </Toolbar>
             </div>
+            <datalist id="books">
+              {this.renderBookList()}
+            </datalist>
             <div className="verses">
               {this.renderVerses()}
             </div>
@@ -122,6 +127,29 @@ App = React.createClass({
   },
   handleSignOut() {
     Meteor.logout();
+  },
+
+  renderBookList() {
+    const books = [
+			"Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+		  "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
+			"1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles",
+		  "Ezra", "Nehemiah", "Esther",
+		  "Job", "Psalm", "Proverbs", "Ecclesiastes", "Song of Songs",
+		  "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
+		  "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+		  "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
+		  "Matthew", "Mark", "Luke", "John", "Acts",
+		  "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+		  "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
+		  "1 Timothy", "2 Timothy", "Titus", "Philemon",
+		  "Hebrews", "James", "1 Peter", "2 Peter",
+		  "1 John", "2 John", "3 John", "Jude", "Revelation"
+  	];
+
+    return books.map( (book) => {
+      return <option value={book} />
+    });
   },
 
   renderVerses() {
