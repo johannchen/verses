@@ -87,30 +87,39 @@ App = React.createClass({
               <ToolbarSeparator />
               <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
             </div>} />
-        <div style={{paddingTop: '80px'}}>
+          <div className="container" style={{paddingTop: '80px'}}>
         { this.data.currentUser ?
           <div>
-            <div className="tool-bar">
+            <div className="row">
+              <div className="col-xs-12">
               <Toolbar>
                 <ToolbarGroup key={0} float="left">
                   <FontIcon className="material-icons" onTouchTap={this.handleClearSearch}>search</FontIcon>
-                  <TextField hintText="Search" ref="search" underlineFocusStyle={{borderColor: Colors.amber900}} onEnterKeyDown={this.handleSearch} />
+                  <TextField hintText="Search"
+                    ref="search" 
+                    underlineFocusStyle={{borderColor: Colors.amber900}}
+                    style={{width: '150px'}}
+                    onEnterKeyDown={this.handleSearch} />
                 </ToolbarGroup>
                 <ToolbarGroup key={1} float="right">
-                  <TextField hintText="John 3:16" ref="title" list="books" />
-                  <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px'}} />
+                  <TextField hintText="John 3:16" ref="title" list="books" style={{width: '150px'}} />
+                  <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px', width: '150px'}} />
                   <RaisedButton label="Add Verse" secondary={true} style={{float: 'right'}}  onClick={this.handleNewVerse} />
                 </ToolbarGroup>
               </Toolbar>
+              </div>
             </div>
             <datalist id="books">
               {this.renderBookList()}
             </datalist>
-            <div className="verses">
-              {this.renderVerses()}
+            {this.renderVerses()}
+          </div>
+          :
+          <div className="row center-xs">
+            <div className="col-xs-4">
+              <AccountsMUI signin={this.state.signin} />
             </div>
           </div>
-          : <AccountsMUI signin={this.state.signin} />
         }
         </div>
       </AppCanvas>

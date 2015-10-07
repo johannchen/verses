@@ -21,9 +21,9 @@ Verse = React.createClass({
       <FlatButton key={2} label="Save" ref="save" secondary={true} onTouchTap={this._onEditDialogSubmit} />
     ];
     let styles = {
-      container: {
+      buttonContainer: {
         textAlign: 'center',
-        marginBottom: '16px'
+        marginBottom: '8px'
       },
       exampleFlatButtonIcon: {
         height: '100%',
@@ -36,33 +36,37 @@ Verse = React.createClass({
     };
     return (
       <div>
-        <Card initiallyExpanded={false} style={{marginTop: '10px'}}>
-          <CardTitle
-            title={this.props.verse.title}
-            subtitle={this.props.verse.topic}
-            showExpandableButton={true} />
-          <CardText expandable={true}>
-            {this.props.verse.content}
-          </CardText>
-          <CardActions expandable={true}>
-            <div style={styles.container}>
-              <FlatButton label={this.props.verse.starCount ? this.props.verse.starCount : '0'}
-                secondary={true}
-                title={this.props.verse.lastStarAt ? moment(this.props.verse.lastStarAt).fromNow() : ''}
-                onTouchTap={this._handleDiaglogTouchTap}>
-                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
-              </FlatButton>
-              <FlatButton label="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>
-                <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">create</FontIcon>
-              </FlatButton>
-            </div>
-          </CardActions>
-          <CardText expandable={true}>
-            <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
-            <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
-            {this.renderComments()}
-          </CardText>
-        </Card>
+        <div className="row">
+          <div className="col-xs-12">
+            <Card initiallyExpanded={false} style={{marginTop: '10px'}}>
+              <CardTitle
+                title={this.props.verse.title}
+                subtitle={this.props.verse.topic}
+                showExpandableButton={true} />
+              <CardText expandable={true}>
+                {this.props.verse.content}
+              </CardText>
+              <CardActions expandable={true}>
+                <div style={styles.buttonContainer}>
+                  <FlatButton label={this.props.verse.starCount ? this.props.verse.starCount : '0'}
+                    secondary={true}
+                    title={this.props.verse.lastStarAt ? moment(this.props.verse.lastStarAt).fromNow() : ''}
+                    onTouchTap={this._handleDiaglogTouchTap}>
+                    <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
+                  </FlatButton>
+                  <FlatButton label="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>
+                    <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">create</FontIcon>
+                  </FlatButton>
+                </div>
+              </CardActions>
+              <CardText expandable={true}>
+                <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
+                <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
+                {this.renderComments()}
+              </CardText>
+            </Card>
+          </div>
+        </div>
         <Dialog
           ref="dialog"
           title={this.props.verse.title}
