@@ -1,13 +1,27 @@
 let { Card, CardText, CardTitle, CardActions, TextField, RaisedButton, FlatButton } = MUI;
 
 Login = React.createClass({
+  // This mixin makes the getMeteorData method work
+  mixins: [ReactMeteorData],
+
+  getMeteorData() {
+    return {
+      resetPasswordToken: Session.get('resetPassword')
+    }
+  },
+
   getInitialState() {
     return {
-      loginErrMsg: ""
+      loginErrMsg: '',
+      forgotPassword: false
     }
   },
   render() {
     return (
+      <div>
+      { (this.state.forgotPassword || this.data.resetPasswordToken) ?
+        <ResetPass resetToken={this.data.resetPasswordToken} setSignin={this.setSignin}/>
+      :
       <Card>
         <CardTitle title="Sign In" />
         <CardText>
@@ -18,9 +32,11 @@ Login = React.createClass({
         </CardText>
         <CardActions>
           <RaisedButton label="Sign In" primary={true} onTouchTap={this.handleSignIn}/>
-          <FlatButton label="Forget Password" onTouchTap={this.handleForgetPassword} />
+          <FlatButton label="Forgot Password?" onTouchTap={this.handleForgotPassword} />
         </CardActions>
       </Card>
+      }
+      </div>
     )
   },
 
@@ -35,5 +51,14 @@ Login = React.createClass({
     });
     this.refs.email.setValue('');
     this.refs.pass.setValue('');
+  },
+
+  handleForgotPassword() {
+    this.setState({forgotPassword: true});
+  },
+
+  setSignin() {
+    this.setState({forgotPassword: false});
   }
+
 });

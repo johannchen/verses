@@ -55,7 +55,7 @@ App = React.createClass({
   getInitialState() {
     return {
       search: null,
-      auth: "signin"
+      signin: true
     };
   },
 
@@ -110,7 +110,7 @@ App = React.createClass({
               {this.renderVerses()}
             </div>
           </div>
-          : <AccountsMUI page={this.state.auth} />
+          : <AccountsMUI signin={this.state.signin} />
         }
         </div>
       </AppCanvas>
@@ -118,10 +118,10 @@ App = React.createClass({
   },
 
   handleSignIn() {
-    this.setState({auth: "signin"});
+    this.setState({signin: true});
   },
   handleSignUp() {
-    this.setState({auth: "signup"});
+    this.setState({signin: false});
   },
   handleSignOut() {
     Meteor.logout();
