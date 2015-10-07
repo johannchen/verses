@@ -83,7 +83,7 @@ App = React.createClass({
             </div>
             :
             <div>
-              <RaisedButton label="Sign Up" onTouchTap={this.handleSignUp}  />
+              <RaisedButton label="Sign Up" primary={true} onTouchTap={this.handleSignUp}  />
               <ToolbarSeparator />
               <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
             </div>} />

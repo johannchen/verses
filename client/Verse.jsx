@@ -36,7 +36,7 @@ Verse = React.createClass({
     };
     return (
       <div>
-        <Card initiallyExpanded={true} className="verse">
+        <Card initiallyExpanded={false} style={{marginTop: '10px'}}>
           <CardTitle
             title={this.props.verse.title}
             subtitle={this.props.verse.topic}

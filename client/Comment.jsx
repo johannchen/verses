@@ -1,11 +1,11 @@
-let { FontIcon } = MUI;
+let { IconButton } = MUI;
 
 Comment = React.createClass({
   render() {
     return (
       <p>
-        <FontIcon className="material-icons" onTouchTap={this.removeComment}>clear</FontIcon>
-        <span style={{paddingLeft: '10px', paddingRight: '10px'}}>
+        <IconButton iconClassName="material-icons" onTouchTap={this.removeComment}>clear</IconButton>
+        <span style={{paddingRight: '10px'}}>
           <i>{moment(this.props.comment.createdAt).fromNow()}</i>:
         </span>
         {this.props.comment.comment}
