@@ -3,16 +3,19 @@
 let {
   AppCanvas,
   AppBar,
+  IconMenu,
+  FloatingActionButton,
+  FontIcon,
+  IconButton,
   ToolbarSeparator,
   LinearProgress,
-  Toolbar,
-  ToolbarGroup,
   TextField,
   RaisedButton,
   FlatButton,
-  FontIcon,
+  Dialog,
   Styles } = MUI;
-
+//let IconMenu = MUI.Libs.Menu;
+let MenuItem = MUI.Libs.MenuItem;
 let { ThemeManager, LightRawTheme, Colors } = Styles;
 
 App = React.createClass({
@@ -72,51 +75,79 @@ App = React.createClass({
       }
     });
     */
+    let standardActions = [
+      { text: 'Cancel' },
+      { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' }
+    ];
+    let menuItems = [];
+    if (this.data.currentUser) {
+      menuItems = [
+        { payload: '0', text: this.data.currentUser.username },
+        { payload: '1', text: "Sign Out" },
+        { payload: '2', text: "another user" }
+      ];
+    }
+
     return (
       <AppCanvas>
+        {this.data.currentUser ?
+        <AppBar
+          title={this.data.currentUser.username}
+          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
+          iconElementRight={
+            <div>
+              <FontIcon
+                className="material-icons"
+                onTouchTap={this.handleClearSearch}
+                color={Colors.grey50}>search</FontIcon>
+              <TextField hintText="Search"
+                ref="search"
+                underlineFocusStyle={{borderColor: Colors.amber900}}
+                style={{width: '100px'}}
+                onEnterKeyDown={this.handleSearch} />
+              <IconMenu
+                iconButtonElement={
+                  <IconButton>
+                    <FontIcon className="material-icons" color={Colors.grey50}>more_vert</FontIcon>
+                  </IconButton>
+                }>
+                <MenuItem primaryText="Sign out" onTouchTap={this.handleSignOut} />
+              </IconMenu>
+            </div>
+          } />
+        :
         <AppBar
           title="Verses"
-          iconElementRight={this.data.currentUser ?
-            <div>
-              <ToolbarSeparator />
-              <RaisedButton label="Sign Out" onTouchTap={this.handleSignOut}/>
-            </div>
-            :
+          iconElementRight={
             <div>
               <RaisedButton label="Sign Up" primary={true} onTouchTap={this.handleSignUp}  />
               <ToolbarSeparator />
               <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
-            </div>} />
-          <div className="container" style={{paddingTop: '80px'}}>
+            </div>
+          } />
+        }
+        <div className="container" style={{paddingTop: '80px'}}>
         { this.data.currentUser ?
           <div>
-            <div className="row">
-              <div className="col-xs-12">
-              <Toolbar>
-                <ToolbarGroup key={0} float="left">
-                  <FontIcon className="material-icons" onTouchTap={this.handleClearSearch}>search</FontIcon>
-                  <TextField hintText="Search"
-                    ref="search" 
-                    underlineFocusStyle={{borderColor: Colors.amber900}}
-                    style={{width: '150px'}}
-                    onEnterKeyDown={this.handleSearch} />
-                </ToolbarGroup>
-                <ToolbarGroup key={1} float="right">
-                  <TextField hintText="John 3:16" ref="title" list="books" style={{width: '150px'}} />
-                  <TextField hintText="Topic" ref="topic" style={{paddingLeft: '15px', width: '150px'}} />
-                  <RaisedButton label="Add Verse" secondary={true} style={{float: 'right'}}  onClick={this.handleNewVerse} />
-                </ToolbarGroup>
-              </Toolbar>
-              </div>
-            </div>
             <datalist id="books">
               {this.renderBookList()}
             </datalist>
+            <Dialog
+              ref="newVerseDialog"
+              title="New Verse"
+              actions={standardActions}
+              actionFocus="submit"
+              modal={this.state.modal}>
+              <TextField hintText="John 3:16" ref="title" list="books" />
+              <br />
+              <TextField hintText="Topic" ref="topic" />
+            </Dialog>
+
             {this.renderVerses()}
           </div>
           :
           <div className="row center-xs">
-            <div className="col-xs-4">
+            <div className="col-xs-8">
               <AccountsMUI signin={this.state.signin} />
             </div>
           </div>
@@ -126,6 +157,11 @@ App = React.createClass({
     );
   },
 
+  handleSelectMenu(e, index, menuItem) {
+    if (menuItem.text === "Sign Out") {
+      this.handleSignOut();
+    }
+  },
   handleSignIn() {
     this.setState({signin: true});
   },
@@ -169,8 +205,11 @@ App = React.createClass({
     this.setState({search: null});
     this.refs.search.setValue('');
   },
-
-  handleNewVerse() {
+  /* add verse */
+  showNewVerseDialog() {
+    this.refs.newVerseDialog.show();
+  },
+  handleAddVerse() {
     //TODO handle style on required field
     let title = this.refs.title.getValue();
     let topic = this.refs.topic.getValue();
@@ -182,6 +221,7 @@ App = React.createClass({
     //React.findDOMNode(this.refs.title).value = '';
     this.refs.title.setValue('');
     this.refs.topic.setValue('');
+    this.refs.newVerseDialog.dismiss();
   },
 
   handleSearch() {
