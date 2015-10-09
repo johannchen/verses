@@ -18,7 +18,8 @@ let {
 let MenuItem = MUI.Libs.MenuItem;
 let { ThemeManager, LightRawTheme, Colors } = Styles;
 
-App = React.createClass({
+Home = React.createClass({
+  /*
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
@@ -29,6 +30,7 @@ App = React.createClass({
       muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
     };
   },
+  */
 
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
@@ -157,11 +159,6 @@ App = React.createClass({
     );
   },
 
-  handleSelectMenu(e, index, menuItem) {
-    if (menuItem.text === "Sign Out") {
-      this.handleSignOut();
-    }
-  },
   handleSignIn() {
     this.setState({signin: true});
   },

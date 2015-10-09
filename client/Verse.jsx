@@ -72,6 +72,7 @@ Verse = React.createClass({
           title={this.props.verse.title}
           actions={standardActions}
           actionFocus="submit"
+          autoScrollBodyContent={true}
           modal={this.state.modal}>
 
           <TextField hintText="please type verse to memorize ..." ref="textarea" multiLine={true} fullWidth={true} />
@@ -84,6 +85,7 @@ Verse = React.createClass({
           title="Edit Verse"
           actions={editActions}
           actionFocus="save"
+          autoScrollBodyContent={true}
           modal={this.state.eidtMode}>
           <TextField ref="title" hintText="Reference" defaultValue={this.props.verse.title} />
           <TextField ref="topic" hintText="Topic" style={{paddingLeft: '20px'}} defaultValue={this.props.verse.topic} />
