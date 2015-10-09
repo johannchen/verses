@@ -1,64 +1,23 @@
-let { Card, CardTitle, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
+let { Card, CardTitle, CardHeader, Avatar, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
 
 Verse = React.createClass({
-  getInitialState() {
-    return {
-      modal: false,
-      editMode: false,
-      diff: { __html: ''}
-    }
-  },
-
   render() {
-    let standardActions = [
-      { text: 'Cancel', key: 0 },
-      { text: 'Try Again', key: 1, onTouchTap: this._onTryAgain },
-      { text: 'Submit', key: 2, onTouchTap: this._onDialogSubmit, ref: 'submit' }
-    ];
-    let editActions = [
-      <FlatButton key={0} label="Cancel" onTouchTap={this._editDialogClose} />,
-      <FlatButton key={1} label="Delete" primary={true} onTouchTap={this._onDeleteVerse} />,
-      <FlatButton key={2} label="Save" ref="save" secondary={true} onTouchTap={this._onEditDialogSubmit} />
-    ];
-    let styles = {
-      buttonContainer: {
-        textAlign: 'center',
-        marginBottom: '8px'
-      },
-      exampleFlatButtonIcon: {
-        height: '100%',
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        float: 'left',
-        paddingLeft: '12px',
-        lineHeight: '36px'
-      }
-    };
+    let starPath = `/star/${this.props.verse._id}`;
+
     return (
       <div>
         <div className="row">
           <div className="col-xs-12">
-            <Card initiallyExpanded={false} style={{marginTop: '10px'}}>
-              <CardTitle
+            <Card initiallyExpanded={this.props.expanded} style={{marginTop: '10px'}}>
+              <CardHeader
                 title={this.props.verse.title}
                 subtitle={this.props.verse.topic}
+                avatar={<Avatar onTouchTap={this.gotoStar}>{this.starCount()}</Avatar>}
                 showExpandableButton={true} />
               <CardText expandable={true}>
                 {this.props.verse.content}
               </CardText>
-              <CardActions expandable={true}>
-                <div style={styles.buttonContainer}>
-                  <FlatButton label={this.props.verse.starCount ? this.props.verse.starCount : '0'}
-                    secondary={true}
-                    title={this.props.verse.lastStarAt ? moment(this.props.verse.lastStarAt).fromNow() : ''}
-                    onTouchTap={this._handleDiaglogTouchTap}>
-                    <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">grade</FontIcon>
-                  </FlatButton>
-                  <FlatButton label="Edit" onTouchTap={this._handleEditDiaglogTouchTap}>
-                    <FontIcon style={styles.exampleFlatButtonIcon} className="material-icons">create</FontIcon>
-                  </FlatButton>
-                </div>
-              </CardActions>
+
               <CardText expandable={true}>
                 <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
                 <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
@@ -67,31 +26,6 @@ Verse = React.createClass({
             </Card>
           </div>
         </div>
-        <Dialog
-          ref="dialog"
-          title={this.props.verse.title}
-          actions={standardActions}
-          actionFocus="submit"
-          autoScrollBodyContent={true}
-          modal={this.state.modal}>
-
-          <TextField hintText="please type verse to memorize ..." ref="textarea" multiLine={true} fullWidth={true} />
-          <p>
-            <span dangerouslySetInnerHTML={this.state.diff} />
-          </p>
-        </Dialog>
-        <Dialog
-          ref="editDialog"
-          title="Edit Verse"
-          actions={editActions}
-          actionFocus="save"
-          autoScrollBodyContent={true}
-          modal={this.state.eidtMode}>
-          <TextField ref="title" hintText="Reference" defaultValue={this.props.verse.title} />
-          <TextField ref="topic" hintText="Topic" style={{paddingLeft: '20px'}} defaultValue={this.props.verse.topic} />
-          <br />
-          <TextField ref="verseContent" multiLine={true} fullWidth={true} defaultValue={this.props.verse.content} />
-        </Dialog>
       </div>
     )
   },
@@ -105,25 +39,14 @@ Verse = React.createClass({
     }
   },
 
-  diffText(text1, text2) {
-  	let dmp = new diff_match_patch();
-  	let d = dmp.diff_main(text1, text2);
-  	dmp.diff_cleanupSemantic(d);
-  	return dmp.diff_prettyHtml(d);
+  gotoStar() {
+    let starPath = `/star/${this.props.verse._id}`;
+    FlowRouter.go(starPath);
   },
 
-  updateStar() {
-    Meteor.call('updateStar', this.props.verse._id);
+  starCount() {
+    return this.props.verse.starCount ? this.props.verse.starCount : '0'
   },
-
-  removeVerse() {
-    Meteor.call('removeVerse', this.props.verse._id);
-  },
-
-  updateVerse(title, topic, content) {
-    Meteor.call('updateVerse', this.props.verse._id, title, topic, content);
-  },
-
   addComment(comment) {
     Meteor.call('addComment', this.props.verse._id, comment);
   },
@@ -135,45 +58,6 @@ Verse = React.createClass({
       this.addComment(comment);
       this.refs.newComment.setValue(null)
     }
-  },
-
-  /* memorized verse */
-  _handleDiaglogTouchTap() {
-    this.refs.dialog.show();
-  },
-
-  _onDialogSubmit() {
-    let typedVerse = this.refs.textarea.getValue();
-    if (typedVerse === this.props.verse.content) {
-      this.updateStar();
-      this.refs.dialog.dismiss();
-    } else {
-      let diff = this.diffText(typedVerse, this.props.verse.content);
-      this.setState({diff: { __html: diff }});
-    }
-  },
-
-  _onTryAgain() {
-    this.refs.textarea.setValue('');
-    this.setState({diff: { __html: ''}});
-  },
-
-  /* edit verse */
-  _editDialogClose() {
-    this.refs.editDialog.dismiss();
-  },
-  _handleEditDiaglogTouchTap() {
-    this.refs.editDialog.show();
-  },
-  _onEditDialogSubmit() {
-    let title = this.refs.title.getValue();
-    let topic = this.refs.topic.getValue();
-    let content = this.refs.verseContent.getValue();
-    this.updateVerse(title, topic, content);
-    this.refs.editDialog.dismiss();
-  },
-  _onDeleteVerse() {
-    this.removeVerse();
-    this.refs.editDialog.dismiss();
   }
+
 });

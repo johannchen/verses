@@ -16,7 +16,8 @@ let {
   Styles } = MUI;
 //let IconMenu = MUI.Libs.Menu;
 let MenuItem = MUI.Libs.MenuItem;
-let { ThemeManager, LightRawTheme, Colors } = Styles;
+//let { ThemeManager, LightRawTheme, Colors } = Styles;
+let { Colors } = Styles;
 
 Home = React.createClass({
   /*
@@ -194,7 +195,7 @@ Home = React.createClass({
 
   renderVerses() {
     return this.data.verses.map( (verse) => {
-      return <Verse key={verse._id} verse={verse} />;
+      return <Verse key={verse._id} verse={verse} expanded={false} />;
     });
   },
 

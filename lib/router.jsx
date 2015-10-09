@@ -9,3 +9,30 @@ FlowRouter.route('/', {
     });
   }
 });
+
+FlowRouter.route('/verse/:_id', {
+  name: 'verse',
+  /*
+  subscriptions: function(params) {
+    this.register('verse', Meteor.subscribe('verse', params._id));
+  },
+  */
+  action: function(params) {
+    ReactLayout.render(MainLayout, {
+      content() {
+        return <VersePage verseId={params._id} />;
+      }
+    });
+  }
+});
+
+FlowRouter.route('/star/:_id', {
+  name: 'star',
+  action: function(params) {
+    ReactLayout.render(MainLayout, {
+      content() {
+        return <Star verseId={params._id} />;
+      }
+    });
+  }
+});
