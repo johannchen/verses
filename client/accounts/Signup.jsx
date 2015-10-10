@@ -37,7 +37,9 @@ Signup = React.createClass({
     } else if(password !== passAgain) {
       this.refs.passAgain.setErrorText("do not match password!")
     } else {
-      Accounts.createUser({username, email, password}, (err) => {
+      // set default weekly goal in profile
+      let profile = { goal: 5 };
+      Accounts.createUser({username, email, password, profile}, (err) => {
         //TODO: display more error on sign up
         console.log(err);
       });

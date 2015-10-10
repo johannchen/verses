@@ -12,27 +12,13 @@ let {
   TextField,
   RaisedButton,
   FlatButton,
-  Dialog,
-  Styles } = MUI;
+  Styles,
+  Dialog} = MUI;
 //let IconMenu = MUI.Libs.Menu;
 let MenuItem = MUI.Libs.MenuItem;
-//let { ThemeManager, LightRawTheme, Colors } = Styles;
 let { Colors } = Styles;
 
 Home = React.createClass({
-  /*
-  childContextTypes: {
-    muiTheme: React.PropTypes.object
-  },
-
-  getChildContext() {
-    return {
-      //muiTheme: ThemeManager.getCurrentTheme()
-      muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
-    };
-  },
-  */
-
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
 
@@ -47,9 +33,12 @@ Home = React.createClass({
       ]};
     }
 
+    let startOfWeek = moment().startOf('week').valueOf();
+
     return {
-      verses: Verses.find(query, {sort: {createdAt: -1}}).fetch(),
-      currentUser: Meteor.user()
+      verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
+      currentUser: Meteor.user(),
+      starThisWeek: Verses.find({lastStarAt: {$gte: startOfWeek}}).count()
       /*
       topics: Verses.find({}, {
           sort: {topic: 1}, fields: {topic: 1}
@@ -61,7 +50,9 @@ Home = React.createClass({
   getInitialState() {
     return {
       search: null,
-      signin: true
+      signin: true,
+      modal: false,
+      goalModal: false
     };
   },
 
@@ -82,20 +73,15 @@ Home = React.createClass({
       { text: 'Cancel' },
       { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' }
     ];
-    let menuItems = [];
-    if (this.data.currentUser) {
-      menuItems = [
-        { payload: '0', text: this.data.currentUser.username },
-        { payload: '1', text: "Sign Out" },
-        { payload: '2', text: "another user" }
-      ];
-    }
-
+    let goalActions = [
+      { text: 'Cancel' },
+      { text: 'Set Goal', onTouchTap: this.handleSetGoal, ref: 'setGoal' }
+    ];
     return (
       <AppCanvas>
         {this.data.currentUser ?
         <AppBar
-          title={this.data.currentUser.username}
+          title={this.title()}
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
           iconElementRight={
             <div>
@@ -114,7 +100,8 @@ Home = React.createClass({
                     <FontIcon className="material-icons" color={Colors.grey50}>more_vert</FontIcon>
                   </IconButton>
                 }>
-                <MenuItem primaryText="Sign out" onTouchTap={this.handleSignOut} />
+                <MenuItem primaryText="Set Goal" onTouchTap={this.showGoalDialog} />
+                <MenuItem primaryText="Sign Out" onTouchTap={this.handleSignOut} />
               </IconMenu>
             </div>
           } />
@@ -132,6 +119,8 @@ Home = React.createClass({
         <div className="container" style={{paddingTop: '80px'}}>
         { this.data.currentUser ?
           <div>
+            <FlatButton label={this.goalDisplay()} disabled={true} />
+            <LinearProgress mode="determinate" value={this.percentage()} size={3} />
             <datalist id="books">
               {this.renderBookList()}
             </datalist>
@@ -144,6 +133,18 @@ Home = React.createClass({
               <TextField hintText="John 3:16" ref="title" list="books" />
               <br />
               <TextField hintText="Topic" ref="topic" />
+            </Dialog>
+            <Dialog
+              ref="goalDialog"
+              title="Set Weekly Goal"
+              actions={goalActions}
+              actionFocus="setGoal"
+              modal={this.state.goalModal}>
+              <TextField
+                type="number" min="1" max="20"
+                style={{width: '50px'}}
+                ref="goal"
+                defaultValue={this.data.currentUser.profile.goal}/>
             </Dialog>
 
             {this.renderVerses()}
@@ -158,6 +159,24 @@ Home = React.createClass({
         </div>
       </AppCanvas>
     );
+  },
+
+  title() {
+    //TODO: avatar, switch username
+    return this.data.currentUser.username;
+  },
+
+  goalDisplay() {
+    return `Weekly Goal: ${this.data.starThisWeek}/${this.data.currentUser.profile.goal}`;
+  },
+
+  percentage() {
+    let percentage = 0;
+    let stars = this.data.starThisWeek;
+    if (stars) {
+      percentage = Math.round(stars / this.data.currentUser.profile.goal * 100);
+    }
+    return percentage;
   },
 
   handleSignIn() {
@@ -203,6 +222,17 @@ Home = React.createClass({
     this.setState({search: null});
     this.refs.search.setValue('');
   },
+
+  /* set goal */
+  showGoalDialog() {
+    this.refs.goalDialog.show();
+  },
+
+  handleSetGoal() {
+    Meteor.call('setGoal', this.refs.goal.getValue());
+    this.refs.goalDialog.dismiss();
+  },
+
   /* add verse */
   showNewVerseDialog() {
     this.refs.newVerseDialog.show();

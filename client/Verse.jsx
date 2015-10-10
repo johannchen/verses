@@ -11,7 +11,7 @@ Verse = React.createClass({
             <Card initiallyExpanded={this.props.expanded} style={{marginTop: '10px'}}>
               <CardHeader
                 title={this.props.verse.title}
-                subtitle={this.props.verse.topic}
+                subtitle={this.subtitle()}
                 avatar={<Avatar onTouchTap={this.gotoStar}>{this.starCount()}</Avatar>}
                 showExpandableButton={true} />
               <CardText expandable={true}>
@@ -38,6 +38,15 @@ Verse = React.createClass({
       });
     }
   },
+
+  subtitle() {
+    let lastStar = '';
+    if (this.props.verse.lastStarAt) {
+      lastStar = moment(this.props.verse.lastStarAt).fromNow() + ', ';
+    }
+    return lastStar + this.props.verse.topic;
+  },
+
 
   gotoStar() {
     let starPath = `/star/${this.props.verse._id}`;

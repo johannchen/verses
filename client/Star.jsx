@@ -1,4 +1,5 @@
-let {AppBar, IconButton, TextField, FlatButton } = MUI;
+let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton } = MUI;
+
 Star = React.createClass({
   mixins: [ReactMeteorData],
 
@@ -20,15 +21,21 @@ Star = React.createClass({
         <AppBar
           title={this.data.verse.title}
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.gotoVerse}>arrow_back</IconButton>}
+          iconElementRight={<IconButton iconClassName="material-icons" onTouchTap={this.goHome}>home</IconButton>}
         />
-        <TextField hintText="please type verse to memorize ..." ref="textarea" multiLine={true} fullWidth={true} />
-        <p>
-          <span dangerouslySetInnerHTML={this.state.diff} />
-        </p>
-        <div>
-          <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
-          <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
-        </div>
+        <Card>
+          <CardText>
+            <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
+            <p>
+              <strong>{this.data.verse.title}</strong><br />
+              <span dangerouslySetInnerHTML={this.state.diff} />
+            </p>
+          </CardText>
+          <CardActions>
+            <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
+            <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
+          </CardActions>
+        </Card>
       </div>
     )
   },
@@ -36,6 +43,10 @@ Star = React.createClass({
   gotoVerse() {
     let path = `/verse/${this.props.verseId}`;
     FlowRouter.go(path);
+  },
+
+  goHome() {
+    FlowRouter.go('/');
   },
 
   diffText(text1, text2) {
