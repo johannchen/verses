@@ -1,4 +1,5 @@
-let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton } = MUI;
+let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton, FontIcon, Styles } = MUI;
+let { Colors } = Styles;
 
 Star = React.createClass({
   mixins: [ReactMeteorData],
@@ -11,6 +12,7 @@ Star = React.createClass({
 
   getInitialState() {
     return {
+      practice: false,
       diff: { __html: ''}
     }
   },
@@ -21,23 +23,49 @@ Star = React.createClass({
         <AppBar
           title={this.data.verse.title}
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.gotoVerse}>arrow_back</IconButton>}
-          iconElementRight={<IconButton iconClassName="material-icons" onTouchTap={this.goHome}>home</IconButton>}
+          iconElementRight={
+            <div>
+              {this.state.practice ?
+                <IconButton onTouchTap={this.goStar}>
+                  <FontIcon className="material-icons" color={Colors.grey50}>keyboard</FontIcon>
+                </IconButton>
+              : <IconButton onTouchTap={this.goPractice}>
+                  <FontIcon className="material-icons" color={Colors.grey50}>subject</FontIcon>
+                </IconButton>
+              }
+              <IconButton onTouchTap={this.goHome}>
+                <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
+              </IconButton>
+            </div>
+          }
         />
-        <Card>
-          <CardText>
-            <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
-            <p>
-              <strong>{this.data.verse.title}</strong><br />
-              <span dangerouslySetInnerHTML={this.state.diff} />
-            </p>
-          </CardText>
-          <CardActions>
-            <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
-            <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
-          </CardActions>
-        </Card>
+        { this.state.practice ?
+          <Practice verse={this.data.verse} />
+          :
+          <Card>
+            <CardText>
+              <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
+              <p>
+                <strong>{this.data.verse.title}</strong><br />
+                <span dangerouslySetInnerHTML={this.state.diff} />
+              </p>
+            </CardText>
+            <CardActions>
+              <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
+              <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
+            </CardActions>
+          </Card>
+        }
       </div>
     )
+  },
+
+  goPractice() {
+    this.setState({practice: true});
+  },
+
+  goStar() {
+    this.setState({practice: false});
   },
 
   gotoVerse() {

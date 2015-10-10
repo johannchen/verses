@@ -1,5 +1,3 @@
-// let ThemeManager = new MUI.Styles.ThemeManager();
-
 let {
   AppCanvas,
   AppBar,
@@ -39,11 +37,6 @@ Home = React.createClass({
       verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
       currentUser: Meteor.user(),
       starThisWeek: Verses.find({lastStarAt: {$gte: startOfWeek}}).count()
-      /*
-      topics: Verses.find({}, {
-          sort: {topic: 1}, fields: {topic: 1}
-        }).fetch().map( (verse) => { return verse.topic; })
-        */
     };
   },
 
@@ -57,18 +50,6 @@ Home = React.createClass({
   },
 
   render() {
-    /* get unique topics
-    let topics = this.data.topics;
-    var uniqueTopics = topics.filter( function(item, index) {
-      return topics.indexOf(item) == index;
-    });
-    let topicItems = [];
-    uniqueTopics.forEach( function(item, index) {
-      if(item) {
-        topicItems.push({payload: index, text: item});
-      }
-    });
-    */
     let standardActions = [
       { text: 'Cancel' },
       { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' }
