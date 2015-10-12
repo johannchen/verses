@@ -27,7 +27,8 @@ Practice = React.createClass({
   },
 
   handleNextWord() {
-    const verseArray = this.props.verse.content.split(" ");
+    let verseString = `${this.props.verse.content} ${this.props.verse.title}`;
+    const verseArray = verseString.split(" ");
     let words = verseArray.slice(0, this.state.index).join(" ");
     let index = this.state.index + 1;
     if (index === verseArray.length + 1) {

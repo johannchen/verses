@@ -34,8 +34,9 @@ Home = React.createClass({
     let startOfWeek = moment().startOf('week').valueOf();
 
     return {
-      verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
+      loggingIn: Meteor.loggingIn(),
       currentUser: Meteor.user(),
+      verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
       starThisWeek: Verses.find({lastStarAt: {$gte: startOfWeek}}).count()
     };
   },
@@ -61,45 +62,32 @@ Home = React.createClass({
     return (
       <AppCanvas>
         {this.data.currentUser ?
-        <AppBar
-          title={this.title()}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
-          iconElementRight={
-            <div>
-              <FontIcon
-                className="material-icons"
-                onTouchTap={this.handleClearSearch}
-                color={Colors.grey50}>search</FontIcon>
-              <TextField hintText="Search"
-                ref="search"
-                underlineFocusStyle={{borderColor: Colors.amber900}}
-                style={{width: '100px'}}
-                onEnterKeyDown={this.handleSearch} />
-              <IconMenu
-                iconButtonElement={
-                  <IconButton>
-                    <FontIcon className="material-icons" color={Colors.grey50}>more_vert</FontIcon>
-                  </IconButton>
-                }>
-                <MenuItem primaryText="Set Goal" onTouchTap={this.showGoalDialog} />
-                <MenuItem primaryText="Sign Out" onTouchTap={this.handleSignOut} />
-              </IconMenu>
-            </div>
-          } />
-        :
-        <AppBar
-          title="Verses"
-          iconElementRight={
-            <div>
-              <RaisedButton label="Sign Up" primary={true} onTouchTap={this.handleSignUp}  />
-              <ToolbarSeparator />
-              <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
-            </div>
-          } />
-        }
-        <div className="container" style={{paddingTop: '80px'}}>
-        { this.data.currentUser ?
-          <div>
+        <div>
+          <AppBar
+            title={this.title()}
+            iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
+            iconElementRight={
+              <div>
+                <FontIcon
+                  className="material-icons"
+                  onTouchTap={this.handleClearSearch}
+                  color={Colors.grey50}>search</FontIcon>
+                <TextField hintText="Search"
+                  ref="search"
+                  underlineFocusStyle={{borderColor: Colors.amber900}}
+                  style={{width: '100px'}}
+                  onEnterKeyDown={this.handleSearch} />
+                <IconMenu
+                  iconButtonElement={
+                    <IconButton>
+                      <FontIcon className="material-icons" color={Colors.grey50}>more_vert</FontIcon>
+                    </IconButton>
+                  }>
+                  <MenuItem primaryText="Set Goal" onTouchTap={this.showGoalDialog} />
+                  <MenuItem primaryText="Sign Out" onTouchTap={this.handleSignOut} />
+                </IconMenu>
+              </div>
+            } />
             <FlatButton label={this.goalDisplay()} disabled={true} />
             <LinearProgress mode="determinate" value={this.percentage()} size={3} />
             <datalist id="books">
@@ -130,14 +118,27 @@ Home = React.createClass({
 
             {this.renderVerses()}
           </div>
-          :
-          <div className="row center-xs">
-            <div className="col-xs-8">
-              <AccountsMUI signin={this.state.signin} />
-            </div>
+        :
+          <div>
+          <AppBar
+            title="Verses"
+            iconElementRight={
+              <div>
+                <RaisedButton label="Sign Up" primary={true} onTouchTap={this.handleSignUp}  />
+                <ToolbarSeparator />
+                <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
+              </div>
+            } />
+            <p>Verses helps you to organize and memorize your favorite ESV Bible verses. May your heart and mind be filled with God's words, which you can put to good use in time of need.</p>
+            { this.data.loggingIn ?
+              <div>
+                <FlatButton label="Logging in" disabled={true} />
+                <LinearProgress mode="indeterminate"  />
+              </div>
+              : <AccountsMUI signin={this.state.signin} />
+            }
           </div>
         }
-        </div>
       </AppCanvas>
     );
   },
