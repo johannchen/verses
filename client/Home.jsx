@@ -133,7 +133,7 @@ Home = React.createClass({
             { this.data.loggingIn ?
               <div>
                 <FlatButton label="Logging in" disabled={true} />
-                <LinearProgress mode="indeterminate"  />
+                <LinearProgress mode="indeterminate" />
               </div>
               : <AccountsMUI signin={this.state.signin} />
             }
