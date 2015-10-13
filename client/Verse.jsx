@@ -12,7 +12,9 @@ Verse = React.createClass({
               <CardHeader
                 title={this.props.verse.title}
                 subtitle={this.subtitle()}
-                avatar={<Avatar onTouchTap={this.gotoStar}>{this.starCount()}</Avatar>}
+                avatar={ this.props.partner ?
+                  <Avatar>{this.starCount()}</Avatar>
+                  : <Avatar onTouchTap={this.gotoStar}>{this.starCount()}</Avatar> }
                 showExpandableButton={true} />
               <CardText expandable={true}>
                 {this.props.verse.content}
@@ -68,5 +70,4 @@ Verse = React.createClass({
       this.refs.newComment.setValue(null)
     }
   }
-
 });

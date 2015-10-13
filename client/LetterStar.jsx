@@ -30,7 +30,7 @@ LetterStar = React.createClass({
   handleNextWord(event) {
     const verseString = `${this.props.verse.content} ${this.props.verse.title}`;
     const verseArray = verseString.split(" ");
-    let letter = event.target.value;
+    let letter = event.target.value.toLowerCase();
     let firstLetter = verseArray[this.state.index][0].toLowerCase();
     if (letter === firstLetter) {
       let index = this.state.index + 1;
@@ -41,7 +41,7 @@ LetterStar = React.createClass({
         this.goVerse();
       }
     } else {
-      // set error message
+      this.refs.letter.setErrorText("incorrect!");
     }
     this.refs.letter.setValue('');
   }
