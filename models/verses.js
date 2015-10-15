@@ -4,12 +4,15 @@ Verses.allow({
   remove: function(userId, doc) {
     return userId === doc.owner;
   },
+  /* TODO: allow comment edit 
   update: function (userId, doc, fields, modifier) {
-    // can only change your own documents
     return doc.owner === userId;
   },
+  */
   fetch: ['owner']
-})
+});
+
+
 Meteor.methods({
   addVerse(title, topic, content) {
     // Make sure the user is logged in before inserting a verse
@@ -40,6 +43,7 @@ Meteor.methods({
         comments: {
           id: Random.id(),
           comment,
+          username: Meteor.user().username,
           createdAt: Date.now()
         }
       }

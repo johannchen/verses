@@ -101,7 +101,7 @@ Star = React.createClass({
     let typedVerse = this.refs.textarea.getValue();
     if (typedVerse === this.data.verse.content) {
       this.updateStar();
-      this.gotoVerse();
+      this.goVerse();
     } else {
       let diff = this.diffText(typedVerse, this.data.verse.content);
       this.setState({diff: { __html: diff }});

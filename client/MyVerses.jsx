@@ -37,8 +37,10 @@ MyVerses = React.createClass({
       lastStarAt: {$gte: startOfWeek}
     };
 
+    var handle = Meteor.subscribe("verses", null);
 
     return {
+      loaded: handle.ready(),
       verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
       starThisWeek: Verses.find(pointQuery).count()
     };
@@ -96,7 +98,10 @@ MyVerses = React.createClass({
                   </IconButton>
                 }>
                 { this.props.currentUser.profile.partner ?
-                  <MenuItem primaryText={this.props.currentUser.profile.partner.username} onTouchTap={this.showPartner}/>
+                  <span>
+                    <MenuItem primaryText={this.props.currentUser.profile.partner.username} onTouchTap={this.showPartner}/>
+                    <MenuItem primaryText="Remove Partner" onTouchTap={this.removePartner}/>
+                  </span>
                 : <MenuItem primaryText="Add Partner" onTouchTap={this.showPartnerDialog} />
                 }
                 <MenuItem primaryText="Set Goal" onTouchTap={this.showGoalDialog} />
@@ -104,8 +109,16 @@ MyVerses = React.createClass({
               </IconMenu>
             </div>
           } />
-        <FlatButton label={this.goalDisplay()} disabled={true} />
-        <LinearProgress mode="determinate" value={this.percentage()} size={3} />
+        { this.data.loaded ?
+          <div>
+            <FlatButton label={this.goalDisplay()} disabled={true} />
+            <LinearProgress mode="determinate" value={this.percentage()} size={3} />
+            {this.renderVerses()}
+          </div>
+          :
+          <p>Loading</p>
+        }
+
         <datalist id="books">
           {this.renderBookList()}
         </datalist>
@@ -139,7 +152,6 @@ MyVerses = React.createClass({
             ref="goal"
             defaultValue={this.props.currentUser.profile.goal}/>
         </Dialog>
-        {this.renderVerses()}
       </div>
       }
     </div>
@@ -207,7 +219,6 @@ MyVerses = React.createClass({
   },
 
   handleAddPartner() {
-    console.log(this.refs.partner.getValue());
     Meteor.call('addPartner', this.refs.partner.getValue());
     this.refs.partnerDialog.dismiss();
   },
@@ -215,7 +226,11 @@ MyVerses = React.createClass({
   showPartner() {
     this.setState({partner: true});
   },
-
+  removePartner() {
+    if (confirm("Are you sure to remove your partner?")) {
+      Meteor.call("removePartner", this.props.currentUser.profile.partner.id);
+    }
+  },
   /* set goal */
   showGoalDialog() {
     this.refs.goalDialog.show();

@@ -17,29 +17,35 @@ PartnerVerses = React.createClass({
       lastStarAt: {$gte: startOfWeek}
     };
 
-    return {
+    var versesHandle = Meteor.subscribe('verses', partnerId);
+    var data = {
+      loaded: versesHandle.ready(),
       verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
-      pointsThisWeek: Verses.find(pointQuery).count(),
-      goal: Meteor.users.findOne(partnerId).profile.goal
+      pointsThisWeek: Verses.find(pointQuery).count()
     };
-  },
 
-  getInitialState() {
-    return {
-      partner: false
-    };
+    var partnerHandle = Meteor.subscribe('partner');
+    if(partnerHandle.ready()) {
+      data.goal = Meteor.users.findOne(partnerId).profile.goal;
+    }
+
+    return data;
   },
 
   render() {
     return (
       <div>
+        { this.data.loaded ?
+          <div>
         <AppBar
           title={this.props.partner.username}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>}
-          iconElementRight={<IconButton iconClassName="material-icons" onTouchTap={this.handleRemovePartner}>clear</IconButton>} />
+          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>} />
         <FlatButton label={this.goalDisplay()} disabled={true} />
         <LinearProgress mode="determinate" value={this.percentage()} size={3} />
         {this.renderVerses()}
+        </div>
+        : <p>Loading...</p>
+        }
       </div>
     )
   },
@@ -66,4 +72,6 @@ PartnerVerses = React.createClass({
   goMyVerses() {
     this.props.goBack();
   }
+
+  
 });

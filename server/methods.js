@@ -39,5 +39,14 @@ Meteor.methods({
 		} else {
 			console.log("failed to add partner!");
 		}
+	},
+
+	removePartner(id) {
+		Meteor.users.update(id, {
+			$unset: {"profile.partner": ""}
+		});
+		Meteor.users.update(this.userId, {
+			$unset: {"profile.partner": ""}
+		});
 	}
 });
