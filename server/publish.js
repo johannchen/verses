@@ -9,6 +9,10 @@ Meteor.publish('verses', function (partnerId) {
   }
 });
 
+Meteor.publish('verse', function (id) {
+  return Verses.find({_id: id});
+});
+
 Meteor.publish('partner', function() {
   if (this.userId) {
     let partner = Meteor.users.findOne(this.userId).profile.partner;

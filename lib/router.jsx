@@ -12,11 +12,9 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/verse/:_id', {
   name: 'verse',
-  /*
   subscriptions: function(params) {
     this.register('verse', Meteor.subscribe('verse', params._id));
   },
-  */
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {
@@ -28,6 +26,9 @@ FlowRouter.route('/verse/:_id', {
 
 FlowRouter.route('/star/:_id', {
   name: 'star',
+  subscriptions: function(params) {
+    this.register('verse', Meteor.subscribe('verse', params._id));
+  },
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {

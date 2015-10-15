@@ -6,7 +6,8 @@ VersePage = React.createClass({
 
   getMeteorData() {
     return {
-      verse: Verses.findOne(this.props.verseId)
+      loaded: FlowRouter.subsReady('verse'),
+      verse: Verses.findOne()
     }
   },
 
@@ -19,36 +20,41 @@ VersePage = React.createClass({
   render() {
     return (
       <div>
-        <AppBar
-          title={this.data.verse.title}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.gotoStar}>arrow_back</IconButton>}
-          iconElementRight={
-            <div>
-              <IconButton onTouchTap={this.handleEditMode}>
-                <FontIcon className="material-icons" color={Colors.grey50}>edit</FontIcon>
-              </IconButton>
-              <IconButton onTouchTap={this.goHome}>
-                <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
-              </IconButton>
-            </div>
-          }
-        />
-      { this.state.editMode ?
-        <Card>
-          <CardText>
-            <TextField ref="title" hintText="Reference" defaultValue={this.data.verse.title} />
-            <TextField ref="topic" hintText="Topic" style={{paddingLeft: '20px'}} defaultValue={this.data.verse.topic} />
-            <br />
-            <TextField ref="verseContent" multiLine={true} fullWidth={true} defaultValue={this.data.verse.content} />
-          </CardText>
-          <CardActions>
-            <RaisedButton label="Save" primary={true} onTouchTap={this.handleSave} />
-            <FlatButton label="Delete" primary={true} onTouchTap={this.handleDelete} />
-            <FlatButton label="Cancel" onTouchTap={this.handleCancelEdit} />
-          </CardActions>
-        </Card>
-      : <Verse verse={this.data.verse} expanded={true} />
-      }
+        { this.data.loaded ?
+          <div>
+            <AppBar
+              title={this.data.verse.title}
+              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.gotoStar}>arrow_back</IconButton>}
+              iconElementRight={
+                <div>
+                  <IconButton onTouchTap={this.handleEditMode}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>edit</FontIcon>
+                  </IconButton>
+                  <IconButton onTouchTap={this.goHome}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
+                  </IconButton>
+                </div>
+              }
+            />
+            { this.state.editMode ?
+              <Card>
+                <CardText>
+                  <TextField ref="title" hintText="Reference" defaultValue={this.data.verse.title} />
+                  <TextField ref="topic" hintText="Topic" style={{paddingLeft: '20px'}} defaultValue={this.data.verse.topic} />
+                  <br />
+                  <TextField ref="verseContent" multiLine={true} fullWidth={true} defaultValue={this.data.verse.content} />
+                </CardText>
+                <CardActions>
+                  <RaisedButton label="Save" primary={true} onTouchTap={this.handleSave} />
+                  <FlatButton label="Delete" primary={true} onTouchTap={this.handleDelete} />
+                  <FlatButton label="Cancel" onTouchTap={this.handleCancelEdit} />
+                </CardActions>
+              </Card>
+            : <Verse verse={this.data.verse} expanded={true} />
+            }
+          </div>
+        : <p>Loading ...</p>
+        }
       </div>
     )
   },
@@ -58,8 +64,7 @@ VersePage = React.createClass({
   },
 
   gotoStar() {
-    let starPath = `/star/${this.props.verseId}`;
-    FlowRouter.go(starPath);
+    FlowRouter.go(`/star/${this.props.verseId}`);
   },
 
   removeVerse() {
@@ -85,7 +90,9 @@ VersePage = React.createClass({
     this.setState({editMode: false})
   },
   handleDelete() {
-    this.removeVerse();
-    this.goHome();
+    if (confirm("Are you sure to delete this verse?")) {
+      this.removeVerse();
+      this.goHome();
+    }
   }
 });

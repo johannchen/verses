@@ -6,8 +6,9 @@ Star = React.createClass({
 
   getMeteorData() {
     return {
-      verse: Verses.findOne(this.props.verseId)
-    }
+      loaded: FlowRouter.subsReady('verse'),
+      verse: Verses.findOne()
+    };
   },
 
   getInitialState() {
@@ -20,49 +21,54 @@ Star = React.createClass({
   render() {
     return (
       <div>
-        <AppBar
-          title={this.data.verse.title}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>arrow_back</IconButton>}
-          iconElementRight={
-            <div>
-              <IconButton onTouchTap={this.goSentence}>
-                <FontIcon className="material-icons" color={Colors.grey50}>keyboard</FontIcon>
-              </IconButton>
-              <IconButton onTouchTap={this.goLetter}>
-                <FontIcon className="material-icons" color={Colors.grey50}>text_format</FontIcon>
-              </IconButton>
-              <IconButton onTouchTap={this.goWord}>
-                <FontIcon className="material-icons" color={Colors.grey50}>subject</FontIcon>
-              </IconButton>
-              <IconButton onTouchTap={this.goHome}>
-                <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
-              </IconButton>
-            </div>
+        { this.data.loaded ?
+          <div>
+            <AppBar
+              title={this.data.verse.title}
+              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>arrow_back</IconButton>}
+              iconElementRight={
+                <div>
+                  <IconButton onTouchTap={this.goSentence}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>keyboard</FontIcon>
+                  </IconButton>
+                  <IconButton onTouchTap={this.goLetter}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>text_format</FontIcon>
+                  </IconButton>
+                  <IconButton onTouchTap={this.goWord}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>subject</FontIcon>
+                  </IconButton>
+                  <IconButton onTouchTap={this.goHome}>
+                    <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
+                  </IconButton>
+                </div>
+              }
+              />
+            { (() => {
+              switch (this.state.action) {
+                case "letter": return <LetterStar verse={this.data.verse} />;
+                case "word": return <Practice verse={this.data.verse} />;
+                default: return (
+                  <Card>
+                    <CardText>
+                      <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
+                      <p>
+                        <strong>{this.data.verse.title}</strong><br />
+                        <span dangerouslySetInnerHTML={this.state.diff} />
+                      </p>
+                    </CardText>
+                    <CardActions>
+                      <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
+                      <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
+                    </CardActions>
+                  </Card>
+                )
+              }
+            })()
           }
-        />
-      { (() => {
-          switch (this.state.action) {
-            case "letter": return <LetterStar verse={this.data.verse} />;
-            case "word": return <Practice verse={this.data.verse} />;
-            default: return (
-              <Card>
-                <CardText>
-                  <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
-                  <p>
-                    <strong>{this.data.verse.title}</strong><br />
-                    <span dangerouslySetInnerHTML={this.state.diff} />
-                  </p>
-                </CardText>
-                <CardActions>
-                  <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
-                  <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
-                </CardActions>
-              </Card>
-            )
-          }
-        })()
+          </div>
+        : <p>Loading...</p>
       }
-      </div>
+    </div>
     )
   },
 
@@ -87,10 +93,10 @@ Star = React.createClass({
   },
 
   diffText(text1, text2) {
-  	let dmp = new diff_match_patch();
-  	let d = dmp.diff_main(text1, text2);
-  	dmp.diff_cleanupSemantic(d);
-  	return dmp.diff_prettyHtml(d);
+    let dmp = new diff_match_patch();
+    let d = dmp.diff_main(text1, text2);
+    dmp.diff_cleanupSemantic(d);
+    return dmp.diff_prettyHtml(d);
   },
 
   updateStar() {
@@ -112,5 +118,4 @@ Star = React.createClass({
     this.refs.textarea.setValue('');
     this.setState({diff: { __html: ''}});
   }
-
 });
