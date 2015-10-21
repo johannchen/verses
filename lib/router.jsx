@@ -24,6 +24,22 @@ FlowRouter.route('/verse/:_id', {
   }
 });
 
+FlowRouter.route('/edit/:_id', {
+  name: 'edit',
+  subscriptions: function(params) {
+    this.register('verse', Meteor.subscribe('verse', params._id));
+  },
+  action: function(params) {
+    ReactLayout.render(MainLayout, {
+      content() {
+        return <VerseEdit verseId={params._id} />;
+      }
+    });
+  }
+});
+
+
+
 FlowRouter.route('/point/:_id', {
   name: 'point',
   subscriptions: function(params) {

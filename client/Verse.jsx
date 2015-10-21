@@ -2,8 +2,6 @@ let { Card, CardTitle, CardHeader, Avatar, CardText, CardActions, FlatButton, Fo
 
 Verse = React.createClass({
   render() {
-    let pointPath = `/point/${this.props.verse._id}`;
-
     return (
       <div>
         <div className="row">
@@ -14,15 +12,13 @@ Verse = React.createClass({
                 subtitle={this.subtitle()}
                 avatar={ this.props.partner ?
                   <Avatar>{this.pointCount()}</Avatar>
-                  : <Avatar onTouchTap={this.gotoPoint}>{this.pointCount()}</Avatar> }
+                  : <Avatar onTouchTap={this.goPoint}>{this.pointCount()}</Avatar> }
                 showExpandableButton={true} />
               <CardText expandable={true}>
                 {this.props.verse.content}
-              </CardText>
-
-              <CardText expandable={true}>
                 <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
                 <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
+                <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
                 {this.renderComments()}
               </CardText>
             </Card>
@@ -50,9 +46,12 @@ Verse = React.createClass({
   },
 
 
-  gotoPoint() {
-    let pointPath = `/point/${this.props.verse._id}`;
-    FlowRouter.go(pointPath);
+  goPoint() {
+    FlowRouter.go(`/point/${this.props.verse._id}`);
+  },
+
+  goVerseEdit() {
+    FlowRouter.go(`/edit/${this.props.verse._id}`);
   },
 
   pointCount() {

@@ -25,7 +25,7 @@ Point = React.createClass({
           <div>
             <AppBar
               title={this.data.verse.title}
-              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>arrow_back</IconButton>}
+              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>remove_red_eye</IconButton>}
               iconElementRight={
                 <div>
                   <IconButton onTouchTap={this.goSentence}>
