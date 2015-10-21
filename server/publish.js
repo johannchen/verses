@@ -1,6 +1,5 @@
 Meteor.publish('verses', function (partnerId) {
   if (this.userId) {
-    //let partner = Meteor.users.findOne(this.userId).profile.partner;
     if (partnerId) {
       return Verses.find({$or: [{owner: this.userId}, {owner: partnerId}]});
     } else {

@@ -21,7 +21,31 @@ MyVerses = React.createClass({
   mixins: [ReactMeteorData],
 
   getMeteorData() {
-    let query = {owner: this.props.currentUser._id};
+
+    var handle, partnerId, partnerGoal;
+    if (this.props.currentUser.profile.partner || this.state.partner) {
+      partnerId = this.props.currentUser.profile.partner.id;
+      handle = Meteor.subscribe("verses", partnerId);
+      var partnerHandle = Meteor.subscribe('partner');
+      if(partnerHandle.ready()) {
+        partnerGoal = Meteor.users.findOne(partnerId).profile.goal;
+      }
+    } else {
+      handle = Meteor.subscribe("verses", null);
+    }
+
+    return {
+      loaded: handle.ready(),
+      verses: this.getMyVerses(),
+      pointsOfThisWeek: this.getPointsOfThisWeek(this.props.currentUser._id),
+      partnerVerses: this.getPartnerVerses(),
+      partnerPointsOfThisWeek: this.getPointsOfThisWeek(partnerId),
+      partnerGoal
+    };
+  },
+
+  getMyVerses() {
+    let query = {};
     if (this.state.search) {
       q = new RegExp(this.state.search, 'i');
       query = { $or: [
@@ -30,25 +54,31 @@ MyVerses = React.createClass({
         { content: q}
       ]};
     }
+    let sort = {createdAt: -1};
+    if (this.state.sortByPoint) { sort = {lastPointAt: -1}; }
+    query.owner = this.props.currentUser._id;
+    return Verses.find(query, {sort: sort}).fetch();
+  },
 
+  getPointsOfThisWeek(id) {
     let startOfWeek = moment().startOf('week').valueOf();
     let pointQuery = {
-      owner: this.props.currentUser._id,
+      owner: id,
       lastPointAt: {$gte: startOfWeek}
     };
+    return Verses.find(pointQuery).count();
+  },
 
-    var handle = Meteor.subscribe("verses", null);
-
-    return {
-      loaded: handle.ready(),
-      verses: Verses.find(query, {sort: {lastPointAt: -1, createdAt: -1}}).fetch(),
-      pointsThisWeek: Verses.find(pointQuery).count()
-    };
+  getPartnerVerses() {
+    if (this.props.currentUser.profile.partner) {
+      return Verses.find({owner: this.props.currentUser.profile.partner.id}, {sort: {lastPointAt: -1, createdAt: -1}}).fetch();
+    }
   },
 
   getInitialState() {
     return {
       search: null,
+      sortByPoint: false,
       verseModal: false,
       partnerModal: false,
       goalModal: false,
@@ -73,7 +103,11 @@ MyVerses = React.createClass({
       <div>
       { this.state.partner ?
         <div>
-          <PartnerVerses partner={this.props.currentUser.profile.partner} goBack={this.goMyVerses}/>
+          <PartnerVerses verses={this.data.partnerVerses}
+            points={this.data.partnerPointsOfThisWeek}
+            goal={this.data.partnerGoal}
+            username={this.props.currentUser.profile.partner.username}
+            goBack={this.goMyVerses} />
         </div>
       :
       <div>
@@ -111,7 +145,13 @@ MyVerses = React.createClass({
           } />
         { this.data.loaded ?
           <div>
-            <Goal points={this.data.pointsThisWeek} goal={this.props.currentUser.profile.goal}/>
+            { this.props.currentUser.profile.partner ?
+              <Goal points={this.data.partnerPointsOfThisWeek}
+                goal={this.data.partnerGoal}
+                partner={this.props.currentUser.profile.partner.username} />
+              : ''
+            }
+            <Goal points={this.data.pointsOfThisWeek} goal={this.props.currentUser.profile.goal}/>
             {this.renderVerses()}
           </div>
           :
@@ -207,6 +247,7 @@ MyVerses = React.createClass({
   handleAddPartner() {
     Meteor.call('addPartner', this.refs.partner.getValue());
     this.refs.partnerDialog.dismiss();
+    //this.showPartner();
   },
 
   showPartner() {
