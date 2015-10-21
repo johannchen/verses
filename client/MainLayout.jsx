@@ -14,9 +14,17 @@ MainLayout = React.createClass({
 
   render() {
     return (
-      <main>
-        {this.props.content()}
-      </main>
+      <div>
+        <head>
+          <title>verses</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        </head>
+
+        <main>
+          {this.props.content()}
+        </main>
+      </div>
     )
   }
 });

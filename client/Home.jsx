@@ -46,7 +46,7 @@ Home = React.createClass({
                   <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
                 </div>
               } />
-            <p>Verses helps you to organize and memorize your favorite ESV Bible verses. May your heart and mind be filled with God's words, which you can put to good use in time of need.</p>
+            <p>Verses helps you to organize and memorize your favorite ESV Bible verses with your accountability partner. May your heart and mind be filled with God's Word, which you can put to good use in time of need.</p>
             { this.data.loggingIn ?
               <div>
                 <FlatButton label="Logging in" disabled={true} />
