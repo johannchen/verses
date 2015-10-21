@@ -14,7 +14,7 @@ Verse = React.createClass({
                 subtitle={this.subtitle()}
                 avatar={ this.props.partner ?
                   <Avatar>{this.pointCount()}</Avatar>
-                  : <Avatar onTouchTap={this.gotoStar}>{this.pointCount()}</Avatar> }
+                  : <Avatar onTouchTap={this.gotoPoint}>{this.pointCount()}</Avatar> }
                 showExpandableButton={true} />
               <CardText expandable={true}>
                 {this.props.verse.content}
@@ -42,15 +42,15 @@ Verse = React.createClass({
   },
 
   subtitle() {
-    let lastStar = '';
-    if (this.props.verse.lastStarAt) {
-      lastStar = moment(this.props.verse.lastStarAt).fromNow() + ', ';
+    let lastPoint = '';
+    if (this.props.verse.lastPointAt) {
+      lastPoint = moment(this.props.verse.lastPointAt).fromNow() + ', ';
     }
-    return lastStar + this.props.verse.topic;
+    return lastPoint + this.props.verse.topic;
   },
 
 
-  gotoStar() {
+  gotoPoint() {
     let pointPath = `/point/${this.props.verse._id}`;
     FlowRouter.go(pointPath);
   },

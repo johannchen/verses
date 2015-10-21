@@ -79,6 +79,7 @@ MyVerses = React.createClass({
     return {
       search: null,
       sortByPoint: false,
+      showSearchField: false,
       verseModal: false,
       partnerModal: false,
       goalModal: false,
@@ -116,15 +117,24 @@ MyVerses = React.createClass({
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
           iconElementRight={
             <div>
-              <FontIcon
-                className="material-icons"
-                onTouchTap={this.handleClearSearch}
-                color={Colors.grey50}>search</FontIcon>
-              <TextField hintText="Search"
-                ref="search"
-                underlineFocusStyle={{borderColor: Colors.amber900}}
-                style={{width: '100px'}}
-                onEnterKeyDown={this.handleSearch} />
+              <IconButton onTouchTap={this.toggleSort}>
+                <FontIcon
+                  className="material-icons"
+                  color={Colors.grey50}>sort</FontIcon>
+              </IconButton>
+              <IconButton onTouchTap={this.toggleSearchField}>
+                <FontIcon
+                  className="material-icons"
+                  color={Colors.grey50}>search</FontIcon>
+              </IconButton>
+              { this.state.showSearchField ?
+                <TextField hintText="Search"
+                  ref="search"
+                  underlineFocusStyle={{borderColor: Colors.amber900}}
+                  style={{width: '100px'}}
+                  onEnterKeyDown={this.handleSearch} />
+                : ''
+              }
               <IconMenu
                 iconButtonElement={
                   <IconButton>
@@ -226,17 +236,21 @@ MyVerses = React.createClass({
     });
   },
 
-    goMyVerses() {
+  goMyVerses() {
     this.setState({partner: false});
   },
+
   handleSignOut() {
     Meteor.logout();
   },
 
+  toggleSort() {
+    this.setState({sortByPoint: !this.state.sortByPoint});
+  },
 
-  handleClearSearch() {
+  toggleSearchField() {
+    this.setState({showSearchField: !this.state.showSearchField});
     this.setState({search: null});
-    this.refs.search.setValue('');
   },
 
   /* add partner */
