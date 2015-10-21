@@ -42,7 +42,7 @@ MyVerses = React.createClass({
     return {
       loaded: handle.ready(),
       verses: Verses.find(query, {sort: {lastPointAt: -1, createdAt: -1}}).fetch(),
-      pointThisWeek: Verses.find(pointQuery).count()
+      pointsThisWeek: Verses.find(pointQuery).count()
     };
   },
 
@@ -111,8 +111,7 @@ MyVerses = React.createClass({
           } />
         { this.data.loaded ?
           <div>
-            <FlatButton label={this.goalDisplay()} disabled={true} />
-            <LinearProgress mode="determinate" value={this.percentage()} size={3} />
+            <Goal points={this.data.pointsThisWeek} goal={this.props.currentUser.profile.goal}/>
             {this.renderVerses()}
           </div>
           :
@@ -176,8 +175,8 @@ MyVerses = React.createClass({
 		  "1 John", "2 John", "3 John", "Jude", "Revelation"
   	];
 
-    return books.map( (book) => {
-      return <option value={book} />
+    return books.map( (book, index) => {
+      return <option value={book} key={index} />
     });
   },
 
@@ -187,20 +186,7 @@ MyVerses = React.createClass({
     });
   },
 
-  goalDisplay() {
-    return `Weekly Goal: ${this.data.pointThisWeek}/${this.props.currentUser.profile.goal}`;
-  },
-
-  percentage() {
-    let percentage = 0;
-    let points = this.data.pointThisWeek;
-    if (points) {
-      percentage = Math.round(points / this.props.currentUser.profile.goal * 100);
-    }
-    return percentage;
-  },
-
-  goMyVerses() {
+    goMyVerses() {
     this.setState({partner: false});
   },
   handleSignOut() {

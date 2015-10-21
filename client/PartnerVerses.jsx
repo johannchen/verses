@@ -37,13 +37,12 @@ PartnerVerses = React.createClass({
       <div>
         { this.data.loaded ?
           <div>
-        <AppBar
-          title={this.props.partner.username}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>} />
-        <FlatButton label={this.goalDisplay()} disabled={true} />
-        <LinearProgress mode="determinate" value={this.percentage()} size={3} />
-        {this.renderVerses()}
-        </div>
+            <AppBar
+              title={this.props.partner.username}
+              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>} />
+            <Goal points={this.data.pointsThisWeek} goal={this.data.goal} partner={this.props.partner.username} />
+            {this.renderVerses()}
+          </div>
         : <p>Loading...</p>
         }
       </div>
@@ -54,19 +53,6 @@ PartnerVerses = React.createClass({
     return this.data.verses.map( (verse) => {
       return <Verse key={verse._id} verse={verse} partner={true} expanded={false} />;
     });
-  },
-
-  goalDisplay() {
-    return `Weekly Goal: ${this.data.pointsThisWeek}/${this.data.goal}`;
-  },
-
-  percentage() {
-    let percentage = 0;
-    let points = this.data.pointThisWeek;
-    if (points) {
-      percentage = Math.round(points / this.data.goal * 100);
-    }
-    return percentage;
   },
 
   goMyVerses() {
