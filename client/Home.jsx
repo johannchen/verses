@@ -13,7 +13,6 @@ Home = React.createClass({
 
   getMeteorData() {
     return {
-      loggingIn: Meteor.loggingIn(),
       currentUser: Meteor.user()
     };
   },
@@ -47,13 +46,7 @@ Home = React.createClass({
                 </div>
               } />
             <p>Verses helps you to organize and memorize your favorite ESV Bible verses with your accountability partner. May your heart and mind be filled with God's Word, which you can put to good use in time of need.</p>
-            { this.data.loggingIn ?
-              <div>
-                <FlatButton label="Logging in" disabled={true} />
-                <LinearProgress mode="indeterminate" />
-              </div>
-              : <AccountsMUI signin={this.state.signin} />
-            }
+            <AccountsMUI signin={this.state.signin} />
           </div>
         }
       </AppCanvas>
