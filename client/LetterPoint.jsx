@@ -1,6 +1,6 @@
 let { Card, CardText, TextField } = MUI;
 
-LetterStar = React.createClass({
+LetterPoint = React.createClass({
   getInitialState() {
     return {
       words: '',
@@ -19,8 +19,8 @@ LetterStar = React.createClass({
     )
   },
 
-  updateStar() {
-    Meteor.call('updateStar', this.props.verse._id);
+  updatePoint() {
+    Meteor.call('updatePoint', this.props.verse._id);
   },
 
   goVerse() {
@@ -37,7 +37,7 @@ LetterStar = React.createClass({
       let words = verseArray.slice(0, index).join(" ");
       this.setState({words: words, index: index});
       if (index === verseArray.length) {
-        this.updateStar();
+        this.updatePoint();
         this.goVerse();
       }
     } else {

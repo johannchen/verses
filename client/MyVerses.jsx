@@ -34,15 +34,15 @@ MyVerses = React.createClass({
     let startOfWeek = moment().startOf('week').valueOf();
     let pointQuery = {
       owner: this.props.currentUser._id,
-      lastStarAt: {$gte: startOfWeek}
+      lastPointAt: {$gte: startOfWeek}
     };
 
     var handle = Meteor.subscribe("verses", null);
 
     return {
       loaded: handle.ready(),
-      verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
-      starThisWeek: Verses.find(pointQuery).count()
+      verses: Verses.find(query, {sort: {lastPointAt: -1, createdAt: -1}}).fetch(),
+      pointThisWeek: Verses.find(pointQuery).count()
     };
   },
 
@@ -188,14 +188,14 @@ MyVerses = React.createClass({
   },
 
   goalDisplay() {
-    return `Weekly Goal: ${this.data.starThisWeek}/${this.props.currentUser.profile.goal}`;
+    return `Weekly Goal: ${this.data.pointThisWeek}/${this.props.currentUser.profile.goal}`;
   },
 
   percentage() {
     let percentage = 0;
-    let stars = this.data.starThisWeek;
-    if (stars) {
-      percentage = Math.round(stars / this.props.currentUser.profile.goal * 100);
+    let points = this.data.pointThisWeek;
+    if (points) {
+      percentage = Math.round(points / this.props.currentUser.profile.goal * 100);
     }
     return percentage;
   },

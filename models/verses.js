@@ -4,11 +4,9 @@ Verses.allow({
   remove: function(userId, doc) {
     return userId === doc.owner;
   },
-  /* TODO: allow comment edit 
   update: function (userId, doc, fields, modifier) {
     return doc.owner === userId;
   },
-  */
   fetch: ['owner']
 });
 
@@ -19,17 +17,17 @@ Meteor.methods({
     if (! Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
-    Verses.insert({title, topic, content, starCount: 0, owner: Meteor.userId(), createdAt: Date.now()});
+    Verses.insert({title, topic, content, pointCount: 0, owner: Meteor.userId(), createdAt: Date.now()});
   },
   removeVerse(id) {
     Verses.remove(id);
   },
-  updateStar(id) {
+  updatePoint(id) {
     let now = Date.now();
     Verses.update(id, {
-      $set: {lastStarAt: now},
-      $inc: {starCount: 1},
-      $push: {stars: {starAt: now}}
+      $set: {lastPointAt: now},
+      $inc: {pointCount: 1},
+      $push: {points: {pointAt: now}}
     });
   },
   updateVerse(id, title, topic, content) {

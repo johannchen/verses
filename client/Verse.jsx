@@ -2,7 +2,7 @@ let { Card, CardTitle, CardHeader, Avatar, CardText, CardActions, FlatButton, Fo
 
 Verse = React.createClass({
   render() {
-    let starPath = `/star/${this.props.verse._id}`;
+    let pointPath = `/point/${this.props.verse._id}`;
 
     return (
       <div>
@@ -13,8 +13,8 @@ Verse = React.createClass({
                 title={this.props.verse.title}
                 subtitle={this.subtitle()}
                 avatar={ this.props.partner ?
-                  <Avatar>{this.starCount()}</Avatar>
-                  : <Avatar onTouchTap={this.gotoStar}>{this.starCount()}</Avatar> }
+                  <Avatar>{this.pointCount()}</Avatar>
+                  : <Avatar onTouchTap={this.gotoStar}>{this.pointCount()}</Avatar> }
                 showExpandableButton={true} />
               <CardText expandable={true}>
                 {this.props.verse.content}
@@ -51,12 +51,12 @@ Verse = React.createClass({
 
 
   gotoStar() {
-    let starPath = `/star/${this.props.verse._id}`;
-    FlowRouter.go(starPath);
+    let pointPath = `/point/${this.props.verse._id}`;
+    FlowRouter.go(pointPath);
   },
 
-  starCount() {
-    return this.props.verse.starCount ? this.props.verse.starCount : '0'
+  pointCount() {
+    return this.props.verse.pointCount ? this.props.verse.pointCount : '0'
   },
   addComment(comment) {
     Meteor.call('addComment', this.props.verse._id, comment);

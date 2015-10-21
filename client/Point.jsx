@@ -1,7 +1,7 @@
 let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton, FontIcon, Styles } = MUI;
 let { Colors } = Styles;
 
-Star = React.createClass({
+Point = React.createClass({
   mixins: [ReactMeteorData],
 
   getMeteorData() {
@@ -45,7 +45,7 @@ Star = React.createClass({
               />
             { (() => {
               switch (this.state.action) {
-                case "letter": return <LetterStar verse={this.data.verse} />;
+                case "letter": return <LetterPoint verse={this.data.verse} />;
                 case "word": return <Practice verse={this.data.verse} />;
                 default: return (
                   <Card>
@@ -99,14 +99,14 @@ Star = React.createClass({
     return dmp.diff_prettyHtml(d);
   },
 
-  updateStar() {
-    Meteor.call('updateStar', this.props.verseId);
+  updatePoint() {
+    Meteor.call('updatePoint', this.props.verseId);
   },
 
   onSubmitVerse() {
     let typedVerse = this.refs.textarea.getValue();
     if (typedVerse === this.data.verse.content) {
-      this.updateStar();
+      this.updatePoint();
       this.goVerse();
     } else {
       let diff = this.diffText(typedVerse, this.data.verse.content);

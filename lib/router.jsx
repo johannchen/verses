@@ -24,15 +24,15 @@ FlowRouter.route('/verse/:_id', {
   }
 });
 
-FlowRouter.route('/star/:_id', {
-  name: 'star',
+FlowRouter.route('/point/:_id', {
+  name: 'point',
   subscriptions: function(params) {
     this.register('verse', Meteor.subscribe('verse', params._id));
   },
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {
-        return <Star verseId={params._id} />;
+        return <Point verseId={params._id} />;
       }
     });
   }

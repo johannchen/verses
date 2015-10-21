@@ -14,13 +14,13 @@ PartnerVerses = React.createClass({
     let startOfWeek = moment().startOf('week').valueOf();
     let pointQuery = {
       owner: partnerId,
-      lastStarAt: {$gte: startOfWeek}
+      lastPointAt: {$gte: startOfWeek}
     };
 
     var versesHandle = Meteor.subscribe('verses', partnerId);
     var data = {
       loaded: versesHandle.ready(),
-      verses: Verses.find(query, {sort: {lastStarAt: -1, createdAt: -1}}).fetch(),
+      verses: Verses.find(query, {sort: {lastPointAt: -1, createdAt: -1}}).fetch(),
       pointsThisWeek: Verses.find(pointQuery).count()
     };
 
@@ -62,9 +62,9 @@ PartnerVerses = React.createClass({
 
   percentage() {
     let percentage = 0;
-    let stars = this.data.starThisWeek;
-    if (stars) {
-      percentage = Math.round(stars / this.data.goal * 100);
+    let points = this.data.pointThisWeek;
+    if (points) {
+      percentage = Math.round(points / this.data.goal * 100);
     }
     return percentage;
   },
@@ -72,6 +72,4 @@ PartnerVerses = React.createClass({
   goMyVerses() {
     this.props.goBack();
   }
-
-  
 });

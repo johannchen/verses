@@ -64,7 +64,7 @@ VersePage = React.createClass({
   },
 
   gotoStar() {
-    FlowRouter.go(`/star/${this.props.verseId}`);
+    FlowRouter.go(`/point/${this.props.verseId}`);
   },
 
   removeVerse() {
