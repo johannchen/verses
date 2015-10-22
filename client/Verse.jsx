@@ -4,26 +4,24 @@ Verse = React.createClass({
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-xs-12">
-            <Card initiallyExpanded={this.props.expanded} style={{marginTop: '10px'}}>
-              <CardHeader
-                title={this.props.verse.title}
-                subtitle={this.subtitle()}
-                avatar={ this.props.partner ?
-                  <Avatar>{this.pointCount()}</Avatar>
-                  : <Avatar onTouchTap={this.goPoint}>{this.pointCount()}</Avatar> }
-                showExpandableButton={true} />
-              <CardText expandable={true}>
-                {this.props.verse.content}
-                <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
-                <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
-                <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
-                {this.renderComments()}
-              </CardText>
-            </Card>
-          </div>
-        </div>
+        <Card initiallyExpanded={this.props.expanded} style={{marginTop: '10px'}}>
+          <CardHeader
+            title={this.props.verse.title}
+            subtitle={this.subtitle()}
+            avatar={ this.props.partner ?
+              <Avatar>{this.pointCount()}</Avatar>
+              : <Avatar onTouchTap={this.goPoint}>{this.pointCount()}</Avatar> }
+            showExpandableButton={true} />
+          <CardText expandable={true}>
+            {this.props.verse.content}
+            <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
+            <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
+            { this.props.partner ? ''
+              : <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
+            }
+            {this.renderComments()}
+          </CardText>
+        </Card>
       </div>
     )
   },
@@ -32,7 +30,7 @@ Verse = React.createClass({
     if (this.props.verse.comments) {
       let verseId = this.props.verse._id;
       return this.props.verse.comments.reverse().map( (comment) => {
-        return <Comment key={comment.id} comment={comment} verseId={verseId} />;
+        return <Comment key={comment.id} comment={comment} verseId={verseId} ownerId={this.props.verse.owner} />;
       });
     }
   },

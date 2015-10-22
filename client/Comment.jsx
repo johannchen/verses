@@ -5,7 +5,7 @@ Comment = React.createClass({
 
   getMeteorData() {
     return {
-      currentUsername: Meteor.user().username
+      currentUser: Meteor.user()
     }
   },
 
@@ -26,7 +26,7 @@ Comment = React.createClass({
   },
 
   isOwner() {
-    return this.data.currentUsername === this.props.comment.username;
+    return this.data.currentUser.username === this.props.comment.username || this.data.currentUser._id === this.props.ownerId;
   },
 
   removeComment() {
