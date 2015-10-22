@@ -8,7 +8,7 @@ PartnerVerses = React.createClass({
     return (
       <div>
         <AppBar
-          title={this.props.username}
+          title={this.getTitle()}
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>} />
         <Goal points={this.props.points} goal={this.props.goal} partner={this.props.username} />
         {this.renderVerses()}
@@ -20,6 +20,10 @@ PartnerVerses = React.createClass({
     return this.props.verses.map( (verse) => {
       return <Verse key={verse._id} verse={verse} partner={true} expanded={false} />;
     });
+  },
+
+  getTitle() {
+    return `${this.props.versesCount} ${this.props.username}`;
   },
 
   goMyVerses() {

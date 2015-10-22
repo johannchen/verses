@@ -36,9 +36,11 @@ MyVerses = React.createClass({
 
     return {
       loaded: handle.ready(),
-      verses: this.getMyVerses(),
+      verses: this.getMyVerses().fetch(),
+      versesCount: this.getMyVerses().count(),
       pointsOfThisWeek: this.getPointsOfThisWeek(this.props.currentUser._id),
       partnerVerses: this.getPartnerVerses(),
+      partnerVersesCount: this.getPartnerVersesCount(),
       partnerPointsOfThisWeek: this.getPointsOfThisWeek(partnerId),
       partnerGoal
     };
@@ -57,7 +59,7 @@ MyVerses = React.createClass({
     let sort = {createdAt: -1};
     if (this.state.sortByPoint) { sort = {lastPointAt: -1}; }
     query.owner = this.props.currentUser._id;
-    return Verses.find(query, {sort: sort}).fetch();
+    return Verses.find(query, {sort: sort});
   },
 
   getPointsOfThisWeek(id) {
@@ -73,6 +75,10 @@ MyVerses = React.createClass({
     if (this.props.currentUser.profile.partner) {
       return Verses.find({owner: this.props.currentUser.profile.partner.id}, {sort: {lastPointAt: -1, createdAt: -1}}).fetch();
     }
+  },
+
+  getPartnerVersesCount() {
+    return Verses.find({owner: this.props.currentUser.profile.partner.id}).count();
   },
 
   getInitialState() {
@@ -105,6 +111,7 @@ MyVerses = React.createClass({
       { this.state.partner ?
         <div>
           <PartnerVerses verses={this.data.partnerVerses}
+            versesCount={this.data.partnerVersesCount}
             points={this.data.partnerPointsOfThisWeek}
             goal={this.data.partnerGoal}
             username={this.props.currentUser.profile.partner.username}
@@ -113,7 +120,7 @@ MyVerses = React.createClass({
       :
       <div>
         <AppBar
-          title={this.props.currentUser.username}
+          title={this.getTitle()}
           iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
           iconElementRight={
             <div>
@@ -236,6 +243,9 @@ MyVerses = React.createClass({
     });
   },
 
+  getTitle() {
+    return `${this.data.versesCount} ${this.props.currentUser.username}`;
+  },
   goMyVerses() {
     this.setState({partner: false});
   },
