@@ -32,6 +32,10 @@ LetterPoint = React.createClass({
     const verseArray = verseString.split(" ");
     let letter = event.target.value.toLowerCase();
     let firstLetter = verseArray[this.state.index][0].toLowerCase();
+    // skip quotation mark
+    if (firstLetter === "\"" || firstLetter === "\'") {
+      firstLetter = verseArray[this.state.index][1].toLowerCase();
+    }
     if (letter === firstLetter) {
       let index = this.state.index + 1;
       let words = verseArray.slice(0, index).join(" ");
