@@ -17,7 +17,7 @@ Verse = React.createClass({
             <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
             <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
             { this.props.partner ? ''
-              : <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
+            : <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
             }
             {this.renderComments()}
           </CardText>

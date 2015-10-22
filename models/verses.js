@@ -1,16 +1,5 @@
 Verses = new Mongo.Collection("verses");
 
-Verses.allow({
-  remove: function(userId, doc) {
-    return userId === doc.owner;
-  },
-  update: function (userId, doc, fields, modifier) {
-    return doc.owner === userId;
-  },
-  fetch: ['owner']
-});
-
-
 Meteor.methods({
   addVerse(title, topic, content) {
     // Make sure the user is logged in before inserting a verse
@@ -20,9 +9,15 @@ Meteor.methods({
     Verses.insert({title, topic, content, pointCount: 0, owner: Meteor.userId(), createdAt: Date.now()});
   },
   removeVerse(id) {
+    if (Verses.findOne(id).owner !== Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
     Verses.remove(id);
   },
   updatePoint(id) {
+    if (Verses.findOne(id).owner !== Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
     let now = Date.now();
     Verses.update(id, {
       $set: {lastPointAt: now},
@@ -31,6 +26,9 @@ Meteor.methods({
     });
   },
   updateVerse(id, title, topic, content) {
+    if (Verses.findOne(id).owner !== Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
     Verses.update(id, {
       $set: {title, topic, content}
     });
