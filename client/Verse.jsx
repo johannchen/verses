@@ -1,6 +1,21 @@
-let { Card, CardTitle, CardHeader, Avatar, CardText, CardActions, FlatButton, FontIcon, IconButton, TextField, Dialog } = MUI;
+let { Card,
+  CardTitle,
+  CardHeader,
+  Avatar,
+  CardText,
+  CardActions,
+  FlatButton,
+  FontIcon,
+  IconButton,
+  TextField,
+  Snackbar } = MUI;
 
 Verse = React.createClass({
+  getInitialState() {
+    return {
+      message: ''
+    }
+  },
   render() {
     return (
       <div>
@@ -14,14 +29,20 @@ Verse = React.createClass({
             showExpandableButton={true} />
           <CardText expandable={true}>
             {this.props.verse.content}
-            <TextField hintText="Any thought on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
+            <TextField hintText="Any thoughts on this verse?" ref="newComment" fullWidth={true} multiLine={true} />
             <FlatButton label="Add Comment" secondary={true} onTouchTap={this._handleNewComment} />
-            { this.props.partner ? ''
+            { this.props.partner ?
+              <FlatButton label="Add To My Verses" onTouchTap={this.addToMyVerses} />
+
             : <FlatButton label="Edit Verse" onTouchTap={this.goVerseEdit} />
             }
             {this.renderComments()}
           </CardText>
         </Card>
+        <Snackbar
+          ref="addVerseIndicator"
+          message={this.state.message}
+          autoHideDuration={2000} />
       </div>
     )
   },
@@ -55,11 +76,24 @@ Verse = React.createClass({
   pointCount() {
     return this.props.verse.pointCount ? this.props.verse.pointCount : '0'
   },
+
+  addToMyVerses() {
+    let { title, topic, content} = this.props.verse;
+    Meteor.call('addVerse', title, topic, content, (err) => {
+      if (err) {
+        this.setState({message: "Already Added To My Verses"})
+      } else {
+        this.setState({message: "Added To My Verses"})
+      }
+      this.refs.addVerseIndicator.show();
+    });
+  },
+
+  /* add comment */
   addComment(comment) {
     Meteor.call('addComment', this.props.verse._id, comment);
   },
 
-  /* add comment */
   _handleNewComment() {
     let comment = this.refs.newComment.getValue();
     if (comment) {

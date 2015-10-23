@@ -3,7 +3,8 @@ Verses = new Mongo.Collection("verses");
 Meteor.methods({
   addVerse(title, topic, content) {
     // Make sure the user is logged in before inserting a verse
-    if (! Meteor.userId()) {
+    // verse is not duplicate
+    if (! Meteor.userId() || Verses.findOne({title: title, owner: Meteor.userId()})) {
       throw new Meteor.Error("not-authorized");
     }
     Verses.insert({title, topic, content, pointCount: 0, owner: Meteor.userId(), createdAt: Date.now()});

@@ -28,11 +28,7 @@ Home = React.createClass({
       <AppCanvas>
         {this.data.currentUser ?
           <div>
-          { this.state.partner ?
-            <Partner username={this.data.currentUser.profile.partner} />
-          :
             <MyVerses currentUser={this.data.currentUser} />
-          }
           </div>
         :
           <div>

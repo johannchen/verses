@@ -1,5 +1,5 @@
 let { Styles } = MUI;
-let { ThemeManager, LightRawTheme, Colors} = Styles;
+let { ThemeManager, LightRawTheme } = Styles;
 
 MainLayout = React.createClass({
   childContextTypes: {

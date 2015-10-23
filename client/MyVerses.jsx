@@ -11,6 +11,7 @@ let {
   RaisedButton,
   FlatButton,
   Styles,
+  Snackbar,
   Dialog} = MUI;
 //let IconMenu = MUI.Libs.Menu;
 let MenuItem = MUI.Libs.MenuItem;
@@ -85,6 +86,7 @@ MyVerses = React.createClass({
     return {
       search: null,
       sortByPoint: false,
+      sortMessage: '',
       showSearchField: false,
       verseModal: false,
       partnerModal: false,
@@ -175,6 +177,11 @@ MyVerses = React.createClass({
           <p>Loading</p>
         }
 
+        <Snackbar
+          ref="sortIndicator"
+          message={this.state.sortMessage}
+          autoHideDuration={2000} />
+
         <datalist id="books">
           {this.renderBookList()}
         </datalist>
@@ -255,7 +262,13 @@ MyVerses = React.createClass({
   },
 
   toggleSort() {
+    if (this.state.sortByPoint) {
+      this.setState({sortMessage: "Sort By Entered Date"});
+    } else {
+      this.setState({sortMessage: "Sort By Most Recent Memorized"});
+    }
     this.setState({sortByPoint: !this.state.sortByPoint});
+    this.refs.sortIndicator.show();
   },
 
   toggleSearchField() {
@@ -296,19 +309,23 @@ MyVerses = React.createClass({
   showNewVerseDialog() {
     this.refs.newVerseDialog.show();
   },
+
   handleAddVerse() {
     //TODO handle style on required field
     let title = this.refs.title.getValue();
-    let topic = this.refs.topic.getValue();
-    Meteor.call("getESV", title, (err, res) => {
-      //TODO: check error
-			var content = res.content.trim().replace(/\s{2,}/g, ' ');
-      Meteor.call('addVerse', title, topic, content);
-    });
-    //React.findDOMNode(this.refs.title).value = '';
-    this.refs.title.setValue('');
-    this.refs.topic.setValue('');
-    this.refs.newVerseDialog.dismiss();
+    if (Verses.findOne({title: title})) {
+      this.refs.title.setErrorText('this verse already exists!');
+    } else {
+      let topic = this.refs.topic.getValue();
+      Meteor.call("getESV", title, (err, res) => {
+        //TODO: check error
+  			var content = res.content.trim().replace(/\s{2,}/g, ' ');
+        Meteor.call('addVerse', title, topic, content);
+      });
+      this.refs.title.setValue('');
+      this.refs.topic.setValue('');
+      this.refs.newVerseDialog.dismiss();
+    }
   },
 
   handleSearch() {
