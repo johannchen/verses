@@ -24,7 +24,7 @@ Point = React.createClass({
         { this.data.loaded ?
           <div>
             <AppBar
-              title={this.data.verse.title}
+              title=""
               iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>remove_red_eye</IconButton>}
               iconElementRight={
                 <div>
@@ -50,7 +50,7 @@ Point = React.createClass({
                 default: return (
                   <Card>
                     <CardText>
-                      <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} />
+                      <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} autoFocus={true} />
                       <p>
                         <strong>{this.data.verse.title}</strong><br />
                         <span dangerouslySetInnerHTML={this.state.diff} />

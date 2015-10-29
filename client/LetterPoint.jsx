@@ -13,7 +13,7 @@ LetterPoint = React.createClass({
       <Card>
         <CardText>
           <p>{this.state.words}</p>
-          <TextField hintText="first letter" ref="letter" onChange={this.handleNextWord}/>
+          <TextField hintText="first letter" ref="letter" onChange={this.handleNextWord} autoFocus={true}/>
         </CardText>
       </Card>
     )
@@ -29,11 +29,11 @@ LetterPoint = React.createClass({
 
   handleNextWord(event) {
     const verseString = `${this.props.verse.content} ${this.props.verse.title}`;
-    const verseArray = verseString.split(" ");
+    const verseArray = verseString.split(/\s+/);
     let letter = event.target.value.toLowerCase();
     let firstLetter = verseArray[this.state.index][0].toLowerCase();
-    // skip quotation mark
-    if (firstLetter === "\"" || firstLetter === "\'") {
+    // skip quotation mark, puntuation
+    if (firstLetter === "\"" || firstLetter === "\'" || firstLetter === "(") {
       firstLetter = verseArray[this.state.index][1].toLowerCase();
     }
     if (letter === firstLetter) {

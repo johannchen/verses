@@ -18,7 +18,7 @@ PartnerVerses = React.createClass({
 
   renderVerses() {
     return this.props.verses.map( (verse) => {
-      return <Verse key={verse._id} verse={verse} partner={true} expanded={false} />;
+      return <Verse key={verse._id} verse={verse} partner={true} expanded={true} />;
     });
   },
 
