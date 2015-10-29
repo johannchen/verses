@@ -16,7 +16,7 @@ Meteor.methods({
 			text: text
 		});
 	},
-  //TODO: add callback
+
 	addPartner(username) {
 		var partner = Accounts.findUserByUsername(username);
 		if (partner && !partner.profile.partner) {
@@ -36,8 +36,9 @@ Meteor.methods({
 					}
 				}
       });
+			return true;
 		} else {
-			console.log("failed to add partner!");
+			return false;
 		}
 	},
 

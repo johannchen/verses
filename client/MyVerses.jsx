@@ -79,7 +79,9 @@ MyVerses = React.createClass({
   },
 
   getPartnerVersesCount() {
-    return Verses.find({owner: this.props.currentUser.profile.partner.id}).count();
+    if (this.props.currentUser.profile.partner) {
+      return Verses.find({owner: this.props.currentUser.profile.partner.id}).count();
+    }
   },
 
   getInitialState() {
@@ -282,9 +284,15 @@ MyVerses = React.createClass({
   },
 
   handleAddPartner() {
-    Meteor.call('addPartner', this.refs.partner.getValue());
-    this.refs.partnerDialog.dismiss();
-    //this.showPartner();
+    Meteor.call('addPartner', this.refs.partner.getValue(), (err, result) => {
+      if (err) {
+        this.refs.partner.setErrorText("Sorry, there is problem adding this partner.");
+      } else if (! result) {
+        this.refs.partner.setErrorText("Sorry, this partner is not available.");
+      } else {
+        this.refs.partnerDialog.dismiss();
+      }
+    });
   },
 
   showPartner() {
