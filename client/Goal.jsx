@@ -12,7 +12,10 @@ Goal = React.createClass({
   goalDisplay() {
     let who = "My";
     if (this.props.partner) { who = this.props.partner;}
-    return `${who} Weekly Goal: ${this.props.points}/${this.props.goal}`;
+    var goal = `${who} Weekly Goal: ${this.props.points}/${this.props.goal}`;
+    let reward = "";
+    if (this.props.reward) { reward = `Reward Partner: ${this.props.reward}`; }
+    return `${goal} ${reward}`
   },
 
   percentage() {

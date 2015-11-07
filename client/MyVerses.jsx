@@ -23,13 +23,15 @@ MyVerses = React.createClass({
 
   getMeteorData() {
 
-    var handle, partnerId, partnerGoal;
+    var handle, partnerId, partnerGoal, partnerReward;
     if (this.props.currentUser.profile.partner || this.state.partner) {
       partnerId = this.props.currentUser.profile.partner.id;
       handle = Meteor.subscribe("verses", partnerId);
       var partnerHandle = Meteor.subscribe('partner');
       if(partnerHandle.ready()) {
-        partnerGoal = Meteor.users.findOne(partnerId).profile.goal;
+        profile = Meteor.users.findOne(partnerId).profile;
+        partnerGoal = profile.goal;
+        partnerReward = profile.rewardPartner;
       }
     } else {
       handle = Meteor.subscribe("verses", null);
@@ -43,7 +45,8 @@ MyVerses = React.createClass({
       partnerVerses: this.getPartnerVerses(),
       partnerVersesCount: this.getPartnerVersesCount(),
       partnerPointsOfThisWeek: this.getPointsOfThisWeek(partnerId),
-      partnerGoal
+      partnerGoal,
+      partnerReward
     };
   },
 
@@ -169,10 +172,15 @@ MyVerses = React.createClass({
             { this.props.currentUser.profile.partner ?
               <Goal points={this.data.partnerPointsOfThisWeek}
                 goal={this.data.partnerGoal}
-                partner={this.props.currentUser.profile.partner.username} />
+                partner={this.props.currentUser.profile.partner.username}
+                reward={this.data.partnerReward}
+                 />
               : ''
             }
-            <Goal points={this.data.pointsOfThisWeek} goal={this.props.currentUser.profile.goal}/>
+            <Goal points={this.data.pointsOfThisWeek}
+              goal={this.props.currentUser.profile.goal}
+              reward={this.props.currentUser.profile.rewardPartner}
+              />
             {this.renderVerses()}
           </div>
           :
@@ -216,6 +224,13 @@ MyVerses = React.createClass({
             style={{width: '50px'}}
             ref="goal"
             defaultValue={this.props.currentUser.profile.goal}/>
+          <br />
+          { this.props.currentUser.profile.partner ?
+            <TextField hintText="reward your partner (e.g. 10 min massage)"
+              ref="reward"
+              defaultValue={this.props.currentUser.profile.rewardPartner} />
+            : ''
+          }
         </Dialog>
       </div>
       }
@@ -309,7 +324,9 @@ MyVerses = React.createClass({
   },
 
   handleSetGoal() {
-    Meteor.call('setGoal', this.refs.goal.getValue());
+    let reward = '';
+    if (this.refs.reward) { reward = this.refs.reward.getValue();}
+    Meteor.call('setGoal', this.refs.goal.getValue(), reward );
     this.refs.goalDialog.dismiss();
   },
 
