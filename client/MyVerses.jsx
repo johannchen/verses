@@ -1,3 +1,5 @@
+Session.setDefault('sortByPoint', false);
+
 let {
   AppCanvas,
   AppBar,
@@ -61,7 +63,7 @@ MyVerses = React.createClass({
       ]};
     }
     let sort = {createdAt: -1};
-    if (this.state.sortByPoint) { sort = {lastPointAt: -1}; }
+    if (Session.get('sortByPoint')) { sort = {lastPointAt: -1}; }
     query.owner = this.props.currentUser._id;
     return Verses.find(query, {sort: sort});
   },
@@ -90,7 +92,6 @@ MyVerses = React.createClass({
   getInitialState() {
     return {
       search: null,
-      sortByPoint: false,
       sortMessage: '',
       showSearchField: false,
       verseModal: false,
@@ -279,12 +280,12 @@ MyVerses = React.createClass({
   },
 
   toggleSort() {
-    if (this.state.sortByPoint) {
+    if (Session.get('sortByPoint')) {
       this.setState({sortMessage: "Sort By Entered Date"});
     } else {
       this.setState({sortMessage: "Sort By Most Recent Memorized"});
     }
-    this.setState({sortByPoint: !this.state.sortByPoint});
+    Session.set('sortByPoint', !Session.get('sortByPoint'));
     this.refs.sortIndicator.show();
   },
 
