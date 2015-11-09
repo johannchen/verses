@@ -337,15 +337,13 @@ MyVerses = React.createClass({
   },
 
   handleAddVerse() {
-    //TODO handle style on required field
     let title = this.refs.title.getValue();
-    if (Verses.findOne({title: title})) {
+    if (Verses.findOne({title: title, owner: this.props.currentUser._id})) {
       this.refs.title.setErrorText('this verse already exists!');
     } else {
       let topic = this.refs.topic.getValue();
       Meteor.call("getESV", title, (err, res) => {
-        //TODO: check error
-  			var content = res.content.trim().replace(/\s{2,}/g, ' ');
+  			var content = res.content.trim().replace(/\s+/g, ' ');
         Meteor.call('addVerse', title, topic, content);
       });
       this.refs.title.setValue('');
