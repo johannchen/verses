@@ -18,10 +18,10 @@ VerseEdit = React.createClass({
         <div>
           <AppBar
             title={this.data.verse.title}
-            iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>arrow_back</IconButton>}
+            iconElementLeft={<IconButton iconClassName="zmdi zmdi-arrow-left" onTouchTap={this.goVerse}></IconButton>}
             iconElementRight={
               <IconButton onTouchTap={this.goHome}>
-                <FontIcon className="material-icons">home</FontIcon>
+                <FontIcon className="zmdi zmdi-home"></FontIcon>
               </IconButton>
             }
           />

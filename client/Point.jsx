@@ -1,4 +1,4 @@
-let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton, FontIcon, Styles } = MUI;
+let { AppBar, IconButton, Card, CardText, CardActions, TextField, FlatButton, FontIcon, CircularProgress, Styles } = MUI;
 let { Colors } = Styles;
 
 Point = React.createClass({
@@ -25,20 +25,20 @@ Point = React.createClass({
           <div>
             <AppBar
               title=""
-              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goVerse}>remove_red_eye</IconButton>}
+              iconElementLeft={<IconButton iconClassName="zmdi zmdi-eye" onTouchTap={this.goVerse}></IconButton>}
               iconElementRight={
                 <div>
                   <IconButton onTouchTap={this.goSentence}>
-                    <FontIcon className="material-icons" color={Colors.grey50}>keyboard</FontIcon>
+                    <FontIcon className="zmdi zmdi-keyboard" color={Colors.grey50}></FontIcon>
                   </IconButton>
                   <IconButton onTouchTap={this.goLetter}>
-                    <FontIcon className="material-icons" color={Colors.grey50}>text_format</FontIcon>
+                    <FontIcon className="zmdi zmdi-text-format" color={Colors.grey50}></FontIcon>
                   </IconButton>
                   <IconButton onTouchTap={this.goWord}>
-                    <FontIcon className="material-icons" color={Colors.grey50}>subject</FontIcon>
+                    <FontIcon className="zmdi zmdi-parking" color={Colors.grey50}></FontIcon>
                   </IconButton>
                   <IconButton onTouchTap={this.goHome}>
-                    <FontIcon className="material-icons" color={Colors.grey50}>home</FontIcon>
+                    <FontIcon className="zmdi zmdi-home" color={Colors.grey50}></FontIcon>
                   </IconButton>
                 </div>
               }
@@ -66,8 +66,9 @@ Point = React.createClass({
             })()
           }
           </div>
-        : <p>Loading...</p>
-      }
+        :
+          <CircularProgress mode="indeterminate" size={2} />
+        }
     </div>
     )
   },

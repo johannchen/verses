@@ -9,6 +9,7 @@ let {
   IconButton,
   ToolbarSeparator,
   LinearProgress,
+  CircularProgress,
   TextField,
   RaisedButton,
   FlatButton,
@@ -129,18 +130,18 @@ MyVerses = React.createClass({
       <div>
         <AppBar
           title={this.getTitle()}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.showNewVerseDialog}>add</IconButton>}
+          iconElementLeft={<IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerseDialog}></IconButton>}
           iconElementRight={
             <div>
               <IconButton onTouchTap={this.toggleSort}>
                 <FontIcon
-                  className="material-icons"
-                  color={Colors.grey50}>sort</FontIcon>
+                  className="zmdi zmdi-sort-amount-asc"
+                  color={Colors.grey50}></FontIcon>
               </IconButton>
               <IconButton onTouchTap={this.toggleSearchField}>
                 <FontIcon
-                  className="material-icons"
-                  color={Colors.grey50}>search</FontIcon>
+                  className="zmdi zmdi-search"
+                  color={Colors.grey50}></FontIcon>
               </IconButton>
               { this.state.showSearchField ?
                 <TextField hintText="Search"
@@ -153,7 +154,7 @@ MyVerses = React.createClass({
               <IconMenu
                 iconButtonElement={
                   <IconButton>
-                    <FontIcon className="material-icons" color={Colors.grey50}>more_vert</FontIcon>
+                    <FontIcon className="zmdi zmdi-more-vert" color={Colors.grey50}></FontIcon>
                   </IconButton>
                 }>
                 { this.props.currentUser.profile.partner ?
@@ -185,7 +186,7 @@ MyVerses = React.createClass({
             {this.renderVerses()}
           </div>
           :
-          <p>Loading</p>
+          <CircularProgress mode="indeterminate" size={2} />
         }
 
         <Snackbar

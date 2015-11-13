@@ -9,7 +9,7 @@ PartnerVerses = React.createClass({
       <div>
         <AppBar
           title={this.getTitle()}
-          iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goMyVerses}>arrow_back</IconButton>} />
+          iconElementLeft={<IconButton iconClassName="zmdi zmdi-arrow-left" onTouchTap={this.goMyVerses}></IconButton>} />
         <Goal points={this.props.points} goal={this.props.goal} partner={this.props.username} />
         {this.renderVerses()}
       </div>

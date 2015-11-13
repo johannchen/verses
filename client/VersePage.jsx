@@ -1,4 +1,4 @@
-let { AppBar, IconButton, FontIcon, Card, CardText, CardActions, TextField, FlatButton, RaisedButton } = MUI;
+let { AppBar, IconButton, FontIcon, Card, CardText, CardActions, TextField, FlatButton, RaisedButton, CircularProgress } = MUI;
 
 VersePage = React.createClass({
   mixins: [ReactMeteorData],
@@ -17,16 +17,17 @@ VersePage = React.createClass({
           <div>
             <AppBar
               title={this.data.verse.title}
-              iconElementLeft={<IconButton iconClassName="material-icons" onTouchTap={this.goPoint}>keyboard</IconButton>}
+              iconElementLeft={<IconButton iconClassName="zmdi zmdi-keyboard" onTouchTap={this.goPoint}></IconButton>}
               iconElementRight={
                 <IconButton onTouchTap={this.goHome}>
-                  <FontIcon className="material-icons">home</FontIcon>
+                  <FontIcon className="zmdi zmdi-home"></FontIcon>
                 </IconButton>
               }
             />
             <Verse verse={this.data.verse} expanded={true} />
           </div>
-        : <p>Loading ...</p>
+        :
+          <CircularProgress mode="indeterminate" size={2} />
         }
       </div>
     )
