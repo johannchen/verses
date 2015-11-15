@@ -1,0 +1,8 @@
+{
+  "public": {
+    "comment": "These are test API keys, change them to your own for testing but please don't commit the changes",
+    "analyticsSettings": {
+       "Google Analytics": {"trackingId": "UA-70129235-1"}
+     }
+   }
+ }
