@@ -20,3 +20,20 @@ Meteor.publish('partner', function() {
     }
   }
 });
+
+// random verse
+function randomVerseId() {
+  // get the total verses count of the collection
+ var versesCount = Verses.find().count();
+ // get a random number (N) between [0 , itemsCount - 1]
+ var random = Math.floor(Random.fraction() * versesCount);
+ // choose a random item by skipping N items
+ var verse = Verses.findOne({},{
+   skip: random
+ });
+ return verse && verse._id;
+}
+
+Meteor.publish('randomVerse', function() {
+  return Verses.find({_id: randomVerseId()});
+});

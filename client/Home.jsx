@@ -5,6 +5,9 @@ let {
   RaisedButton,
   FlatButton,
   LinearProgress,
+  Card,
+  CardTitle,
+  CardText,
   ToolbarSeparator } = MUI;
 
 Home = React.createClass({
@@ -13,6 +16,8 @@ Home = React.createClass({
 
   getMeteorData() {
     return {
+      loaded: FlowRouter.subsReady('randomVerse'),
+      randomVerse: Verses.findOne(),
       currentUser: Meteor.user()
     };
   },
@@ -41,8 +46,16 @@ Home = React.createClass({
                   <RaisedButton label="Sign In" onTouchTap={this.handleSignIn}  />
                 </div>
               } />
-            <p>Verses helps you to organize and memorize your favorite ESV Bible verses with your accountability partner. May your heart and mind be filled with God's Word, which you can put to good use in time of need.</p>
+            <p>Verses helps you to memorize your favorite ESV Bible verses with your accountability partner. May your heart and mind be filled with God's Word, which you can put to good use in time of need.</p>
             <AccountsMUI signin={this.state.signin} />
+            { this.data.loaded ?
+            <Card style={{marginTop: '30px'}}>
+              <CardTitle title={this.data.randomVerse.title} />
+              <CardText>
+                {this.data.randomVerse.content}
+              </CardText>
+            </Card>
+            : ''}
           </div>
         }
       </AppCanvas>

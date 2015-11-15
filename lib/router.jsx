@@ -1,5 +1,8 @@
 FlowRouter.route('/', {
   name: 'home',
+  subscriptions: function(params) {
+    this.register('randomVerse', Meteor.subscribe('randomVerse'));
+  },
   action: function(params) {
     /* The key 'content' is now a function */
     ReactLayout.render(MainLayout, {
