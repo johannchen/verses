@@ -58,7 +58,7 @@ Point = React.createClass({
                     </CardText>
                     <CardActions>
                       <FlatButton label="Submit" primary={true} onTouchTap={this.onSubmitVerse} />
-                      <FlatButton label="Try Again" secondary={true} onTouchTap={this.onTryAgain} />
+                      <FlatButton label="Try Again" onTouchTap={this.onTryAgain} />
                     </CardActions>
                   </Card>
                 )
@@ -117,6 +117,7 @@ Point = React.createClass({
 
   onTryAgain() {
     this.refs.textarea.setValue('');
+    this.refs.textarea.focus();
     this.setState({diff: { __html: ''}});
   }
 });

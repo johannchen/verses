@@ -1,4 +1,4 @@
-let { Card, CardText, TextField } = MUI;
+let { Card, CardText, TextField, FlatButton } = MUI;
 
 LetterPoint = React.createClass({
   getInitialState() {
@@ -13,7 +13,8 @@ LetterPoint = React.createClass({
       <Card>
         <CardText>
           <p>{this.state.words}</p>
-          <TextField hintText="first letter" ref="letter" onChange={this.handleNextWord} autoFocus={true}/>
+          <TextField hintText="first letter" ref="letter" style={{width: '100px'}} onChange={this.handleNextWord} autoFocus={true}/>
+          <FlatButton label="Try Again" onTouchTap={this.tryAgain} />
         </CardText>
       </Card>
     )
@@ -48,5 +49,10 @@ LetterPoint = React.createClass({
       this.refs.letter.setErrorText("incorrect!");
     }
     this.refs.letter.setValue('');
+  },
+
+  tryAgain() {
+    this.setState({words: '', index: 0});
+    this.refs.letter.focus();
   }
 });

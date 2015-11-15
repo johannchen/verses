@@ -20,7 +20,7 @@ Practice = React.createClass({
             <FlatButton label="Done!" disabled={true} />
           : <FlatButton label="Next Word" primary={true} onTouchTap={this.handleNextWord} />
           }
-          <FlatButton label="Reset" onTouchTap={this.handleReset} />
+          <FlatButton label="Try Again" onTouchTap={this.handleReset} />
         </CardActions>
       </Card>
     )
