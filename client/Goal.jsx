@@ -1,9 +1,12 @@
-let { FlatButton, LinearProgress } = MUI;
+let { FlatButton, FontIcon, LinearProgress } = MUI;
 Goal = React.createClass({
   render() {
     return (
       <div>
         <FlatButton label={this.goalDisplay()} disabled={true} />
+        <FlatButton label={this.props.reward} labelPosition="after" style={{float: 'right'}} disabled={true}>
+          <FontIcon className="zmdi zmdi-favorite-outline" />
+        </FlatButton>
         <LinearProgress mode="determinate" value={this.percentage()} size={3} />
       </div>
     )
@@ -12,10 +15,7 @@ Goal = React.createClass({
   goalDisplay() {
     let who = "My";
     if (this.props.partner) { who = this.props.partner;}
-    var goal = `${who} Weekly Goal: ${this.props.points}/${this.props.goal}`;
-    let reward = "";
-    if (this.props.reward) { reward = `Reward Partner: ${this.props.reward}`; }
-    return `${goal} ${reward}`
+    return `${who} Weekly Goal: ${this.props.points}/${this.props.goal}`;
   },
 
   percentage() {

@@ -1,4 +1,4 @@
-Session.setDefault('sortByPoint', false);
+Session.setDefault('sort', 'date');
 
 let {
   AppCanvas,
@@ -63,8 +63,22 @@ MyVerses = React.createClass({
         { content: q}
       ]};
     }
-    let sort = {createdAt: -1};
-    if (Session.get('sortByPoint')) { sort = {lastPointAt: -1}; }
+    switch (Session.get('sort')) {
+      case 'lastPoint':
+        sort = {lastPointAt: -1};
+        break;
+      case 'mostPoint':
+        sort = {pointCount: -1};
+        break;
+      case 'lestPoint':
+        sort = {pointCount: 1};
+        break;
+      case 'book':
+        sort = {title: 1};
+        break;
+      default:
+        sort = {createdAt: -1};
+    }
     query.owner = this.props.currentUser._id;
     return Verses.find(query, {sort: sort});
   },
@@ -104,16 +118,16 @@ MyVerses = React.createClass({
 
   render() {
     let standardActions = [
-      { text: 'Cancel' },
-      { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' }
+      { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' },
+      { text: 'Cancel' }
     ];
     let partnerActions = [
-      { text: 'Cancel' },
-      { text: 'Add Partner', onTouchTap: this.handleAddPartner, ref: 'addPartner' }
+      { text: 'Add Partner', onTouchTap: this.handleAddPartner, ref: 'addPartner' },
+      { text: 'Cancel' }
     ];
     let goalActions = [
-      { text: 'Cancel' },
-      { text: 'Set Goal', onTouchTap: this.handleSetGoal, ref: 'setGoal' }
+      { text: 'Set Goal', onTouchTap: this.handleSetGoal, ref: 'setGoal' },
+      { text: 'Cancel' }
     ];
     return (
       <div>
@@ -133,11 +147,6 @@ MyVerses = React.createClass({
           iconElementLeft={<IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerseDialog}></IconButton>}
           iconElementRight={
             <div>
-              <IconButton onTouchTap={this.toggleSort}>
-                <FontIcon
-                  className="zmdi zmdi-sort-amount-asc"
-                  color={Colors.grey50}></FontIcon>
-              </IconButton>
               <IconButton onTouchTap={this.toggleSearchField}>
                 <FontIcon
                   className="zmdi zmdi-search"
@@ -151,6 +160,19 @@ MyVerses = React.createClass({
                   onEnterKeyDown={this.handleSearch} />
                 : ''
               }
+              <IconMenu
+                iconButtonElement={
+                  <IconButton>
+                    <FontIcon className="zmdi zmdi-sort-amount-asc" color={Colors.grey50}></FontIcon>
+                  </IconButton>
+                }>
+                <MenuItem primaryText="Added Date" onTouchTap={this.sortByDate} />
+                <MenuItem primaryText="Last Point Date" onTouchTap={this.sortByLastPoint} />
+                <MenuItem primaryText="Most Point" onTouchTap={this.sortByMostPoint} />
+                <MenuItem primaryText="Lest Point" onTouchTap={this.sortByLestPoint} />
+                <MenuItem primaryText="Books" onTouchTap={this.sortByBook} />
+              </IconMenu>
+
               <IconMenu
                 iconButtonElement={
                   <IconButton>
@@ -170,7 +192,7 @@ MyVerses = React.createClass({
             </div>
           } />
         { this.data.loaded ?
-          <div>
+          <div style={{paddingTop: '5px'}}>
             { this.props.currentUser.profile.partner ?
               <Goal points={this.data.partnerPointsOfThisWeek}
                 goal={this.data.partnerGoal}
@@ -203,7 +225,7 @@ MyVerses = React.createClass({
           actions={standardActions}
           actionFocus="submit"
           modal={this.state.verseModal}>
-          <TextField hintText="John 3:16" ref="title" list="books" />
+          <TextField hintText="John 3:16" ref="title" list="books" autoFocus={true} />
           <br />
           <TextField hintText="Topic" ref="topic" />
         </Dialog>
@@ -228,7 +250,7 @@ MyVerses = React.createClass({
             defaultValue={this.props.currentUser.profile.goal}/>
           <br />
           { this.props.currentUser.profile.partner ?
-            <TextField hintText="reward your partner (e.g. 10 min massage)"
+            <TextField hintText="reward partner"
               ref="reward"
               defaultValue={this.props.currentUser.profile.rewardPartner} />
             : ''
@@ -280,13 +302,33 @@ MyVerses = React.createClass({
     Meteor.logout();
   },
 
-  toggleSort() {
-    if (Session.get('sortByPoint')) {
-      this.setState({sortMessage: "Sort By Entered Date"});
-    } else {
-      this.setState({sortMessage: "Sort By Most Recent Memorized"});
-    }
-    Session.set('sortByPoint', !Session.get('sortByPoint'));
+  sortByDate() {
+    Session.set('sort', 'date');
+    this.setState({sortMessage: "Sort By Added Date"});
+    this.refs.sortIndicator.show();
+  },
+
+  sortByLastPoint() {
+    Session.set('sort', 'lastPoint');
+    this.setState({sortMessage: "Sort By Last Point Date"});
+    this.refs.sortIndicator.show();
+  },
+
+  sortByMostPoint() {
+    Session.set('sort', 'mostPoint');
+    this.setState({sortMessage: "Sort By Most Points"});
+    this.refs.sortIndicator.show();
+  },
+
+  sortByLestPoint() {
+    Session.set('sort', 'lestPoint');
+    this.setState({sortMessage: "Sort By Lest Points"});
+    this.refs.sortIndicator.show();
+  },
+
+  sortByBook() {
+    Session.set('sort', 'book');
+    this.setState({sortMessage: "Sort By Books"});
     this.refs.sortIndicator.show();
   },
 
