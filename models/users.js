@@ -3,7 +3,7 @@ Meteor.methods({
     Meteor.users.update(Meteor.userId(), {
       $set: {
         "profile.goal": goal,
-        "profile.rewardPartner": reward
+        "profile.reward": reward
       }
     });
   }

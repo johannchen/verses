@@ -34,7 +34,7 @@ MyVerses = React.createClass({
       if(partnerHandle.ready()) {
         profile = Meteor.users.findOne(partnerId).profile;
         partnerGoal = profile.goal;
-        partnerReward = profile.rewardPartner;
+        partnerReward = profile.reward;
       }
     } else {
       handle = Meteor.subscribe("verses", null);
@@ -137,6 +137,7 @@ MyVerses = React.createClass({
             versesCount={this.data.partnerVersesCount}
             points={this.data.partnerPointsOfThisWeek}
             goal={this.data.partnerGoal}
+            reward={this.data.partnerReward}
             username={this.props.currentUser.profile.partner.username}
             goBack={this.goMyVerses} />
         </div>
@@ -167,9 +168,9 @@ MyVerses = React.createClass({
                   </IconButton>
                 }>
                 <MenuItem primaryText="Added Date" onTouchTap={this.sortByDate} />
-                <MenuItem primaryText="Last Point Date" onTouchTap={this.sortByLastPoint} />
-                <MenuItem primaryText="Most Point" onTouchTap={this.sortByMostPoint} />
-                <MenuItem primaryText="Lest Point" onTouchTap={this.sortByLestPoint} />
+                <MenuItem primaryText="Last Memorized" onTouchTap={this.sortByLastPoint} />
+                <MenuItem primaryText="Most Points" onTouchTap={this.sortByMostPoint} />
+                <MenuItem primaryText="Least Points" onTouchTap={this.sortByLestPoint} />
                 <MenuItem primaryText="Books" onTouchTap={this.sortByBook} />
               </IconMenu>
 
@@ -203,7 +204,7 @@ MyVerses = React.createClass({
             }
             <Goal points={this.data.pointsOfThisWeek}
               goal={this.props.currentUser.profile.goal}
-              reward={this.props.currentUser.profile.rewardPartner}
+              reward={this.props.currentUser.profile.reward}
               />
             {this.renderVerses()}
           </div>
@@ -248,13 +249,11 @@ MyVerses = React.createClass({
             style={{width: '50px'}}
             ref="goal"
             defaultValue={this.props.currentUser.profile.goal}/>
+          <span><strong>different</strong> verses per week</span>
           <br />
-          { this.props.currentUser.profile.partner ?
-            <TextField hintText="reward partner"
-              ref="reward"
-              defaultValue={this.props.currentUser.profile.rewardPartner} />
-            : ''
-          }
+          <TextField hintText="my reward"
+            ref="reward"
+            defaultValue={this.props.currentUser.profile.reward} />
         </Dialog>
       </div>
       }
@@ -310,7 +309,7 @@ MyVerses = React.createClass({
 
   sortByLastPoint() {
     Session.set('sort', 'lastPoint');
-    this.setState({sortMessage: "Sort By Last Point Date"});
+    this.setState({sortMessage: "Sort By Last Memorized Date"});
     this.refs.sortIndicator.show();
   },
 
@@ -322,7 +321,7 @@ MyVerses = React.createClass({
 
   sortByLestPoint() {
     Session.set('sort', 'lestPoint');
-    this.setState({sortMessage: "Sort By Lest Points"});
+    this.setState({sortMessage: "Sort By Least Points"});
     this.refs.sortIndicator.show();
   },
 

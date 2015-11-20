@@ -52,7 +52,6 @@ Point = React.createClass({
                     <CardText>
                       <TextField hintText="please type verse to memorize" ref="textarea" multiLine={true} fullWidth={true} autoFocus={true} />
                       <p>
-                        <strong>{this.data.verse.title}</strong><br />
                         <span dangerouslySetInnerHTML={this.state.diff} />
                       </p>
                     </CardText>
@@ -106,11 +105,12 @@ Point = React.createClass({
 
   onSubmitVerse() {
     let typedVerse = this.refs.textarea.getValue();
-    if (typedVerse === this.data.verse.content) {
+    let verse = `${this.data.verse.content} ${this.data.verse.title}`;
+    if (typedVerse === verse) {
       this.updatePoint();
       this.goVerse();
     } else {
-      let diff = this.diffText(typedVerse, this.data.verse.content);
+      let diff = this.diffText(typedVerse, verse);
       this.setState({diff: { __html: diff }});
     }
   },
