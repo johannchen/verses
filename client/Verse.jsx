@@ -50,7 +50,7 @@ Verse = React.createClass({
   renderComments() {
     if (this.props.verse.comments) {
       let verseId = this.props.verse._id;
-      return this.props.verse.comments.reverse().map( (comment) => {
+      return this.props.verse.comments.map( (comment) => {
         return <Comment key={comment.id} comment={comment} verseId={verseId} ownerId={this.props.verse.owner} />;
       });
     }

@@ -188,6 +188,7 @@ MyVerses = React.createClass({
                 : <MenuItem primaryText="Add Partner" onTouchTap={this.showPartnerDialog} />
                 }
                 <MenuItem primaryText="Set Goal" onTouchTap={this.showGoalDialog} />
+                <MenuItem primaryText="Feedback" onTouchTap={this.goFeedback} />
                 <MenuItem primaryText="Sign Out" onTouchTap={this.handleSignOut} />
               </IconMenu>
             </div>
@@ -293,6 +294,10 @@ MyVerses = React.createClass({
   getTitle() {
     return `${this.data.versesCount} ${this.props.currentUser.username}`;
   },
+  goFeedback() {
+    FlowRouter.go('/feedback');
+  },
+
   goMyVerses() {
     this.setState({partner: false});
   },

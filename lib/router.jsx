@@ -41,8 +41,6 @@ FlowRouter.route('/edit/:_id', {
   }
 });
 
-
-
 FlowRouter.route('/point/:_id', {
   name: 'point',
   subscriptions: function(params) {
@@ -52,6 +50,18 @@ FlowRouter.route('/point/:_id', {
     ReactLayout.render(MainLayout, {
       content() {
         return <Point verseId={params._id} />;
+      }
+    });
+  }
+});
+
+FlowRouter.route('/feedback', {
+  name: 'feedback',
+  action: function(params) {
+    /* The key 'content' is now a function */
+    ReactLayout.render(MainLayout, {
+      content() {
+        return <Feedback />;
       }
     });
   }
