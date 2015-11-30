@@ -48,7 +48,7 @@ Home = React.createClass({
               } />
             <p>Verses helps you to memorize your favorite ESV Bible verses with your accountability partner. May your heart and mind be filled with God's Word, which you can put to good use in time of need.</p>
             <AccountsMUI signin={this.state.signin} />
-            { this.data.loaded ?
+            { this.data.randomVerse ?
             <Card style={{marginTop: '30px'}}>
               <CardTitle title={this.data.randomVerse.title} />
               <CardText>

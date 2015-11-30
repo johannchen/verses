@@ -226,7 +226,8 @@ MyVerses = React.createClass({
           title="New Verse"
           actions={standardActions}
           actionFocus="submit"
-          modal={this.state.verseModal}>
+          open={this.state.verseModal}
+          onRequestClose={this.closeNewVerseDialog}>
           <TextField hintText="John 3:16" ref="title" list="books" autoFocus={true} />
           <br />
           <TextField hintText="Topic" ref="topic" />
@@ -236,7 +237,8 @@ MyVerses = React.createClass({
           title="Add Accountability Partner"
           actions={partnerActions}
           actionFocus="addPartner"
-          modal={this.state.partnerModal}>
+          open={this.state.partnerModal}
+          onRequestClose={this.closePartnerDialog}>
           <TextField hintText="partner's username" ref="partner" />
         </Dialog>
         <Dialog
@@ -244,12 +246,13 @@ MyVerses = React.createClass({
           title="Set Weekly Goal"
           actions={goalActions}
           actionFocus="setGoal"
-          modal={this.state.goalModal}>
+          open={this.state.goalModal}
+          onRequestClose={this.closeGoalDialog}>
           <TextField
             type="number" min="1" max="20"
             style={{width: '50px'}}
             ref="goal"
-            defaultValue={this.props.currentUser.profile.goal}/>
+            defaultValue={this.props.currentUser.profile.goal.toString()}/>
           <span><strong>different</strong> verses per week</span>
           <br />
           <TextField hintText="my reward"
@@ -343,7 +346,12 @@ MyVerses = React.createClass({
 
   /* add partner */
   showPartnerDialog() {
-    this.refs.partnerDialog.show();
+    //this.refs.partnerDialog.show();
+    this.setState({partnerModal: true});
+  },
+
+  closePartnerDialog() {
+    this.setState({partnerModal: false});
   },
 
   handleAddPartner() {
@@ -353,7 +361,8 @@ MyVerses = React.createClass({
       } else if (! result) {
         this.refs.partner.setErrorText("Sorry, this partner is not available.");
       } else {
-        this.refs.partnerDialog.dismiss();
+        //this.refs.partnerDialog.dismiss();
+        this.setState({partnerModal: false});
       }
     });
   },
@@ -368,19 +377,30 @@ MyVerses = React.createClass({
   },
   /* set goal */
   showGoalDialog() {
-    this.refs.goalDialog.show();
+    //this.refs.goalDialog.show();
+    this.setState({goalModal: true});
+  },
+
+  closeGoalDialog() {
+    this.setState({goalModal: false});
   },
 
   handleSetGoal() {
     let reward = '';
     if (this.refs.reward) { reward = this.refs.reward.getValue();}
     Meteor.call('setGoal', this.refs.goal.getValue(), reward );
-    this.refs.goalDialog.dismiss();
+    //this.refs.goalDialog.dismiss();
+    this.setState({goalModal: false});
   },
 
   /* add verse */
   showNewVerseDialog() {
-    this.refs.newVerseDialog.show();
+    //this.refs.newVerseDialog.show();
+    this.setState({verseModal: true});
+  },
+
+  closeNewVerseDialog() {
+    this.setState({verseModal: false});
   },
 
   handleAddVerse() {
@@ -395,7 +415,8 @@ MyVerses = React.createClass({
       });
       this.refs.title.setValue('');
       this.refs.topic.setValue('');
-      this.refs.newVerseDialog.dismiss();
+      //this.refs.newVerseDialog.dismiss();
+      this.setState({verseModal: false});
     }
   },
 
