@@ -6,5 +6,13 @@ Meteor.methods({
         "profile.reward": reward
       }
     });
+  },
+  // TODO: remove after set myself to admin
+  setAdmin() {
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        "profile.admin": true
+      }
+    });
   }
 })

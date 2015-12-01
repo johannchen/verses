@@ -21,6 +21,10 @@ Meteor.publish('partner', function() {
   }
 });
 
+Meteor.publish('people', function() {
+  return Meteor.users.find({}, {fields: {_id:1, username:1, emails:1, createdAt:1}});
+});
+
 // random verse
 function randomVerseId() {
   // get the total verses count of the collection

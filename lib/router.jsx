@@ -66,3 +66,15 @@ FlowRouter.route('/feedback', {
     });
   }
 });
+
+FlowRouter.route('/admin', {
+  name: 'admin',
+  action: function(params) {
+    /* The key 'content' is now a function */
+    ReactLayout.render(MainLayout, {
+      content() {
+        return <Admin />;
+      }
+    });
+  }
+});

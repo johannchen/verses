@@ -15,6 +15,7 @@ let {
   FlatButton,
   Styles,
   Snackbar,
+  AutoComplete,
   Dialog} = MUI;
 //let IconMenu = MUI.Libs.Menu;
 let MenuItem = MUI.Libs.MenuItem;
