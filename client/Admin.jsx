@@ -15,12 +15,14 @@ Admin = React.createClass({
 
   getMeteorData() {
     let loaded = false;
-    if (Meteor.user().profile.admin) {
+    let currentUser = Meteor.user();
+    if (currentUser && currentUser.profile.admin) {
       loaded = Meteor.subscribe('people').ready();
     }
     return {
       loaded,
-      people: Meteor.users.find().fetch()
+      people: Meteor.users.find({}, {sort: {createdAt: -1}}).fetch(),
+      headCount: Meteor.users.find().count()
     }
   },
   render() {
@@ -29,7 +31,7 @@ Admin = React.createClass({
       { this.data.loaded ?
         <div>
           <AppBar
-            title="Admin"
+            title={this.getTitle()}
             iconElementLeft={<IconButton iconClassName="zmdi zmdi-home" onTouchTap={this.goHome}></IconButton>} />
           <Table selectable={false}>
             <TableHeader displaySelectAll={false}>
@@ -68,6 +70,10 @@ Admin = React.createClass({
       return user.emails[0].address
     });
     return emails.join();
+  },
+
+  getTitle() {
+    return `Admin (${this.data.headCount})`;
   },
 
   goHome() {
