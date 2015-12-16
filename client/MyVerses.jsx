@@ -15,7 +15,8 @@ let {
   FlatButton,
   Styles,
   Snackbar,
-  AutoComplete,
+  Card,
+  CardText,
   Dialog} = MUI;
 //let IconMenu = MUI.Libs.Menu;
 let MenuItem = MUI.Libs.MenuItem;
@@ -127,8 +128,8 @@ MyVerses = React.createClass({
       search: null,
       sortMessage: '',
       showSearchField: false,
+      showAddVerse: false,
       showBackToTop: false,
-      verseModal: false,
       partnerModal: false,
       goalModal: false,
       partner: false
@@ -136,10 +137,6 @@ MyVerses = React.createClass({
   },
 
   render() {
-    let standardActions = [
-      { text: 'Add Verse', onTouchTap: this.handleAddVerse, ref: 'submit' },
-      { text: 'Cancel' }
-    ];
     let partnerActions = [
       { text: 'Add Partner', onTouchTap: this.handleAddPartner, ref: 'addPartner' },
       { text: 'Cancel' }
@@ -164,7 +161,10 @@ MyVerses = React.createClass({
       <div>
         <AppBar
           title={this.getTitle()}
-          iconElementLeft={<IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerseDialog}></IconButton>}
+          iconElementLeft={
+            this.state.showAddVerse ?
+            <IconButton iconClassName="zmdi zmdi-minus" onTouchTap={this.closeNewVerse}></IconButton>
+            : <IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerse}></IconButton>}
           iconElementRight={
             <div>
               <IconButton onTouchTap={this.toggleSearchField}>
@@ -212,6 +212,17 @@ MyVerses = React.createClass({
               </IconMenu>
             </div>
           } />
+        { this.state.showAddVerse ?
+          <Card>
+            <CardText>
+              <TextField hintText="John 3:16" ref="title" list="books" autoFocus={true} />
+              <TextField hintText="Topic" ref="topic"  style={{paddingLeft: '5px'}} />
+              <FlatButton label="Add Verse" primary={true} onTouchTap={this.handleAddVerse} />
+              <FlatButton label="Cancel" onTouchTap={this.closeNewVerse} />
+            </CardText>
+          </Card>
+          : ''
+        }
         { this.data.loaded ?
           <div style={{paddingTop: '5px'}}>
             { this.props.currentUser.profile.partner ?
@@ -246,17 +257,7 @@ MyVerses = React.createClass({
         <datalist id="books">
           {this.renderBookList()}
         </datalist>
-        <Dialog
-          ref="newVerseDialog"
-          title="New Verse"
-          actions={standardActions}
-          actionFocus="submit"
-          open={this.state.verseModal}
-          onRequestClose={this.closeNewVerseDialog}>
-          <TextField hintText="John 3:16" ref="title" list="books" autoFocus={true} />
-          <br />
-          <TextField hintText="Topic" ref="topic" />
-        </Dialog>
+
         <Dialog
           ref="partnerDialog"
           title="Add Accountability Partner"
@@ -424,13 +425,12 @@ MyVerses = React.createClass({
   },
 
   /* add verse */
-  showNewVerseDialog() {
-    //this.refs.newVerseDialog.show();
-    this.setState({verseModal: true});
+  showNewVerse() {
+    this.setState({showAddVerse: true});
   },
 
-  closeNewVerseDialog() {
-    this.setState({verseModal: false});
+  closeNewVerse() {
+    this.setState({showAddVerse: false});
   },
 
   handleAddVerse() {
@@ -445,8 +445,6 @@ MyVerses = React.createClass({
       });
       this.refs.title.setValue('');
       this.refs.topic.setValue('');
-      //this.refs.newVerseDialog.dismiss();
-      this.setState({verseModal: false});
     }
   },
 
