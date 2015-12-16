@@ -25,8 +25,25 @@ MyVerses = React.createClass({
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
 
-  getMeteorData() {
+  componentDidMount() {
+    //this.updateScroll = throttle(this.updateScroll, 100);
+    window.addEventListener('scroll', this.updateScroll);
+  },
 
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.updateScroll);
+  },
+
+  updateScroll() {
+    this.setState({showBackToTop: this.getScrollTop() > 200});
+  },
+
+  getScrollTop() {
+    return navigator.userAgent.toLowerCase().indexOf('firefox') !== -1 ?
+      document.documentElement.scrollTop : document.body.scrollTop;
+  },
+
+  getMeteorData() {
     var handle, partnerId, partnerGoal, partnerReward;
     if (this.props.currentUser.profile.partner || this.state.partner) {
       partnerId = this.props.currentUser.profile.partner.id;
@@ -110,6 +127,7 @@ MyVerses = React.createClass({
       search: null,
       sortMessage: '',
       showSearchField: false,
+      showBackToTop: false,
       verseModal: false,
       partnerModal: false,
       goalModal: false,
@@ -209,6 +227,12 @@ MyVerses = React.createClass({
               reward={this.props.currentUser.profile.reward}
               />
             {this.renderVerses()}
+            { this.state.showBackToTop ?
+              <div style={{position: "fixed", bottom: "0", right: "0"}}>
+                <FloatingActionButton iconClassName="zmdi zmdi-long-arrow-up" onTouchTap={this.goTop} />
+              </div>
+              : ''
+            }
           </div>
           :
           <CircularProgress mode="indeterminate" size={2} />
@@ -298,8 +322,13 @@ MyVerses = React.createClass({
   getTitle() {
     return `${this.data.versesCount} ${this.props.currentUser.username}`;
   },
+
   goFeedback() {
     FlowRouter.go('/feedback');
+  },
+
+  goTop() {
+    $('html, body').animate({scrollTop: 0}, 300);
   },
 
   goMyVerses() {
