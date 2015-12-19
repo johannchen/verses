@@ -239,7 +239,7 @@ MyVerses = React.createClass({
               />
             {this.renderVerses()}
             { this.state.showBackToTop ?
-              <div style={{position: "fixed", bottom: "0", right: "0"}}>
+              <div style={{position: "fixed", bottom: "60px", right: "0"}}>
                 <FloatingActionButton iconClassName="zmdi zmdi-long-arrow-up" onTouchTap={this.goTop} />
               </div>
               : ''
@@ -444,6 +444,7 @@ MyVerses = React.createClass({
         Meteor.call('addVerse', title, topic, content);
       });
       this.refs.title.setValue('');
+      this.refs.title.focus();
       this.refs.topic.setValue('');
     }
   },
