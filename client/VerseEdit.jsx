@@ -6,7 +6,7 @@ VerseEdit = React.createClass({
 
   getMeteorData() {
     return {
-      loaded: FlowRouter.subsReady('verse'),
+      //loaded: FlowRouter.subsReady('verse'),
       verse: Verses.findOne(this.props.verseId)
     }
   },
@@ -14,7 +14,7 @@ VerseEdit = React.createClass({
   render() {
     return (
       <div>
-        { this.data.loaded ?
+        { this.data.verse ?
         <div>
           <AppBar
             title={this.data.verse.title}

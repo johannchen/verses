@@ -6,8 +6,8 @@ Point = React.createClass({
 
   getMeteorData() {
     return {
-      loaded: FlowRouter.subsReady('verse'),
-      verse: Verses.findOne()
+      //loaded: FlowRouter.subsReady('verse'),
+      verse: Verses.findOne(this.props.verseId)
     };
   },
 
@@ -21,7 +21,7 @@ Point = React.createClass({
   render() {
     return (
       <div>
-        { this.data.loaded ?
+        { this.data.verse ?
           <div>
             <AppBar
               title=""

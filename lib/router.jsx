@@ -15,9 +15,9 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/verse/:_id', {
   name: 'verse',
-  subscriptions: function(params) {
-    this.register('verse', Meteor.subscribe('verse', params._id));
-  },
+  //subscriptions: function(params) {
+  //  this.register('verse', Meteor.subscribe('verse', params._id));
+  //},
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {
@@ -29,9 +29,9 @@ FlowRouter.route('/verse/:_id', {
 
 FlowRouter.route('/edit/:_id', {
   name: 'edit',
-  subscriptions: function(params) {
-    this.register('verse', Meteor.subscribe('verse', params._id));
-  },
+  //subscriptions: function(params) {
+  //  this.register('verse', Meteor.subscribe('verse', params._id));
+  //},
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {
@@ -43,9 +43,9 @@ FlowRouter.route('/edit/:_id', {
 
 FlowRouter.route('/point/:_id', {
   name: 'point',
-  subscriptions: function(params) {
-    this.register('verse', Meteor.subscribe('verse', params._id));
-  },
+  //subscriptions: function(params) {
+  //  this.register('verse', Meteor.subscribe('verse', params._id));
+  //},
   action: function(params) {
     ReactLayout.render(MainLayout, {
       content() {

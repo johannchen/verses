@@ -1,7 +1,8 @@
-Meteor.publish('verses', function (partnerId) {
+Meteor.publish('verses', function () {
   if (this.userId) {
-    if (partnerId) {
-      return Verses.find({$or: [{owner: this.userId}, {owner: partnerId}]});
+    let partner = Meteor.users.findOne(this.userId).profile.partner;
+    if (partner) {
+      return Verses.find({$or: [{owner: this.userId}, {owner: partner.id}]});
     } else {
       return Verses.find({owner: this.userId});
     }

@@ -45,22 +45,24 @@ MyVerses = React.createClass({
   },
 
   getMeteorData() {
-    var handle, partnerId, partnerGoal, partnerReward;
+    // var handle,
+    var partnerId, partnerGoal, partnerReward;
     if (this.props.currentUser.profile.partner || this.state.partner) {
       partnerId = this.props.currentUser.profile.partner.id;
-      handle = Meteor.subscribe("verses", partnerId);
+      //handle = Meteor.subscribe("verses", partnerId);
       var partnerHandle = Meteor.subscribe('partner');
       if(partnerHandle.ready()) {
         profile = Meteor.users.findOne(partnerId).profile;
         partnerGoal = profile.goal;
         partnerReward = profile.reward;
       }
-    } else {
-      handle = Meteor.subscribe("verses", null);
     }
+    //else {
+    //  handle = Meteor.subscribe("verses", null);
+    //}
 
     return {
-      loaded: handle.ready(),
+      //loaded: handle.ready(),
       verses: this.getMyVerses().fetch(),
       versesCount: this.getMyVerses().count(),
       pointsOfThisWeek: this.getPointsOfThisWeek(this.props.currentUser._id),
@@ -161,10 +163,7 @@ MyVerses = React.createClass({
       <div>
         <AppBar
           title={this.getTitle()}
-          iconElementLeft={
-            this.state.showAddVerse ?
-            <IconButton iconClassName="zmdi zmdi-minus" onTouchTap={this.closeNewVerse}></IconButton>
-            : <IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerse}></IconButton>}
+          iconElementLeft={<IconButton iconClassName="zmdi zmdi-plus" onTouchTap={this.showNewVerse}></IconButton>}
           iconElementRight={
             <div>
               <IconButton onTouchTap={this.toggleSearchField}>
@@ -223,7 +222,7 @@ MyVerses = React.createClass({
           </Card>
           : ''
         }
-        { this.data.loaded ?
+        { this.data.verses ?
           <div style={{paddingTop: '5px'}}>
             { this.props.currentUser.profile.partner ?
               <Goal points={this.data.partnerPointsOfThisWeek}
@@ -394,6 +393,8 @@ MyVerses = React.createClass({
       } else {
         //this.refs.partnerDialog.dismiss();
         this.setState({partnerModal: false});
+        // resubscribe verses
+        Meteor.subscribe('verses');
       }
     });
   },
@@ -404,6 +405,8 @@ MyVerses = React.createClass({
   removePartner() {
     if (confirm("Are you sure to remove your partner?")) {
       Meteor.call("removePartner", this.props.currentUser.profile.partner.id);
+      // resubscribe verses
+      Meteor.subscribe('verses');
     }
   },
   /* set goal */
